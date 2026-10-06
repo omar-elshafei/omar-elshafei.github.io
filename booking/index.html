@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لمسة — نظام حجز المواعيد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2a1b2e; --muted:#7d6b80; --line:#efe4ef; --bg:#fbf7fa; --brand:#b03a77; --brand-2:#d9659d; --soft:#fbe9f2; --green:#15803d; --amber:#b45309; --red:#b91c1c; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Almarai, system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+  a { color:inherit; text-decoration:none; }
+  button, input, select, textarea { font-family:inherit; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 22px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 22px; font-weight:800; font-size:15px; cursor:pointer; }
+  .btn.light { background:#fff; color:var(--ink); border:1.5px solid var(--line); }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  header { background:#fff; border-bottom:1px solid var(--line); }
+  nav { height:70px; display:flex; justify-content:space-between; align-items:center; }
+  .logo { font-weight:800; font-size:22px; display:flex; gap:10px; align-items:center; }
+  .logo i { width:36px; height:36px; border-radius:12px; background:linear-gradient(135deg,#b03a77,#f0a5c8); }
+  .switch { display:flex; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:4px; }
+  .switch a { padding:8px 16px; border-radius:9px; font-weight:800; font-size:14px; color:var(--muted); }
+  .switch a.on { background:var(--brand); color:#fff; }
+
+  /* booking wizard */
+  .book { display:grid; grid-template-columns:1fr 320px; gap:24px; padding:34px 0 60px; align-items:start; }
+  .steps { display:flex; gap:8px; margin-bottom:22px; }
+  .st { flex:1; display:flex; align-items:center; gap:8px; color:var(--muted); font-weight:700; font-size:14px; }
+  .st i { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:#fff; border:2px solid var(--line); font-style:normal; flex:none; }
+  .st.on { color:var(--brand); } .st.on i { border-color:var(--brand); background:var(--brand); color:#fff; }
+  .st.done i { background:var(--soft); border-color:var(--brand-2); color:var(--brand); }
+  .st::after { content:""; flex:1; height:2px; background:var(--line); }
+  .st:last-child::after { display:none; }
+  .panel { background:#fff; border:1px solid var(--line); border-radius:20px; padding:24px; }
+  .panel h2 { font-size:22px; margin-bottom:6px; }
+  .panel .sub { color:var(--muted); margin-bottom:18px; }
+  .opts { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .opt { border:2px solid var(--line); border-radius:16px; padding:16px; cursor:pointer; background:#fff; text-align:right; display:flex; gap:12px; align-items:center; }
+  .opt:hover { border-color:var(--brand-2); }
+  .opt.on { border-color:var(--brand); background:var(--soft); }
+  .opt .ic { width:46px; height:46px; border-radius:12px; background:var(--soft); display:grid; place-items:center; font-size:22px; flex:none; }
+  .opt b { display:block; }
+  .opt small { color:var(--muted); }
+  .opt .pr { margin-right:auto; font-weight:800; color:var(--brand); white-space:nowrap; }
+  .av { width:46px; height:46px; border-radius:50%; display:grid; place-items:center; color:#fff; font-weight:800; flex:none; }
+  .days { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:18px; }
+  .day { border:2px solid var(--line); border-radius:14px; padding:10px 4px; text-align:center; cursor:pointer; background:#fff; }
+  .day small { display:block; color:var(--muted); font-size:12px; }
+  .day b { font-size:20px; }
+  .day.on { border-color:var(--brand); background:var(--soft); }
+  .day.off { opacity:.35; cursor:not-allowed; }
+  .slots { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  .slot { border:1.5px solid var(--line); border-radius:10px; padding:10px; text-align:center; cursor:pointer; background:#fff; font-weight:700; }
+  .slot.on { background:var(--brand); color:#fff; border-color:var(--brand); }
+  .slot.taken { text-decoration:line-through; color:#c9b9c9; cursor:not-allowed; background:#faf5f9; }
+  .form { display:grid; gap:12px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  input, select, textarea { border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:15px; width:100%; background:#fff; }
+  textarea { min-height:90px; resize:vertical; }
+  .nav-btns { display:flex; justify-content:space-between; margin-top:20px; gap:10px; }
+  .summary { position:sticky; top:20px; }
+  .summary h3 { margin-bottom:14px; }
+  .sum-row { display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px dashed var(--line); font-size:14px; }
+  .sum-row span { color:var(--muted); }
+  .total { font-size:20px; font-weight:800; color:var(--brand); border:0; }
+  .note { background:var(--soft); border-radius:12px; padding:12px; font-size:13px; color:var(--brand); margin-top:12px; line-height:1.7; }
+  .done-box { text-align:center; padding:40px 20px; }
+  .done-box .ck { width:80px; height:80px; border-radius:50%; background:#dcfce7; color:var(--green); display:grid; place-items:center; font-size:40px; margin:0 auto 18px; }
+  .code { display:inline-block; background:var(--bg); border:1.5px dashed var(--brand-2); padding:10px 18px; border-radius:12px; font-weight:800; letter-spacing:.1em; margin:14px 0; }
+
+  /* admin */
+  .admin { padding:30px 0 60px; display:grid; gap:20px; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .kpi { background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .kpi span { color:var(--muted); font-size:13px; }
+  .kpi b { display:block; font-size:28px; margin-top:4px; }
+  .two { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; }
+  .ph { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .ph h3 { font-size:17px; }
+  .tools { display:flex; gap:8px; }
+  .tools input, .tools select { width:auto; padding:8px 10px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:right; color:var(--muted); font-size:12px; padding:10px 8px; border-bottom:1px solid var(--line); }
+  td { padding:12px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  .badge { font-size:12px; font-weight:800; padding:4px 10px; border-radius:8px; white-space:nowrap; }
+  .b-new { background:#fef3c7; color:var(--amber); } .b-ok { background:#dcfce7; color:var(--green); } .b-cancel { background:#fee2e2; color:var(--red); } .b-done { background:#e0e7ff; color:#3730a3; }
+  .act { display:flex; gap:6px; }
+  .act button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:5px 9px; font-size:12px; cursor:pointer; }
+  .timeline .slot-row { display:grid; grid-template-columns:60px 1fr; gap:10px; align-items:center; border-bottom:1px dashed var(--line); min-height:46px; }
+  .timeline .t { color:var(--muted); font-size:13px; }
+  .timeline .ev { background:var(--soft); border-right:4px solid var(--brand); border-radius:10px; padding:6px 10px; font-size:13px; }
+  .timeline .ev b { display:block; }
+  .empty { color:var(--muted); text-align:center; padding:24px; }
+  .foot { text-align:center; color:var(--muted); font-size:12px; padding:0 0 24px; }
+  @media (max-width:900px){ .book, .two { grid-template-columns:1fr; } .summary { position:static; } .kpis { grid-template-columns:1fr 1fr; } .slots { grid-template-columns:repeat(3,1fr); } .opts { grid-template-columns:1fr; } .steps .st span { display:none; } }
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <div class="logo"><i></i>لمسة · مركز التجميل</div>
+  <div class="switch"><a href="#/book" id="lnkBook">احجز موعدك</a><a href="#/admin" id="lnkAdmin">لوحة الإدارة</a></div>
+</nav></div></header>
+<main id="app" class="wrap"></main>
+<p class="foot">مشروع تجريبي من تنفيذ عمر الشافعي · البيانات تُحفظ في المتصفح</p>
+
+<script>
+const SERVICES = [
+  {id:"hair", n:"قص وتصفيف الشعر", d:"60 دقيقة", p:180, ic:"✂️"},
+  {id:"color", n:"صبغة شعر كاملة", d:"120 دقيقة", p:450, ic:"🎨"},
+  {id:"nails", n:"مناكير وباديكير", d:"75 دقيقة", p:220, ic:"💅"},
+  {id:"skin", n:"تنظيف بشرة عميق", d:"60 دقيقة", p:300, ic:"🧖‍♀️"},
+  {id:"makeup", n:"مكياج سهرة", d:"90 دقيقة", p:550, ic:"💄"},
+  {id:"bride", n:"باقة العروس", d:"4 ساعات", p:2500, ic:"👰"}
+];
+const STAFF = [
+  {id:"any", n:"أي أخصائية متاحة", r:"أقرب موعد متاح", c:"#9ca3af"},
+  {id:"nora", n:"نورة", r:"خبيرة شعر وصبغات", c:"#b03a77"},
+  {id:"reem", n:"ريم", r:"أخصائية بشرة", c:"#0e7490"},
+  {id:"hala", n:"هلا", r:"مكياج وعرائس", c:"#a16207"}
+];
+const TIMES = ["10:00","11:00","12:00","13:00","14:00","16:00","17:00","18:00","19:00","20:00"];
+const DAYN = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+const KEY = "lamsa-bookings-v1";
+const iso = d => d.toISOString().slice(0,10);
+const today = new Date(); today.setHours(12,0,0,0);
+const nextDays = Array.from({length:7}, (_, i) => { const d = new Date(today); d.setDate(d.getDate() + i); return d; });
+
+function seed(){
+  const s = [["سارة أحمد","hair","nora",0,"11:00","ok"],["منى خالد","skin","reem",0,"13:00","new"],["ليلى سعيد","nails","any",0,"16:00","ok"],["هند محمد","makeup","hala",0,"18:00","new"],["دانة فهد","color","nora",1,"12:00","ok"],["رهف علي","bride","hala",2,"10:00","ok"],["جود ناصر","skin","reem",1,"17:00","cancel"],["أمل يوسف","hair","nora",-1,"14:00","done"]];
+  return s.map(([name,svc,staff,off,time,st], i) => { const d = new Date(today); d.setDate(d.getDate() + off); return {id:"LM" + (1040 + i), name, phone:"05" + (40000000 + i * 1234567).toString().slice(0,8), svc, staff, date:iso(d), time, st, note:""}; });
+}
+let B;
+try { B = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch(e) { B = seed(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(B)); } catch(e) {} };
+const svcOf = id => SERVICES.find(s => s.id === id), staffOf = id => STAFF.find(s => s.id === id);
+const fmtDate = s => { const d = new Date(s + "T12:00"); return `${DAYN[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}`; };
+const taken = (date, time, staff) => B.some(b => b.date === date && b.time === time && b.st !== "cancel" && (staff === "any" ? false : b.staff === staff));
+
+let W = {step:1, svc:null, staff:null, date:null, time:null, name:"", phone:"", note:"", code:null};
+const app = document.getElementById("app");
+
+function bookView(){
+  const labels = ["الخدمة","الأخصائية","الموعد","بياناتك"];
+  const steps = `<div class="steps">${labels.map((l,i) => `<div class="st ${W.step === i + 1 ? "on" : W.step > i + 1 ? "done" : ""}"><i>${W.step > i + 1 ? "✓" : i + 1}</i><span>${l}</span></div>`).join("")}</div>`;
+  let body = "";
+  if (W.code) body = `<div class="panel done-box"><div class="ck">✓</div><h2>تم تأكيد حجزك!</h2><p class="sub">${svcOf(W.svc).n} · ${fmtDate(W.date)} الساعة ${W.time}</p><div class="code">رقم الحجز: ${W.code}</div><p class="sub">أرسلنا لك رسالة تأكيد على جوالك. نراك قريبا 🌸</p><button class="btn" data-a="again">حجز موعد آخر</button></div>`;
+  else if (W.step === 1) body = `<div class="panel"><h2>اختاري الخدمة</h2><p class="sub">كل الأسعار بالريال وتشمل الضريبة</p><div class="opts">${SERVICES.map(s => `<button class="opt ${W.svc === s.id ? "on" : ""}" data-svc="${s.id}"><span class="ic">${s.ic}</span><span><b>${s.n}</b><small>⏱ ${s.d}</small></span><span class="pr">${s.p} ر.س</span></button>`).join("")}</div>${nav(!W.svc)}</div>`;
+  else if (W.step === 2) body = `<div class="panel"><h2>اختاري الأخصائية</h2><p class="sub">أو اتركيها لنا ونختار أقرب موعد</p><div class="opts">${STAFF.map(s => `<button class="opt ${W.staff === s.id ? "on" : ""}" data-staff="${s.id}"><span class="av" style="background:${s.c}">${s.id === "any" ? "★" : s.n[0]}</span><span><b>${s.n}</b><small>${s.r}</small></span></button>`).join("")}</div>${nav(!W.staff)}</div>`;
+  else if (W.step === 3) body = `<div class="panel"><h2>اختاري اليوم والوقت</h2><p class="sub">المواعيد المشطوبة محجوزة</p>
+    <div class="days">${nextDays.map(d => { const off = d.getDay() === 5; return `<button class="day ${W.date === iso(d) ? "on" : ""} ${off ? "off" : ""}" ${off ? "disabled" : ""} data-date="${iso(d)}"><small>${DAYN[d.getDay()]}</small><b>${d.getDate()}</b><small>${off ? "مغلق" : ""}</small></button>`; }).join("")}</div>
+    ${W.date ? `<div class="slots">${TIMES.map(t => { const tk = taken(W.date, t, W.staff); return `<button class="slot ${W.time === t ? "on" : ""} ${tk ? "taken" : ""}" ${tk ? "disabled" : ""} data-time="${t}">${t}</button>`; }).join("")}</div>` : `<p class="sub">اختاري يوما لعرض الأوقات المتاحة</p>`}
+    ${nav(!W.time)}</div>`;
+  else body = `<div class="panel"><h2>بياناتك</h2><p class="sub">لنرسل لك تأكيد الحجز</p><form class="form" id="details"><div class="row"><input name="name" required placeholder="الاسم" value="${W.name}"><input name="phone" required placeholder="رقم الجوال" pattern="[0-9+ ]{8,}" value="${W.phone}"></div><textarea name="note" placeholder="ملاحظات (اختياري)">${W.note}</textarea><div class="nav-btns"><button type="button" class="btn light" data-a="back">→ رجوع</button><button class="btn">تأكيد الحجز ✓</button></div></form></div>`;
+  const s = svcOf(W.svc), st = staffOf(W.staff);
+  const summary = `<aside class="panel summary"><h3>ملخص الحجز</h3>
+    <div class="sum-row"><span>الخدمة</span><b>${s ? s.n : "—"}</b></div>
+    <div class="sum-row"><span>المدة</span><b>${s ? s.d : "—"}</b></div>
+    <div class="sum-row"><span>الأخصائية</span><b>${st ? st.n : "—"}</b></div>
+    <div class="sum-row"><span>الموعد</span><b>${W.date ? fmtDate(W.date) : "—"} ${W.time || ""}</b></div>
+    <div class="sum-row total"><span>الإجمالي</span><b>${s ? s.p + " ر.س" : "—"}</b></div>
+    <div class="note">💳 الدفع في المركز. يمكنك الإلغاء مجانا قبل الموعد بـ 6 ساعات.</div></aside>`;
+  return `<div class="book"><div>${W.code ? "" : steps}${body}</div>${summary}</div>`;
+}
+const nav = dis => `<div class="nav-btns">${W.step > 1 ? `<button class="btn light" data-a="back">→ رجوع</button>` : "<span></span>"}<button class="btn" data-a="next" ${dis ? "disabled" : ""}>التالي ←</button></div>`;
+
+let AF = {q:"", st:"", day:iso(today)};
+function adminView(){
+  const todays = B.filter(b => b.date === iso(today) && b.st !== "cancel");
+  const revenue = B.filter(b => b.st === "ok" || b.st === "done").reduce((a,b) => a + svcOf(b.svc).p, 0);
+  const pending = B.filter(b => b.st === "new").length;
+  const list = B.filter(b => (!AF.q || (b.name + b.id + b.phone).includes(AF.q)) && (!AF.st || b.st === AF.st)).sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const LBL = {new:["بانتظار التأكيد","b-new"], ok:["مؤكد","b-ok"], cancel:["ملغي","b-cancel"], done:["مكتمل","b-done"]};
+  const dayList = B.filter(b => b.date === AF.day && b.st !== "cancel");
+  return `<div class="admin">
+    <div class="ph"><div><h2 style="font-size:24px">لوحة إدارة الحجوزات</h2><p class="sub" style="margin:0;color:var(--muted)">${fmtDate(iso(today))}</p></div><a class="btn" href="#/book">+ حجز جديد</a></div>
+    <div class="kpis">
+      <div class="kpi"><span>حجوزات اليوم</span><b>${todays.length}</b></div>
+      <div class="kpi"><span>بانتظار التأكيد</span><b style="color:var(--amber)">${pending}</b></div>
+      <div class="kpi"><span>كل الحجوزات</span><b>${B.length}</b></div>
+      <div class="kpi"><span>الإيرادات المؤكدة</span><b style="color:var(--green)">${revenue.toLocaleString("en")} ر.س</b></div>
+    </div>
+    <div class="two">
+      <div class="panel"><div class="ph"><h3>كل الحجوزات</h3><div class="tools"><input id="aq" placeholder="بحث بالاسم أو الرقم" value="${AF.q}"><select id="ast"><option value="">كل الحالات</option>${Object.entries(LBL).map(([k,v]) => `<option value="${k}" ${AF.st === k ? "selected" : ""}>${v[0]}</option>`).join("")}</select></div></div>
+        ${list.length ? `<table><thead><tr><th>العميلة</th><th>الخدمة</th><th>الموعد</th><th>الحالة</th><th></th></tr></thead><tbody>${list.map(b => `<tr><td><b>${b.name}</b><br><small style="color:var(--muted)">${b.id}</small></td><td>${svcOf(b.svc).n}<br><small style="color:var(--muted)">${staffOf(b.staff).n}</small></td><td>${fmtDate(b.date)}<br><small style="color:var(--muted)">${b.time}</small></td><td><span class="badge ${LBL[b.st][1]}">${LBL[b.st][0]}</span></td><td><div class="act">${b.st === "new" ? `<button data-set="ok" data-id="${b.id}">تأكيد</button>` : ""}${b.st === "ok" ? `<button data-set="done" data-id="${b.id}">تم</button>` : ""}${b.st !== "cancel" && b.st !== "done" ? `<button data-set="cancel" data-id="${b.id}">إلغاء</button>` : ""}</div></td></tr>`).join("")}</tbody></table>` : `<p class="empty">لا توجد حجوزات مطابقة</p>`}
+      </div>
+      <div class="panel timeline"><div class="ph"><h3>جدول اليوم</h3><select id="aday" style="width:auto;padding:8px">${nextDays.map(d => `<option value="${iso(d)}" ${AF.day === iso(d) ? "selected" : ""}>${fmtDate(iso(d))}</option>`).join("")}</select></div>
+        ${TIMES.map(t => { const ev = dayList.filter(b => b.time === t); return `<div class="slot-row"><span class="t">${t}</span><div>${ev.map(b => `<div class="ev"><b>${b.name}</b>${svcOf(b.svc).n} · ${staffOf(b.staff).n}</div>`).join("")}</div></div>`; }).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function route(){
+  const admin = location.hash.startsWith("#/admin");
+  document.getElementById("lnkBook").classList.toggle("on", !admin);
+  document.getElementById("lnkAdmin").classList.toggle("on", admin);
+  app.innerHTML = admin ? adminView() : bookView();
+}
+app.addEventListener("click", e => {
+  const t = e.target.closest("button"); if (!t || t.disabled) return;
+  if (t.dataset.svc) W.svc = t.dataset.svc;
+  else if (t.dataset.staff) W.staff = t.dataset.staff;
+  else if (t.dataset.date) { W.date = t.dataset.date; W.time = null; }
+  else if (t.dataset.time) W.time = t.dataset.time;
+  else if (t.dataset.a === "next") W.step++;
+  else if (t.dataset.a === "back") W.step--;
+  else if (t.dataset.a === "again") W = {step:1, svc:null, staff:null, date:null, time:null, name:"", phone:"", note:"", code:null};
+  else if (t.dataset.set) { const b = B.find(x => x.id === t.dataset.id); b.st = t.dataset.set; save(); }
+  else return;
+  route();
+});
+app.addEventListener("submit", e => {
+  e.preventDefault(); const f = new FormData(e.target);
+  W.name = f.get("name"); W.phone = f.get("phone"); W.note = f.get("note");
+  W.code = "LM" + Math.floor(1100 + Math.random() * 8900);
+  B.push({id:W.code, name:W.name, phone:W.phone, svc:W.svc, staff:W.staff === "any" ? "nora" : W.staff, date:W.date, time:W.time, st:"new", note:W.note});
+  save(); route();
+});
+app.addEventListener("input", e => {
+  if (e.target.id === "aq") { AF.q = e.target.value; const pos = e.target.selectionStart; route(); const el = document.getElementById("aq"); el.focus(); el.setSelectionRange(pos, pos); }
+});
+app.addEventListener("change", e => {
+  if (e.target.id === "ast") { AF.st = e.target.value; route(); }
+  if (e.target.id === "aday") { AF.day = e.target.value; route(); }
+});
+const demo = new URLSearchParams(location.search).get("demo");
+if (demo === "3") Object.assign(W, {step:3, svc:"skin", staff:"reem", date:iso(nextDays[1]), time:"16:00"});
+window.addEventListener("hashchange", route);
+if (!location.hash) location.hash = "#/book"; else route();
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>منزل للعقارات — بيع وإيجار العقارات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#13212f; --muted:#667788; --line:#e4e9ef; --bg:#f6f8fa; --brand:#0e7c66; --brand-2:#12a383; --gold:#c9a227; --card:#fff; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:Tajawal, system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+  a { color:inherit; text-decoration:none; }
+  button, input, select, textarea { font-family:inherit; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 22px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 20px; font-weight:700; font-size:15px; cursor:pointer; }
+  .btn.light { background:#fff; color:var(--ink); border:1.5px solid var(--line); }
+  .btn.wa { background:#25d366; }
+
+  header { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
+  nav { height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:22px; }
+  .logo svg { width:38px; height:38px; }
+  .links { display:flex; gap:26px; font-weight:500; color:var(--muted); }
+  .links a.on, .links a:hover { color:var(--brand); }
+  .fav-btn { position:relative; }
+  .fav-btn .n { position:absolute; top:-6px; left:-6px; background:var(--gold); color:#fff; font-size:11px; min-width:20px; height:20px; border-radius:10px; display:grid; place-items:center; }
+
+  /* hero */
+  .hero { position:relative; color:#fff; padding:80px 0 120px; background:linear-gradient(120deg, rgba(10,40,50,.92), rgba(14,124,102,.75)), radial-gradient(circle at 20% 80%, #1c6f8c, #0b2c3a); overflow:hidden; }
+  .hero::after { content:""; position:absolute; inset:auto 0 0 0; height:160px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 160' preserveAspectRatio='none'%3E%3Cpath d='M0 160V90h60V60h40v30h50V40h70v50h40V70h60v20h80V30h50v60h40V50h90v40h60V65h50v25h70V45h60v45h50V75h80v15h60V55h50v35h90V70h50v90z' fill='%23ffffff' fill-opacity='.08'/%3E%3C/svg%3E") bottom/100% 100% no-repeat; }
+  .hero h1 { font-size:52px; line-height:1.25; font-weight:800; max-width:720px; }
+  .hero p { font-size:19px; opacity:.9; margin:16px 0 0; max-width:600px; line-height:1.8; }
+  .search { position:relative; z-index:2; margin-top:-64px; background:#fff; border-radius:20px; box-shadow:0 30px 60px rgba(19,33,47,.15); padding:18px; display:grid; grid-template-columns:repeat(4,1fr) auto; gap:12px; align-items:end; }
+  .search label { font-size:13px; color:var(--muted); font-weight:700; display:grid; gap:6px; }
+  select, input, textarea { border:1.5px solid var(--line); border-radius:12px; padding:12px 12px; font-size:15px; background:#fff; color:var(--ink); width:100%; }
+  .tabs { display:flex; gap:8px; margin-bottom:12px; grid-column:1/-1; }
+  .tab { border:0; background:var(--bg); padding:9px 18px; border-radius:10px; font-weight:700; cursor:pointer; color:var(--muted); }
+  .tab.on { background:var(--brand); color:#fff; }
+
+  section { padding:70px 0; }
+  .sh { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:26px; flex-wrap:wrap; }
+  h2 { font-size:34px; font-weight:800; }
+  .sub { color:var(--muted); margin-top:6px; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .card { background:var(--card); border-radius:18px; overflow:hidden; border:1px solid var(--line); transition:transform .2s, box-shadow .2s; display:flex; flex-direction:column; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 18px 40px rgba(19,33,47,.1); }
+  .ph { position:relative; aspect-ratio:16/10; overflow:hidden; display:block; }
+  .ph svg { width:100%; height:100%; display:block; }
+  .tag { position:absolute; top:12px; right:12px; background:#fff; color:var(--ink); font-weight:800; font-size:12px; padding:5px 10px; border-radius:8px; }
+  .tag.rent { background:var(--gold); color:#fff; }
+  .heart { position:absolute; top:10px; left:10px; width:38px; height:38px; border-radius:50%; border:0; background:rgba(255,255,255,.92); cursor:pointer; font-size:18px; display:grid; place-items:center; }
+  .heart.on { color:#e11d48; }
+  .body { padding:16px 18px 18px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .price { font-size:22px; font-weight:800; color:var(--brand); }
+  .price small { font-size:13px; color:var(--muted); font-weight:500; }
+  .card h3 { font-size:18px; }
+  .loc { color:var(--muted); font-size:14px; }
+  .specs { display:flex; gap:14px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding-top:10px; margin-top:auto; }
+
+  .services { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .svc { background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px; }
+  .svc .ic { width:52px; height:52px; border-radius:14px; background:#e6f5f1; display:grid; place-items:center; font-size:26px; margin-bottom:14px; }
+  .svc h3 { margin-bottom:6px; }
+  .svc p { color:var(--muted); line-height:1.7; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; background:var(--ink); color:#fff; border-radius:22px; padding:34px; }
+  .stats b { display:block; font-size:34px; color:#5eead4; }
+  .stats span { opacity:.8; }
+
+  /* listings page */
+  .page-head { background:#fff; border-bottom:1px solid var(--line); padding:30px 0; }
+  .layout { display:grid; grid-template-columns:280px 1fr; gap:24px; padding:30px 0 70px; align-items:start; }
+  .filters { background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px; display:grid; gap:14px; position:sticky; top:90px; }
+  .filters h3 { font-size:17px; }
+  .filters label { display:grid; gap:6px; font-size:13px; font-weight:700; color:var(--muted); }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; }
+  .chip { border:1.5px solid var(--line); background:#fff; border-radius:10px; padding:7px 12px; cursor:pointer; font-weight:700; color:var(--muted); }
+  .chip.on { border-color:var(--brand); background:#e6f5f1; color:var(--brand); }
+  .bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:12px; }
+  .bar select { width:auto; }
+  .layout .grid { grid-template-columns:repeat(2,1fr); }
+  .none { background:#fff; border:1px dashed var(--line); border-radius:18px; padding:50px; text-align:center; color:var(--muted); }
+
+  /* property page */
+  .prop { display:grid; grid-template-columns:1.6fr 1fr; gap:26px; padding:30px 0 60px; align-items:start; }
+  .gallery .main { border-radius:20px; overflow:hidden; aspect-ratio:16/10; }
+  .gallery .main svg { width:100%; height:100%; display:block; }
+  .thumbs { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:10px; }
+  .thumbs button { border:3px solid transparent; border-radius:12px; overflow:hidden; padding:0; cursor:pointer; aspect-ratio:16/10; background:none; }
+  .thumbs button.on { border-color:var(--brand); }
+  .thumbs svg { width:100%; height:100%; display:block; }
+  .box { background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px; margin-top:18px; }
+  .box h3 { margin-bottom:12px; }
+  .facts { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .facts div { background:var(--bg); border-radius:12px; padding:12px; text-align:center; }
+  .facts b { display:block; font-size:20px; }
+  .facts span { color:var(--muted); font-size:13px; }
+  .feat { display:grid; grid-template-columns:1fr 1fr; gap:8px 20px; color:var(--ink); }
+  .feat li { list-style:none; }
+  .feat li::before { content:"✓ "; color:var(--brand); font-weight:800; }
+  .desc { color:var(--muted); line-height:1.9; }
+  .side { position:sticky; top:90px; display:grid; gap:16px; }
+  .agent { display:flex; gap:12px; align-items:center; }
+  .agent .av { width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#0e7c66,#5eead4); color:#fff; display:grid; place-items:center; font-weight:800; font-size:20px; }
+  .side form { display:grid; gap:10px; }
+  .ok { display:none; background:#e6f5f1; color:var(--brand); padding:12px; border-radius:12px; font-weight:700; }
+  .crumbs { color:var(--muted); font-size:14px; margin-bottom:8px; }
+  .crumbs a { color:var(--brand); }
+
+  footer { background:var(--ink); color:#a9b8c6; padding:40px 0 26px; }
+  .fgrid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:24px; }
+  footer h4 { color:#fff; margin-bottom:10px; }
+  footer p, footer li { line-height:2; list-style:none; font-size:14px; }
+  .copy { border-top:1px solid #243444; margin-top:24px; padding-top:18px; font-size:13px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .wa-float { position:fixed; left:22px; bottom:22px; width:58px; height:58px; border-radius:50%; background:#25d366; color:#fff; display:grid; place-items:center; font-size:28px; box-shadow:0 14px 30px rgba(37,211,102,.45); z-index:40; }
+
+  @media (max-width:960px){
+    .search { grid-template-columns:1fr 1fr; } .grid, .services { grid-template-columns:1fr 1fr; }
+    .layout, .prop { grid-template-columns:1fr; } .filters, .side { position:static; }
+    .stats { grid-template-columns:1fr 1fr; } .links { display:none; } .hero h1 { font-size:36px; }
+  }
+  @media (max-width:620px){ .grid, .services, .layout .grid, .search, .fgrid { grid-template-columns:1fr; } .facts { grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#/"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#0e7c66"/><path d="M9 21 20 11l11 10v9H23v-6h-6v6H9z" fill="#fff"/></svg>منزل للعقارات</a>
+      <div class="links"><a href="#/" data-r="home">الرئيسية</a><a href="#/listings" data-r="listings">العقارات</a><a href="#/listings?deal=rent" data-r="rent">للإيجار</a><a href="#contact">تواصل معنا</a></div>
+      <div style="display:flex;gap:10px">
+        <a class="btn light fav-btn" href="#/listings?fav=1">♥ المفضلة<span class="n" id="favN">0</span></a>
+        <a class="btn" href="#/listings">تصفح العقارات</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="fgrid">
+      <div><h4>منزل للعقارات</h4><p>نساعدك تلاقي بيتك أو استثمارك القادم في الرياض وجدة والدمام والقاهرة الجديدة، مع متابعة كاملة من أول زيارة حتى توقيع العقد.</p></div>
+      <div><h4>روابط</h4><ul><li><a href="#/listings?deal=sale">عقارات للبيع</a></li><li><a href="#/listings?deal=rent">عقارات للإيجار</a></li><li><a href="#/listings?fav=1">المفضلة</a></li></ul></div>
+      <div><h4>تواصل</h4><ul><li>📞 920000000</li><li>✉️ info@manzil.example</li><li>📍 طريق الملك فهد، الرياض</li></ul></div>
+    </div>
+    <div class="copy"><span>© منزل للعقارات</span><span>مشروع تجريبي من تنفيذ عمر الشافعي</span></div>
+  </div>
+</footer>
+<a class="wa-float" href="#" aria-label="واتساب">✆</a>
+
+<script>
+const P = [
+  {id:1, t:"فيلا مودرن مع مسبح", type:"villa", deal:"sale", city:"الرياض", area:"حي النرجس", price:3450000, beds:5, baths:6, size:420, hue:160, feat:["مسبح خاص","حديقة","موقف لسيارتين","غرفة خادمة","مطبخ مجهز","تكييف مركزي"]},
+  {id:2, t:"شقة فاخرة بإطلالة بحرية", type:"apartment", deal:"sale", city:"جدة", area:"الشاطئ", price:1650000, beds:3, baths:3, size:190, hue:200, feat:["إطلالة على البحر","شرفة واسعة","نادي رياضي","حارس أمن","مصعد","موقف خاص"]},
+  {id:3, t:"شقة عائلية قريبة من الخدمات", type:"apartment", deal:"rent", city:"الرياض", area:"حي الملقا", price:65000, beds:3, baths:2, size:150, hue:30, feat:["قريبة من المدارس","مصعد","مطبخ مجهز","موقف خاص"]},
+  {id:4, t:"دوبلكس حديث بتشطيب سوبر لوكس", type:"villa", deal:"sale", city:"الدمام", area:"حي الشاطئ", price:2100000, beds:4, baths:5, size:330, hue:280, feat:["سطح خاص","حديقة","غرفة سائق","تكييف مركزي","مطبخ مجهز"]},
+  {id:5, t:"مكتب إداري في برج تجاري", type:"office", deal:"rent", city:"الرياض", area:"طريق الملك فهد", price:120000, beds:0, baths:2, size:210, hue:220, feat:["إطلالة على المدينة","استقبال","مواقف للزوار","إنترنت سريع","أمن 24 ساعة"]},
+  {id:6, t:"فيلا في كمبوند مع حديقة", type:"villa", deal:"sale", city:"القاهرة الجديدة", area:"التجمع الخامس", price:9500000, beds:4, baths:4, size:380, hue:110, feat:["كمبوند مؤمن","حديقة خاصة","نادي اجتماعي","مسبح مشترك","جراج"], cur:"ج.م"},
+  {id:7, t:"استوديو مفروش للإيجار", type:"apartment", deal:"rent", city:"جدة", area:"حي الروضة", price:38000, beds:1, baths:1, size:60, hue:340, feat:["مفروش بالكامل","فواتير مشمولة","إنترنت","قريب من المترو"]},
+  {id:8, t:"أرض سكنية على شارعين", type:"land", deal:"sale", city:"الرياض", area:"حي العارض", price:1200000, beds:0, baths:0, size:600, hue:45, feat:["على شارعين","صك إلكتروني","قريبة من الخدمات","مخطط معتمد"]},
+  {id:9, t:"شقة جديدة أول ساكن", type:"apartment", deal:"sale", city:"الدمام", area:"حي الفيصلية", price:780000, beds:3, baths:2, size:140, hue:190, feat:["أول ساكن","مصعد","موقف خاص","ضمان على التشطيب"]},
+  {id:10, t:"فيلا للإيجار السنوي", type:"villa", deal:"rent", city:"الرياض", area:"حي الياسمين", price:150000, beds:5, baths:5, size:400, hue:15, feat:["حديقة","مجلس رجال","ملحق خارجي","موقف لثلاث سيارات"]},
+  {id:11, t:"شقة بإطلالة على النيل", type:"apartment", deal:"sale", city:"القاهرة الجديدة", area:"العاصمة الإدارية", price:4200000, beds:3, baths:3, size:175, hue:260, feat:["تشطيب كامل","نادي رياضي","أمن وحراسة","تقسيط حتى 7 سنوات"], cur:"ج.م"},
+  {id:12, t:"محل تجاري على شارع رئيسي", type:"office", deal:"rent", city:"جدة", area:"شارع التحلية", price:180000, beds:0, baths:1, size:120, hue:5, feat:["واجهة زجاجية","حركة مرور عالية","مواقف أمام المحل"]}
+];
+const TYPES = {villa:"فيلا", apartment:"شقة", office:"تجاري", land:"أرض"};
+const CITIES = [...new Set(P.map(p => p.city))];
+let favs = [];
+try { favs = JSON.parse(localStorage.getItem("manzil-favs")) || []; } catch(e) {}
+const saveFavs = () => { try { localStorage.setItem("manzil-favs", JSON.stringify(favs)); } catch(e) {} document.getElementById("favN").textContent = favs.length; };
+const money = p => p.price.toLocaleString("en") + " " + (p.cur || "ر.س") + (p.deal === "rent" ? " <small>/ سنويا</small>" : "");
+
+function art(p, v = 0){
+  const h = (p.hue + v * 25) % 360, sky = `hsl(${h},55%,${78 - v * 4}%)`, sky2 = `hsl(${(h + 30) % 360},60%,92%)`, wall = `hsl(${h},18%,${94 - v * 3}%)`, acc = `hsl(${h},45%,38%)`, win = `hsl(${(h + 180) % 360},45%,${72 - v * 6}%)`;
+  let b = "";
+  if (p.type === "villa") b = `<rect x="70" y="120" width="260" height="110" fill="${wall}"/><polygon points="55,125 200,55 345,125" fill="${acc}"/><rect x="95" y="150" width="50" height="40" rx="3" fill="${win}"/><rect x="255" y="150" width="50" height="40" rx="3" fill="${win}"/><rect x="178" y="165" width="44" height="65" rx="3" fill="${acc}"/><rect x="330" y="170" width="90" height="60" fill="${wall}"/><rect x="345" y="185" width="60" height="25" rx="3" fill="${win}"/>${p.feat.includes("مسبح خاص") || v === 2 ? `<rect x="20" y="238" width="140" height="22" rx="8" fill="#38bdf8"/>` : ""}`;
+  else if (p.type === "apartment") b = `<rect x="120" y="40" width="160" height="190" fill="${wall}"/>${[0,1,2,3,4].map(r => [0,1,2].map(c => `<rect x="${138 + c * 46}" y="${55 + r * 34}" width="32" height="22" rx="2" fill="${win}"/>`).join("")).join("")}<rect x="285" y="100" width="90" height="130" fill="${acc}" opacity=".85"/>${[0,1,2].map(r => `<rect x="300" y="${115 + r * 34}" width="60" height="20" rx="2" fill="${win}"/>`).join("")}<rect x="40" y="130" width="75" height="100" fill="${acc}" opacity=".6"/>`;
+  else if (p.type === "office") b = `<rect x="140" y="25" width="120" height="205" fill="${acc}"/>${[0,1,2,3,4,5,6,7].map(r => `<rect x="152" y="${38 + r * 23}" width="96" height="14" fill="${win}" opacity=".9"/>`).join("")}<rect x="60" y="110" width="75" height="120" fill="${wall}"/><rect x="270" y="80" width="80" height="150" fill="${wall}"/>${[0,1,2,3].map(r => `<rect x="282" y="${95 + r * 32}" width="56" height="16" fill="${win}"/>`).join("")}`;
+  else b = `<rect x="30" y="175" width="340" height="55" fill="hsl(${h},35%,62%)"/><rect x="60" y="160" width="6" height="40" fill="#fff"/><rect x="60" y="160" width="50" height="22" fill="#fff"/><text x="85" y="176" font-size="12" text-anchor="middle" fill="${acc}" font-weight="700">للبيع</text><path d="M30 175 L370 175" stroke="#fff" stroke-dasharray="8 6" stroke-width="3"/>`;
+  return `<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="s${p.id}${v}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky}"/><stop offset="1" stop-color="${sky2}"/></linearGradient></defs><rect width="400" height="260" fill="url(#s${p.id}${v})"/><circle cx="${330 - v * 60}" cy="55" r="22" fill="#fff6c8" opacity=".9"/><rect y="228" width="400" height="32" fill="hsl(${h},25%,70%)"/>${b}<circle cx="35" cy="215" r="20" fill="hsl(130,35%,${45 + v * 4}%)"/><circle cx="370" cy="218" r="17" fill="hsl(130,35%,40%)"/></svg>`;
+}
+
+function card(p){
+  return `<article class="card"><a class="ph" href="#/property/${p.id}">${art(p)}<span class="tag ${p.deal === "rent" ? "rent" : ""}">${p.deal === "rent" ? "للإيجار" : "للبيع"}</span></a>
+    <button class="heart ${favs.includes(p.id) ? "on" : ""}" data-fav="${p.id}" aria-label="أضف للمفضلة">${favs.includes(p.id) ? "♥" : "♡"}</button>
+    <div class="body"><div class="price">${money(p)}</div><h3><a href="#/property/${p.id}">${p.t}</a></h3><div class="loc">📍 ${p.area}، ${p.city} · ${TYPES[p.type]}</div>
+    <div class="specs">${p.beds ? `<span>🛏 ${p.beds} غرف</span>` : ""}${p.baths ? `<span>🛁 ${p.baths}</span>` : ""}<span>📐 ${p.size} م²</span></div></div></article>`;
+}
+
+function home(){
+  return `
+  <div class="hero"><div class="wrap"><h1>اعثر على بيتك القادم بسهولة وثقة</h1><p>أكثر من 1,200 عقار موثق للبيع والإيجار في السعودية ومصر، مع مستشار عقاري يرافقك في كل خطوة.</p></div></div>
+  <div class="wrap">
+    <form class="search" id="homeSearch">
+      <div class="tabs"><button type="button" class="tab on" data-deal="sale">شراء</button><button type="button" class="tab" data-deal="rent">إيجار</button></div>
+      <label>المدينة<select name="city"><option value="">كل المدن</option>${CITIES.map(c => `<option>${c}</option>`).join("")}</select></label>
+      <label>نوع العقار<select name="type"><option value="">كل الأنواع</option>${Object.entries(TYPES).map(([k,v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
+      <label>عدد الغرف<select name="beds"><option value="">أي عدد</option><option value="1">1+</option><option value="3">3+</option><option value="4">4+</option></select></label>
+      <label>أقصى سعر<select name="max"><option value="">بدون حد</option><option value="100000">100 ألف</option><option value="1000000">مليون</option><option value="2500000">2.5 مليون</option><option value="5000000">5 مليون</option></select></label>
+      <button class="btn" style="height:48px">🔍 بحث</button>
+    </form>
+  </div>
+  <section><div class="wrap">
+    <div class="sh"><div><h2>عقارات مميزة</h2><p class="sub">مختارة بعناية من فريقنا هذا الأسبوع</p></div><a class="btn light" href="#/listings">عرض كل العقارات ←</a></div>
+    <div class="grid">${P.slice(0,6).map(card).join("")}</div>
+  </div></section>
+  <section style="padding-top:0"><div class="wrap">
+    <div class="sh"><div><h2>كيف نساعدك؟</h2><p class="sub">خدمات عقارية متكاملة تحت سقف واحد</p></div></div>
+    <div class="services">
+      <div class="svc"><div class="ic">🏠</div><h3>شراء العقار</h3><p>نرشح لك العقارات المناسبة لميزانيتك، ونرتب الزيارات، ونتابع الإجراءات حتى الإفراغ.</p></div>
+      <div class="svc"><div class="ic">🔑</div><h3>إيجار سهل</h3><p>عقود إيجار موثقة، ودفع شهري أو سنوي، ومتابعة للصيانة طوال مدة العقد.</p></div>
+      <div class="svc"><div class="ic">📈</div><h3>إدارة الأملاك</h3><p>نؤجر ونحصّل ونصون عقارك نيابة عنك، مع تقارير شهرية واضحة.</p></div>
+    </div>
+    <div class="stats" style="margin-top:30px"><div><b>1,200+</b><span>عقار متاح</span></div><div><b>4</b><span>مدن رئيسية</span></div><div><b>3,500+</b><span>عميل سعيد</span></div><div><b>15</b><span>سنة خبرة</span></div></div>
+  </div></section>`;
+}
+
+function listings(q){
+  const f = {deal:q.get("deal") || "", city:q.get("city") || "", type:q.get("type") || "", beds:+q.get("beds") || 0, max:+q.get("max") || 0, fav:q.get("fav") === "1", sort:q.get("sort") || "new"};
+  let list = P.filter(p => (!f.deal || p.deal === f.deal) && (!f.city || p.city === f.city) && (!f.type || p.type === f.type) && (!f.beds || p.beds >= f.beds) && (!f.max || p.price <= f.max) && (!f.fav || favs.includes(p.id)));
+  if (f.sort === "low") list.sort((a,b) => a.price - b.price);
+  if (f.sort === "high") list.sort((a,b) => b.price - a.price);
+  if (f.sort === "size") list.sort((a,b) => b.size - a.size);
+  const chip = (k, v, label) => `<button class="chip ${f[k] === v ? "on" : ""}" data-k="${k}" data-v="${v}">${label}</button>`;
+  return `
+  <div class="page-head"><div class="wrap"><div class="crumbs"><a href="#/">الرئيسية</a> / العقارات</div><h2>${f.fav ? "عقاراتك المفضلة" : "تصفح العقارات"}</h2></div></div>
+  <div class="wrap layout">
+    <aside class="filters">
+      <h3>تصفية النتائج</h3>
+      <label>نوع الصفقة<div class="chips">${chip("deal","","الكل")}${chip("deal","sale","للبيع")}${chip("deal","rent","للإيجار")}</div></label>
+      <label>المدينة<select data-k="city"><option value="">كل المدن</option>${CITIES.map(c => `<option ${f.city === c ? "selected" : ""}>${c}</option>`).join("")}</select></label>
+      <label>نوع العقار<div class="chips">${chip("type","","الكل")}${Object.entries(TYPES).map(([k,v]) => chip("type",k,v)).join("")}</div></label>
+      <label>عدد الغرف<select data-k="beds"><option value="">أي عدد</option>${[1,2,3,4,5].map(n => `<option value="${n}" ${f.beds === n ? "selected" : ""}>${n}+</option>`).join("")}</select></label>
+      <label>أقصى سعر<select data-k="max"><option value="">بدون حد</option>${[100000,1000000,2500000,5000000].map(n => `<option value="${n}" ${f.max === n ? "selected" : ""}>${n.toLocaleString("en")}</option>`).join("")}</select></label>
+      <a class="btn light" href="#/listings">مسح الفلاتر</a>
+    </aside>
+    <div>
+      <div class="bar"><b>${list.length} عقار</b><select data-k="sort"><option value="new">الأحدث</option><option value="low" ${f.sort === "low" ? "selected" : ""}>السعر: من الأقل</option><option value="high" ${f.sort === "high" ? "selected" : ""}>السعر: من الأعلى</option><option value="size" ${f.sort === "size" ? "selected" : ""}>المساحة الأكبر</option></select></div>
+      ${list.length ? `<div class="grid">${list.map(card).join("")}</div>` : `<div class="none">لا توجد عقارات مطابقة. جرّب تغيير الفلاتر.</div>`}
+    </div>
+  </div>`;
+}
+
+function property(id){
+  const p = P.find(x => x.id == id);
+  if (!p) return `<div class="wrap"><div class="none" style="margin:40px 0">العقار غير موجود. <a href="#/listings">العودة للعقارات</a></div></div>`;
+  const similar = P.filter(x => x.id !== p.id && (x.type === p.type || x.city === p.city)).slice(0,3);
+  return `
+  <div class="page-head"><div class="wrap"><div class="crumbs"><a href="#/">الرئيسية</a> / <a href="#/listings">العقارات</a> / ${p.t}</div><h2>${p.t}</h2><p class="sub">📍 ${p.area}، ${p.city}</p></div></div>
+  <div class="wrap prop">
+    <div>
+      <div class="gallery"><div class="main" id="mainArt">${art(p,0)}</div><div class="thumbs">${[0,1,2,3].map(v => `<button class="${v === 0 ? "on" : ""}" data-v="${v}">${art(p,v)}</button>`).join("")}</div></div>
+      <div class="box"><h3>تفاصيل العقار</h3><div class="facts"><div><b>${p.size}</b><span>م²</span></div><div><b>${p.beds || "—"}</b><span>غرف</span></div><div><b>${p.baths || "—"}</b><span>حمامات</span></div><div><b>${TYPES[p.type]}</b><span>النوع</span></div></div></div>
+      <div class="box"><h3>المميزات</h3><ul class="feat">${p.feat.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      <div class="box"><h3>الوصف</h3><p class="desc">${p.t} في ${p.area} بمدينة ${p.city}، بمساحة ${p.size} متر مربع. العقار في موقع مميز قريب من الخدمات والطرق الرئيسية، ومناسب ${p.type === "office" ? "للشركات والأنشطة التجارية" : "للعائلات الباحثة عن الراحة والخصوصية"}. جميع الأوراق جاهزة ويمكن ترتيب زيارة في الوقت الذي يناسبك.</p></div>
+    </div>
+    <aside class="side">
+      <div class="box" style="margin:0"><div class="price" style="font-size:28px">${money(p)}</div><p class="sub">${p.deal === "rent" ? "إيجار سنوي · دفعات مرنة" : "سعر نهائي قابل للتفاوض البسيط"}</p>
+        <div style="display:grid;gap:10px;margin-top:14px"><a class="btn wa" href="#">✆ تواصل عبر واتساب</a><a class="btn light" href="#">📞 اتصل بالمستشار</a><button class="btn light" data-fav="${p.id}">${favs.includes(p.id) ? "♥ في المفضلة" : "♡ أضف للمفضلة"}</button></div></div>
+      <div class="box" style="margin:0"><div class="agent"><span class="av">س</span><div><b>سلمان العتيبي</b><div class="sub" style="margin:0">مستشار عقاري · يرد خلال ساعة</div></div></div></div>
+      <div class="box" style="margin:0"><h3>احجز موعد معاينة</h3><form id="visit"><input required placeholder="الاسم"><input required placeholder="رقم الجوال"><input type="date" required><button class="btn">تأكيد الموعد</button><p class="ok" id="ok">تم استلام طلبك ✓ سيتواصل معك المستشار لتأكيد الموعد.</p></form></div>
+    </aside>
+  </div>
+  <section style="padding-top:0"><div class="wrap"><div class="sh"><h2>عقارات مشابهة</h2></div><div class="grid">${similar.map(card).join("")}</div></div></section>`;
+}
+
+const app = document.getElementById("app");
+function route(){
+  const [path, qs] = (location.hash.slice(1) || "/").split("?"), q = new URLSearchParams(qs || "");
+  const parts = path.split("/").filter(Boolean);
+  if (parts[0] === "listings") app.innerHTML = listings(q);
+  else if (parts[0] === "property") app.innerHTML = property(parts[1]);
+  else app.innerHTML = home();
+  document.querySelectorAll(".links a").forEach(a => a.classList.toggle("on", (a.dataset.r === "home" && !parts[0]) || (a.dataset.r === "listings" && parts[0] === "listings" && q.get("deal") !== "rent") || (a.dataset.r === "rent" && q.get("deal") === "rent")));
+  window.scrollTo(0,0); saveFavs();
+}
+function setQ(k, v){
+  const [path, qs] = location.hash.slice(1).split("?"), q = new URLSearchParams(qs || "");
+  v ? q.set(k, v) : q.delete(k);
+  location.hash = "/listings?" + q.toString();
+}
+app.addEventListener("click", e => {
+  const fav = e.target.closest("[data-fav]");
+  if (fav){ e.preventDefault(); const id = +fav.dataset.fav; favs = favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id]; const y = scrollY; route(); scrollTo(0, y); return; }
+  const chip = e.target.closest(".chip"); if (chip) return setQ(chip.dataset.k, chip.dataset.v);
+  const tab = e.target.closest(".tab"); if (tab){ document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t === tab)); return; }
+  const th = e.target.closest(".thumbs button");
+  if (th){ const id = location.hash.split("/")[2]; const p = P.find(x => x.id == id); document.getElementById("mainArt").innerHTML = art(p, +th.dataset.v); document.querySelectorAll(".thumbs button").forEach(b => b.classList.toggle("on", b === th)); }
+});
+app.addEventListener("change", e => { const s = e.target.closest("select[data-k]"); if (s) setQ(s.dataset.k, s.value); });
+app.addEventListener("submit", e => {
+  e.preventDefault();
+  if (e.target.id === "homeSearch"){ const f = new FormData(e.target), q = new URLSearchParams(); q.set("deal", document.querySelector(".tab.on").dataset.deal); for (const [k,v] of f) if (v) q.set(k, v); location.hash = "/listings?" + q; }
+  if (e.target.id === "visit"){ document.getElementById("ok").style.display = "block"; e.target.querySelectorAll("input").forEach(i => i.value = ""); }
+});
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>

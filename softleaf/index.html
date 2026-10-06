@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftLeaf — Private Label Tissue & Hygiene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0d2b2a; --muted:#5d7472; --brand:#0f766e; --brand-2:#14b8a6; --soft:#effaf8; --line:#dbe9e7; --sand:#faf7f2; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:Inter, system-ui, sans-serif; color:var(--ink); background:#fff; }
+  html[lang="ar"] body { font-family:Cairo, system-ui, sans-serif; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+  .btn { display:inline-flex; align-items:center; gap:8px; background:var(--brand); color:#fff; padding:13px 24px; border-radius:12px; font-weight:700; font-size:15px; border:0; cursor:pointer; }
+  .btn.light { background:#fff; color:var(--ink); border:1.5px solid var(--line); }
+
+  header { position:sticky; top:0; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); z-index:20; }
+  nav { display:flex; align-items:center; justify-content:space-between; height:72px; gap:24px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:21px; }
+  .logo svg { width:34px; height:34px; }
+  .links { display:flex; gap:26px; font-weight:500; font-size:15px; color:var(--muted); }
+  .links a:hover { color:var(--brand); }
+  .nav-end { display:flex; gap:12px; align-items:center; }
+  .lang { border:1.5px solid var(--line); background:#fff; border-radius:10px; padding:9px 14px; font-weight:700; cursor:pointer; font-family:inherit; }
+
+  .hero { background:linear-gradient(180deg, var(--soft), #fff); padding:64px 0 70px; }
+  .hero .wrap { display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; }
+  .tag { display:inline-block; background:#d5f5ef; color:var(--brand); font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px; }
+  h1 { font-size:52px; line-height:1.1; letter-spacing:-.02em; margin:18px 0; font-weight:800; }
+  html[lang="ar"] h1 { letter-spacing:0; line-height:1.3; }
+  h1 span { color:var(--brand); }
+  .lead { color:var(--muted); font-size:18px; line-height:1.7; margin-bottom:28px; max-width:540px; }
+  .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
+  .hero-art { position:relative; height:420px; }
+  .box { position:absolute; border-radius:22px; box-shadow:0 30px 60px rgba(13,43,42,.18); display:flex; align-items:flex-end; padding:18px; color:#fff; font-weight:800; }
+  .box small { display:block; font-weight:500; opacity:.85; font-size:12px; }
+  .b1 { width:62%; height:68%; inset-inline-start:0; top:8%; background:linear-gradient(150deg,#14b8a6,#0f766e); }
+  .b2 { width:44%; height:48%; inset-inline-end:0; top:0; background:linear-gradient(150deg,#fde68a,#f59e0b); color:#3b2a05; }
+  .b3 { width:46%; height:40%; inset-inline-end:4%; bottom:0; background:linear-gradient(150deg,#c7d2fe,#6366f1); }
+  .b1::before, .b2::before, .b3::before { content:""; position:absolute; top:18px; inset-inline-start:18px; width:46px; height:46px; border-radius:12px; background:rgba(255,255,255,.35); }
+  .badge-logo { position:absolute; inset-inline-start:34%; top:42%; background:#fff; color:var(--ink); padding:14px 18px; border-radius:16px; font-weight:800; box-shadow:0 20px 40px rgba(0,0,0,.15); font-size:14px; }
+  .badge-logo i { display:block; font-style:normal; color:var(--muted); font-weight:500; font-size:12px; }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:-34px; position:relative; }
+  .stat { background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(13,43,42,.06); }
+  .stat b { display:block; font-size:30px; font-weight:800; color:var(--brand); }
+  .stat span { color:var(--muted); font-size:14px; }
+
+  section { padding:84px 0; }
+  .head { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin-bottom:30px; flex-wrap:wrap; }
+  h2 { font-size:36px; letter-spacing:-.02em; font-weight:800; }
+  html[lang="ar"] h2 { letter-spacing:0; }
+  .sub { color:var(--muted); margin-top:8px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; }
+  .chip { border:1.5px solid var(--line); background:#fff; padding:9px 16px; border-radius:999px; font-weight:600; font-size:14px; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .chip.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .card { border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#fff; transition:transform .2s; }
+  .card:hover { transform:translateY(-4px); }
+  .card .img { height:150px; position:relative; }
+  .card .img::after { content:""; position:absolute; left:50%; top:50%; width:74px; height:92px; transform:translate(-50%,-50%); background:rgba(255,255,255,.85); border-radius:14px 14px 10px 10px; box-shadow:0 12px 24px rgba(0,0,0,.12); }
+  .card .body { padding:16px; }
+  .card h4 { font-size:16px; margin-bottom:4px; }
+  .card p { color:var(--muted); font-size:13px; }
+  .card .moq { display:inline-block; margin-top:10px; font-size:12px; font-weight:700; color:var(--brand); background:var(--soft); padding:4px 10px; border-radius:8px; }
+
+  .steps-sec { background:var(--sand); }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; counter-reset:s; }
+  .step { background:#fff; border-radius:18px; padding:26px; border:1px solid #efe8dc; }
+  .step::before { counter-increment:s; content:counter(s); display:grid; place-items:center; width:42px; height:42px; border-radius:12px; background:var(--ink); color:#fff; font-weight:800; margin-bottom:16px; }
+  .step h4 { font-size:18px; margin-bottom:6px; }
+  .step p { color:var(--muted); font-size:14px; line-height:1.6; }
+
+  .contact .wrap { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  form { background:#fff; border:1px solid var(--line); border-radius:20px; padding:28px; display:grid; gap:12px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  input, select, textarea { width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; font:inherit; font-size:15px; background:#fff; }
+  textarea { min-height:110px; resize:vertical; }
+  .map { border-radius:20px; overflow:hidden; position:relative; background:#e8f1ef; min-height:360px; }
+  .map svg { width:100%; height:100%; position:absolute; inset:0; }
+  .pin { position:absolute; left:52%; top:44%; transform:translate(-50%,-100%); background:var(--brand); color:#fff; padding:10px 14px; border-radius:12px; font-weight:700; font-size:13px; box-shadow:0 12px 24px rgba(15,118,110,.35); white-space:nowrap; }
+  .pin::after { content:""; position:absolute; left:50%; bottom:-7px; transform:translateX(-50%) rotate(45deg); width:14px; height:14px; background:var(--brand); }
+  .ok { display:none; color:var(--brand); font-weight:700; }
+
+  .wa { position:fixed; inset-inline-end:22px; bottom:22px; width:58px; height:58px; border-radius:50%; background:#25d366; display:grid; place-items:center; box-shadow:0 14px 30px rgba(37,211,102,.45); z-index:30; }
+  .wa svg { width:30px; height:30px; fill:#fff; }
+  footer { background:var(--ink); color:#a9c3c0; padding:30px 0; font-size:14px; }
+  footer .wrap { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+
+  @media (max-width:900px){
+    .hero .wrap, .contact .wrap { grid-template-columns:1fr; }
+    .hero-art { height:300px; }
+    .links { display:none; }
+    h1 { font-size:38px; }
+    .stats, .steps { grid-template-columns:1fr 1fr; }
+    .grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#0f766e"/><path d="M12 27c0-9 7-15 17-15-1 10-7 16-15 16" fill="#99f6e4"/></svg><span data-i="brand">SoftLeaf</span></a>
+      <div class="links">
+        <a href="#products" data-i="navProducts">Products</a>
+        <a href="#private" data-i="navPrivate">Private Label</a>
+        <a href="#contact" data-i="navContact">Contact</a>
+      </div>
+      <div class="nav-end">
+        <button class="lang" id="lang">العربية</button>
+        <a class="btn" href="#contact" data-i="quote">Get a quote</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="tag" data-i="tag">Private label manufacturer · Saudi Arabia</span>
+      <h1 data-i="h1" data-html>Your brand on <span>premium tissues</span> and cleaning products.</h1>
+      <p class="lead" data-i="lead">We manufacture facial tissues, wet wipes and household cleaners under your logo, from design to delivery, with low minimum orders and fast production.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#private" data-i="cta1">Start your brand</a>
+        <a class="btn light" href="#products" data-i="cta2">View products</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="box b1"><div><small data-i="art1s">Facial tissues</small><span data-i="art1">Soft Touch 200</span></div></div>
+      <div class="box b2"><div><small data-i="art2s">Wet wipes</small><span data-i="art2">Fresh Lemon</span></div></div>
+      <div class="box b3"><div><small data-i="art3s">Cleaner</small><span data-i="art3">Multi-Surface</span></div></div>
+      <div class="badge-logo"><span data-i="yourLogo">YOUR LOGO</span><i data-i="here">goes here</i></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b>120M+</b><span data-i="s1">units produced per year</span></div>
+    <div class="stat"><b>35</b><span data-i="s2">private-label brands served</span></div>
+    <div class="stat"><b>5,000</b><span data-i="s3">units minimum order</span></div>
+    <div class="stat"><b>21</b><span data-i="s4">days average production</span></div>
+  </div>
+</div>
+
+<section id="products">
+  <div class="wrap">
+    <div class="head">
+      <div><h2 data-i="prodTitle">Products ready for your brand</h2><p class="sub" data-i="prodSub">Pick a product, we handle formula, packaging and printing.</p></div>
+      <div class="chips" id="chips">
+        <button class="chip on" data-f="all" data-i="fAll">All</button>
+        <button class="chip" data-f="tissue" data-i="fTissue">Tissues</button>
+        <button class="chip" data-f="wipes" data-i="fWipes">Wet wipes</button>
+        <button class="chip" data-f="clean" data-i="fClean">Cleaners</button>
+        <button class="chip" data-f="kitchen" data-i="fKitchen">Kitchen rolls</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="private" class="steps-sec">
+  <div class="wrap">
+    <div class="head"><div><h2 data-i="stepsTitle">How private label works</h2><p class="sub" data-i="stepsSub">From idea to shelf in four simple steps.</p></div></div>
+    <div class="steps">
+      <div class="step"><h4 data-i="st1">Choose products</h4><p data-i="st1p">Select from our catalog or ask for a custom size, scent or ply.</p></div>
+      <div class="step"><h4 data-i="st2">Send your logo</h4><p data-i="st2p">Our designers prepare the packaging and send you a free mock-up.</p></div>
+      <div class="step"><h4 data-i="st3">Approve the sample</h4><p data-i="st3p">You receive a printed sample to check quality before production.</p></div>
+      <div class="step"><h4 data-i="st4">We produce & ship</h4><p data-i="st4p">Production starts within days and we deliver to your warehouse.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <form id="form">
+      <h2 data-i="formTitle">Request a quote</h2>
+      <div class="row"><input data-ph="fName" placeholder="Full name" required><input data-ph="fCompany" placeholder="Company"></div>
+      <div class="row"><input data-ph="fPhone" placeholder="Phone / WhatsApp" required><select id="sel"></select></div>
+      <textarea data-ph="fMsg" placeholder="Tell us about your brand and quantities"></textarea>
+      <button class="btn" type="submit" data-i="send">Send request</button>
+      <p class="ok" id="ok" data-i="thanks">Thank you! Our team will contact you within 24 hours.</p>
+    </form>
+    <div class="map">
+      <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice"><rect width="600" height="400" fill="#e6f0ee"/><path d="M0 260 C120 230 200 300 320 260 S520 200 600 230 V400 H0Z" fill="#d4e8e4"/><g stroke="#fff" stroke-width="10" fill="none"><path d="M-10 120 L610 160"/><path d="M180 -10 L260 410"/><path d="M420 -10 L380 410"/></g><g stroke="#fff" stroke-width="4" fill="none" opacity=".8"><path d="M0 60 L600 90"/><path d="M0 330 L600 300"/><path d="M90 0 L140 400"/><path d="M520 0 L500 400"/></g></svg>
+      <div class="pin" data-i="pin">SoftLeaf Factory · Riyadh</div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span data-i="foot">© SoftLeaf. All rights reserved.</span><span data-i="demo">Demo project by Omar Elshafei</span></div></footer>
+
+<a class="wa" href="#" aria-label="WhatsApp"><svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.7 8.7 0 0 1-4.3-3.8c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.5 6.5 0 0 0 1.3 3.4 14.6 14.6 0 0 0 5.6 5c2.1.9 2.9 1 4 .8a3.4 3.4 0 0 0 2.2-1.6 2.8 2.8 0 0 0 .2-1.6c-.1-.1-.3-.2-.6-.3z"/></svg></a>
+
+<script>
+const T = {
+  brand:["SoftLeaf","سوفت ليف"], navProducts:["Products","المنتجات"], navPrivate:["Private Label","العلامة الخاصة"], navContact:["Contact","تواصل معنا"], quote:["Get a quote","اطلب عرض سعر"],
+  tag:["Private label manufacturer · Saudi Arabia","مصنع منتجات بعلامتك الخاصة · السعودية"],
+  h1:["Your brand on <span>premium tissues</span> and cleaning products.","علامتك التجارية على <span>مناديل فاخرة</span> ومنتجات تنظيف."],
+  lead:["We manufacture facial tissues, wet wipes and household cleaners under your logo, from design to delivery, with low minimum orders and fast production.","نصنع المناديل والمناديل المبللة ومنظفات المنزل بشعارك، من التصميم حتى التوصيل، بحد أدنى منخفض للطلب وإنتاج سريع."],
+  cta1:["Start your brand","ابدأ علامتك"], cta2:["View products","تصفح المنتجات"],
+  art1s:["Facial tissues","مناديل وجه"], art1:["Soft Touch 200","سوفت تاتش 200"], art2s:["Wet wipes","مناديل مبللة"], art2:["Fresh Lemon","ليمون منعش"], art3s:["Cleaner","منظف"], art3:["Multi-Surface","متعدد الأسطح"],
+  yourLogo:["YOUR LOGO","شعارك"], here:["goes here","هنا"],
+  s1:["units produced per year","وحدة ننتجها سنويا"], s2:["private-label brands served","علامة تجارية نخدمها"], s3:["units minimum order","وحدة حد أدنى للطلب"], s4:["days average production","يوما متوسط مدة الإنتاج"],
+  prodTitle:["Products ready for your brand","منتجات جاهزة لعلامتك"], prodSub:["Pick a product, we handle formula, packaging and printing.","اختر المنتج، ونحن نتولى التركيبة والتغليف والطباعة."],
+  fAll:["All","الكل"], fTissue:["Tissues","مناديل"], fWipes:["Wet wipes","مناديل مبللة"], fClean:["Cleaners","منظفات"], fKitchen:["Kitchen rolls","مناشف مطبخ"],
+  stepsTitle:["How private label works","كيف تعمل العلامة الخاصة"], stepsSub:["From idea to shelf in four simple steps.","من الفكرة إلى الرف في أربع خطوات بسيطة."],
+  st1:["Choose products","اختر المنتجات"], st1p:["Select from our catalog or ask for a custom size, scent or ply.","اختر من الكتالوج أو اطلب مقاسا أو رائحة أو عدد طبقات خاص."],
+  st2:["Send your logo","أرسل شعارك"], st2p:["Our designers prepare the packaging and send you a free mock-up.","يجهز مصممونا التغليف ويرسلون لك نموذجا مجانيا."],
+  st3:["Approve the sample","اعتمد العينة"], st3p:["You receive a printed sample to check quality before production.","تستلم عينة مطبوعة لتتأكد من الجودة قبل الإنتاج."],
+  st4:["We produce & ship","ننتج ونشحن"], st4p:["Production starts within days and we deliver to your warehouse.","يبدأ الإنتاج خلال أيام ونوصل الطلب إلى مستودعك."],
+  formTitle:["Request a quote","اطلب عرض سعر"], send:["Send request","أرسل الطلب"], thanks:["Thank you! Our team will contact you within 24 hours.","شكرا لك! سيتواصل معك فريقنا خلال 24 ساعة."],
+  fName:["Full name","الاسم الكامل"], fCompany:["Company","اسم الشركة"], fPhone:["Phone / WhatsApp","الجوال / واتساب"], fMsg:["Tell us about your brand and quantities","أخبرنا عن علامتك والكميات المطلوبة"],
+  pin:["SoftLeaf Factory · Riyadh","مصنع سوفت ليف · الرياض"], foot:["© SoftLeaf. All rights reserved.","© سوفت ليف. جميع الحقوق محفوظة."], demo:["Demo project by Omar Elshafei","مشروع تجريبي من تنفيذ عمر الشافعي"]
+};
+const P = [
+  {c:"tissue", n:["Soft Touch 200","سوفت تاتش 200"], d:["2-ply facial tissues, 200 sheets","مناديل وجه طبقتين، 200 منديل"], g:"linear-gradient(140deg,#5eead4,#0f766e)"},
+  {c:"tissue", n:["Pocket Pack","مناديل جيب"], d:["Mini packs of 10, travel size","عبوات صغيرة 10 مناديل للسفر"], g:"linear-gradient(140deg,#a7f3d0,#059669)"},
+  {c:"wipes", n:["Fresh Lemon Wipes","مناديل مبللة بالليمون"], d:["Antibacterial, 80 wipes","مضادة للبكتيريا، 80 منديل"], g:"linear-gradient(140deg,#fde68a,#f59e0b)"},
+  {c:"wipes", n:["Baby Care Wipes","مناديل الأطفال"], d:["Alcohol-free, 99% water","خالية من الكحول، 99% ماء"], g:"linear-gradient(140deg,#fbcfe8,#ec4899)"},
+  {c:"clean", n:["Multi-Surface Cleaner","منظف متعدد الأسطح"], d:["750 ml spray, fresh scent","بخاخ 750 مل برائحة منعشة"], g:"linear-gradient(140deg,#c7d2fe,#6366f1)"},
+  {c:"clean", n:["Glass Shine","منظف الزجاج"], d:["Streak-free, 500 ml","بدون آثار، 500 مل"], g:"linear-gradient(140deg,#bae6fd,#0284c7)"},
+  {c:"kitchen", n:["Kitchen Roll XL","مناشف مطبخ XL"], d:["Super absorbent, 2 rolls","امتصاص عال، رولين"], g:"linear-gradient(140deg,#fed7aa,#ea580c)"},
+  {c:"kitchen", n:["Napkins 33cm","مناديل سفرة 33 سم"], d:["Restaurant quality, 100 pcs","جودة مطاعم، 100 قطعة"], g:"linear-gradient(140deg,#e9d5ff,#9333ea)"}
+];
+let L = new URLSearchParams(location.search).get("lang") === "ar" ? 1 : 0, F = "all";
+const grid = document.getElementById("grid"), sel = document.getElementById("sel");
+function render(){
+  document.documentElement.lang = L ? "ar" : "en";
+  document.documentElement.dir = L ? "rtl" : "ltr";
+  document.querySelectorAll("[data-i]").forEach(e => { const v = T[e.dataset.i][L]; e.hasAttribute("data-html") ? e.innerHTML = v : e.textContent = v; });
+  document.querySelectorAll("[data-ph]").forEach(e => e.placeholder = T[e.dataset.ph][L]);
+  document.getElementById("lang").textContent = L ? "English" : "العربية";
+  sel.innerHTML = [["Product type","نوع المنتج"],["Tissues","مناديل"],["Wet wipes","مناديل مبللة"],["Cleaners","منظفات"],["Kitchen rolls","مناشف مطبخ"]].map(o => `<option>${o[L]}</option>`).join("");
+  grid.innerHTML = P.filter(p => F === "all" || p.c === F).map(p => `<div class="card"><div class="img" style="background:${p.g}"></div><div class="body"><h4>${p.n[L]}</h4><p>${p.d[L]}</p><span class="moq">${L ? "الحد الأدنى 5,000 وحدة" : "MOQ 5,000 units"}</span></div></div>`).join("");
+}
+document.getElementById("lang").onclick = () => { L = 1 - L; render(); };
+document.getElementById("chips").onclick = e => { const b = e.target.closest(".chip"); if(!b) return; F = b.dataset.f; document.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c === b)); render(); };
+document.getElementById("form").onsubmit = e => { e.preventDefault(); document.getElementById("ok").style.display = "block"; e.target.reset(); };
+render();
+</script>
+</body>
+</html>

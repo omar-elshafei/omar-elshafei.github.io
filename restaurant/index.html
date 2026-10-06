@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nile Table — Egyptian Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --sand:#f6efe4; --ink:#1f1a14; --clay:#b4532a; --gold:#d9a441; --muted:#6b5e50; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Inter, system-ui, sans-serif; color:var(--ink); background:var(--sand); }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1140px; margin:0 auto; padding:0 24px; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:22px 0; }
+  .logo { font-family:"Playfair Display", serif; font-size:26px; font-weight:700; }
+  .logo span { color:var(--clay); }
+  nav ul { display:flex; gap:28px; list-style:none; font-weight:500; font-size:15px; }
+  .btn { display:inline-block; background:var(--clay); color:#fff; padding:13px 26px; border-radius:999px; font-weight:600; font-size:15px; }
+  .btn.ghost { background:transparent; color:var(--ink); border:1.5px solid var(--ink); }
+  .hero { display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center; padding:48px 0 80px; }
+  .eyebrow { color:var(--clay); font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:13px; }
+  h1 { font-family:"Playfair Display", serif; font-size:60px; line-height:1.05; margin:16px 0 20px; }
+  .lead { color:var(--muted); font-size:18px; line-height:1.6; max-width:480px; margin-bottom:30px; }
+  .actions { display:flex; gap:14px; }
+  .plate { aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 50% 50%, #fff 0 38%, #efe3cf 38% 44%, #fff 44% 52%, transparent 52%), radial-gradient(circle at 35% 30%, var(--gold), var(--clay) 70%); box-shadow:0 30px 60px rgba(80,40,10,.25); position:relative; }
+  .plate::after { content:""; position:absolute; inset:30%; border-radius:50%; background:radial-gradient(circle at 40% 40%, #e9b44c 0 20%, #c4622d 21% 45%, #7a8c3a 46% 60%, #f1d9a6 61%); }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
+  .stats b { font-family:"Playfair Display", serif; font-size:30px; display:block; }
+  .stats small { color:var(--muted); }
+  section.menu { background:#fff; padding:80px 0; }
+  h2 { font-family:"Playfair Display", serif; font-size:40px; margin-bottom:36px; text-align:center; }
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .card { background:var(--sand); border-radius:20px; padding:26px; }
+  .swatch { height:150px; border-radius:14px; margin-bottom:18px; }
+  .card h3 { font-size:19px; margin-bottom:6px; display:flex; justify-content:space-between; }
+  .card h3 span { color:var(--clay); }
+  .card p { color:var(--muted); font-size:15px; line-height:1.5; }
+  .book { padding:80px 0; }
+  .book .box { background:var(--ink); color:#fff; border-radius:28px; padding:56px; display:flex; justify-content:space-between; align-items:center; gap:30px; }
+  .book h2 { text-align:left; margin:0 0 8px; }
+  .book p { color:#cbbfae; }
+  footer { padding:30px 0 40px; color:var(--muted); font-size:14px; text-align:center; }
+  @media (max-width:820px){ .hero,.cards{grid-template-columns:1fr} h1{font-size:42px} nav ul{display:none} .book .box{flex-direction:column;align-items:flex-start;padding:36px} }
+</style>
+</head>
+<body>
+  <header class="wrap">
+    <nav>
+      <div class="logo">Nile<span>Table</span></div>
+      <ul><li><a href="#menu">Menu</a></li><li><a href="#book">Reservations</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul>
+      <a class="btn" href="#book">Book a table</a>
+    </nav>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Egyptian kitchen · Since 2012</div>
+        <h1>Home-style food, served with a view of the Nile.</h1>
+        <p class="lead">Slow-cooked molokhia, charcoal kofta and fresh feteer, made every morning from family recipes. Dine in, take away, or order to your door.</p>
+        <div class="actions"><a class="btn" href="#book">Reserve now</a><a class="btn ghost" href="#menu">See the menu</a></div>
+        <div class="stats">
+          <div><b>4.9★</b><small>2,300+ reviews</small></div>
+          <div><b>45 min</b><small>Average delivery</small></div>
+          <div><b>60+</b><small>Dishes on the menu</small></div>
+        </div>
+      </div>
+      <div class="plate" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <section class="menu" id="menu">
+    <div class="wrap">
+      <h2>Guest favourites</h2>
+      <div class="cards">
+        <div class="card"><div class="swatch" style="background:linear-gradient(135deg,#7a8c3a,#3e5a1f)"></div><h3>Molokhia & rice <span>EGP 185</span></h3><p>Jute-leaf stew with garlic and coriander, served with chicken or rabbit.</p></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(135deg,#c4622d,#7a2e12)"></div><h3>Charcoal kofta <span>EGP 240</span></h3><p>Hand-minced beef and lamb, grilled over charcoal, with tahini and baladi bread.</p></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(135deg,#e9c46a,#d9a441)"></div><h3>Feteer meshaltet <span>EGP 150</span></h3><p>Flaky layered pastry with honey and cream, or stuffed with cheese and pastrami.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book">
+    <div class="wrap">
+      <div class="box">
+        <div><h2>Planning a family dinner?</h2><p>Tables for up to 20 guests. Book online in under a minute.</p></div>
+        <a class="btn" href="#">Book a table</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Nile Table — demo website by Omar Elshafei</footer>
+</body>
+</html>

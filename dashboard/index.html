@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse — Sales Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#111827; --muted:#6b7280; --line:#e7eaf2; --brand:#4f46e5; --brand-soft:#eef0ff; --green:#16a34a; --red:#dc2626; --amber:#d97706; }
+  .dark { --bg:#0b1020; --panel:#121933; --ink:#e8ebf7; --muted:#8b93b0; --line:#232c4d; --brand:#7c7cff; --brand-soft:#1d2550; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Plus Jakarta Sans", system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  button, input, select { font-family:inherit; }
+  .app { display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+  aside { background:var(--panel); border-right:1px solid var(--line); padding:22px 16px; display:flex; flex-direction:column; gap:6px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; padding:4px 10px 22px; }
+  .logo i { width:32px; height:32px; border-radius:10px; background:linear-gradient(135deg,#6366f1,#22d3ee); }
+  .nav a { display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:10px; color:var(--muted); font-weight:600; font-size:14px; text-decoration:none; }
+  .nav a.on { background:var(--brand-soft); color:var(--brand); }
+  .nav svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
+  .upgrade { margin-top:auto; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border-radius:16px; padding:18px; font-size:13px; }
+  .upgrade b { display:block; font-size:15px; margin-bottom:4px; }
+  main { padding:26px 30px 40px; display:flex; flex-direction:column; gap:22px; min-width:0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+  .top h1 { font-size:26px; font-weight:800; }
+  .top p { color:var(--muted); font-size:14px; margin-top:2px; }
+  .tools { display:flex; gap:10px; align-items:center; }
+  .seg { display:flex; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:4px; }
+  .seg button { border:0; background:transparent; color:var(--muted); padding:8px 14px; border-radius:9px; font-weight:600; font-size:13px; cursor:pointer; }
+  .seg button.on { background:var(--brand); color:#fff; }
+  .tbtn { width:42px; height:42px; border-radius:12px; border:1px solid var(--line); background:var(--panel); color:var(--ink); cursor:pointer; font-size:18px; }
+  .avatar { width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#ef4444); }
+
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .kpi { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:18px 18px 12px; }
+  .kpi span { color:var(--muted); font-size:13px; font-weight:600; }
+  .kpi b { display:block; font-size:26px; font-weight:800; margin:6px 0 2px; }
+  .delta { font-size:12px; font-weight:700; }
+  .up { color:var(--green); } .down { color:var(--red); }
+  .kpi svg { width:100%; height:42px; margin-top:6px; }
+
+  .row2 { display:grid; grid-template-columns:2fr 1fr; gap:18px; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; min-width:0; }
+  .ph { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:12px; flex-wrap:wrap; }
+  .ph h3 { font-size:16px; font-weight:800; }
+  .legend { display:flex; gap:14px; font-size:12px; color:var(--muted); font-weight:600; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
+  #chart { width:100%; height:330px; display:block; }
+  .donut-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
+  #donut { width:190px; height:190px; }
+  .src { width:100%; display:grid; gap:10px; font-size:13px; }
+  .src div { display:flex; justify-content:space-between; align-items:center; }
+  .src span i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; }
+
+  .table-tools { display:flex; gap:10px; }
+  .table-tools input, .table-tools select { border:1px solid var(--line); background:var(--bg); color:var(--ink); border-radius:10px; padding:9px 12px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.06em; padding:10px 12px; border-bottom:1px solid var(--line); cursor:pointer; user-select:none; }
+  td { padding:13px 12px; border-bottom:1px solid var(--line); }
+  td .cust { display:flex; align-items:center; gap:10px; font-weight:600; }
+  td .av { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:800; color:#fff; }
+  .st { padding:5px 10px; border-radius:8px; font-size:12px; font-weight:700; }
+  .st.Paid { background:#dcfce7; color:#15803d; } .st.Pending { background:#fef3c7; color:#b45309; } .st.Refunded { background:#fee2e2; color:#b91c1c; }
+  .dark .st.Paid { background:#14351f; color:#4ade80; } .dark .st.Pending { background:#3a2c0b; color:#fbbf24; } .dark .st.Refunded { background:#3b1414; color:#f87171; }
+  .foot { color:var(--muted); font-size:12px; text-align:center; }
+  @media (max-width:1000px){ .app{grid-template-columns:1fr} aside{display:none} .kpis{grid-template-columns:1fr 1fr} .row2{grid-template-columns:1fr} main{padding:18px} }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="logo"><i></i>Pulse</div>
+    <nav class="nav">
+      <a class="on" href="#"><svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Overview</a>
+      <a href="#"><svg viewBox="0 0 24 24"><path d="M6 6h15l-2 9H7z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>Orders</a>
+      <a href="#"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Products</a>
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/></svg>Customers</a>
+      <a href="#"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>Reports</a>
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 2.6a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.4h5l.3-2.6a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6c.1-.3.1-.6.1-.9z"/></svg>Settings</a>
+    </nav>
+    <div class="upgrade"><b>Weekly report ready</b>Revenue grew 12% this week. Export it as PDF.</div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div><h1>Good morning, Sara</h1><p>Here's what's happening with your store today.</p></div>
+      <div class="tools">
+        <div class="seg" id="range"><button data-r="7">7D</button><button data-r="30" class="on">30D</button><button data-r="90">90D</button></div>
+        <button class="tbtn" id="theme" title="Toggle dark mode">☾</button>
+        <div class="avatar"></div>
+      </div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="row2">
+      <div class="panel">
+        <div class="ph"><h3>Revenue vs. last period</h3><div class="legend"><span><i style="background:var(--brand)"></i>This period</span><span><i style="background:#c7cbe0"></i>Last period</span></div></div>
+        <svg id="chart" viewBox="0 0 720 330" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="panel donut-wrap">
+        <div class="ph" style="width:100%"><h3>Traffic sources</h3></div>
+        <svg id="donut" viewBox="0 0 42 42"></svg>
+        <div class="src" id="src"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>Recent orders</h3><div class="table-tools"><input id="search" placeholder="Search customer or order..."><select id="status"><option value="">All statuses</option><option>Paid</option><option>Pending</option><option>Refunded</option></select></div></div>
+      <table><thead><tr><th data-k="id">Order</th><th data-k="name">Customer</th><th data-k="date">Date</th><th data-k="amount">Amount</th><th data-k="status">Status</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+    <p class="foot">Pulse — demo dashboard project by Omar Elshafei · sample data</p>
+  </main>
+</div>
+
+<script>
+const rand = s => () => (s = (s * 9301 + 49297) % 233280) / 233280;
+function series(n, base, seed){ const r = rand(seed); let v = base; return Array.from({length:n}, () => (v = Math.max(base*.5, v + (r() - .42) * base * .12))); }
+const kpiDefs = [
+  {k:"Revenue", f:v => "$" + Math.round(v).toLocaleString(), base:4200, seed:3},
+  {k:"Orders", f:v => Math.round(v).toLocaleString(), base:62, seed:7},
+  {k:"Avg. order value", f:v => "$" + v.toFixed(2), base:68, seed:11},
+  {k:"Conversion rate", f:v => v.toFixed(2) + "%", base:3.1, seed:19}
+];
+const orders = [
+  ["#3021","Ahmed Salem","2026-10-06",184.5,"Paid"],["#3020","Lina Haddad","2026-10-06",92,"Pending"],["#3019","Omar Farouk","2026-10-05",310.2,"Paid"],
+  ["#3018","Mona Aziz","2026-10-05",45.9,"Refunded"],["#3017","Yusuf Kareem","2026-10-04",129,"Paid"],["#3016","Hana Nabil","2026-10-04",76.4,"Pending"],
+  ["#3015","Karim Adel","2026-10-03",254,"Paid"],["#3014","Sara Mansour","2026-10-03",61.25,"Paid"]
+].map(([id,name,date,amount,status]) => ({id,name,date,amount,status}));
+const colors = ["#6366f1","#22d3ee","#f59e0b","#ef4444","#10b981","#a855f7"];
+let range = 30, sortK = "date", sortDir = -1;
+
+function spark(data, up){
+  const max = Math.max(...data), min = Math.min(...data), w = 200, h = 42;
+  const pts = data.map((v,i) => [i/(data.length-1)*w, h - 4 - (v-min)/(max-min||1)*(h-8)]);
+  const d = pts.map((p,i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  const c = up ? "#16a34a" : "#dc2626";
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="${d} L${w} ${h} L0 ${h}Z" fill="${c}" opacity=".1"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2"/></svg>`;
+}
+function drawKpis(){
+  document.getElementById("kpis").innerHTML = kpiDefs.map(k => {
+    const s = series(range, k.base, k.seed + range), cur = s[s.length-1], first = s[0], pct = (cur - first) / first * 100, up = pct >= 0;
+    const total = k.k === "Revenue" || k.k === "Orders" ? s.reduce((a,b) => a+b, 0) : cur;
+    return `<div class="kpi"><span>${k.k}</span><b>${k.f(total)}</b><span class="delta ${up ? "up" : "down"}">${up ? "▲" : "▼"} ${Math.abs(pct).toFixed(1)}%</span> <span style="font-size:12px">vs last period</span>${spark(s, up)}</div>`;
+  }).join("");
+}
+function drawChart(){
+  const a = series(range, 4200, 5 + range), b = series(range, 3900, 41 + range), all = a.concat(b);
+  const W = 720, H = 330, pad = 30, max = Math.max(...all) * 1.1, min = Math.min(...all) * .85;
+  const xy = (v,i) => [pad + i/(range-1)*(W-pad*2), H - pad - (v-min)/(max-min)*(H-pad*2)];
+  const path = s => s.map((v,i) => (i ? "L" : "M") + xy(v,i).map(n => n.toFixed(1)).join(" ")).join(" ");
+  let grid = "";
+  for (let i = 0; i <= 4; i++){ const y = pad + i*(H-pad*2)/4, val = max - i*(max-min)/4; grid += `<line x1="${pad}" x2="${W-pad}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="0" y="${y+4}" font-size="10" fill="var(--muted)">$${(val/1000).toFixed(1)}k</text>`; }
+  const pa = path(a), last = xy(a[a.length-1], a.length-1);
+  document.getElementById("chart").innerHTML = `<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--brand)" stop-opacity=".28"/><stop offset="1" stop-color="var(--brand)" stop-opacity="0"/></linearGradient></defs>${grid}
+    <path d="${path(b)}" fill="none" stroke="#c7cbe0" stroke-width="2" stroke-dasharray="5 5"/>
+    <path d="${pa} L${W-pad} ${H-pad} L${pad} ${H-pad}Z" fill="url(#g)"/><path d="${pa}" fill="none" stroke="var(--brand)" stroke-width="3"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="6" fill="var(--panel)" stroke="var(--brand)" stroke-width="3"/>`;
+}
+function drawDonut(){
+  const src = [["Organic search",38],["Social media",27],["Direct",18],["Email",10],["Referral",7]];
+  let off = 25, out = `<circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--line)" stroke-width="5"/>`;
+  src.forEach(([,v],i) => { out += `<circle cx="21" cy="21" r="15.9" fill="none" stroke="${colors[i]}" stroke-width="5" stroke-dasharray="${v} ${100-v}" stroke-dashoffset="${off}"/>`; off -= v; });
+  out += `<text x="21" y="20" text-anchor="middle" font-size="5" font-weight="800" fill="var(--ink)">24.8k</text><text x="21" y="25.5" text-anchor="middle" font-size="2.6" fill="var(--muted)">visitors</text>`;
+  document.getElementById("donut").innerHTML = out;
+  document.getElementById("src").innerHTML = src.map(([n,v],i) => `<div><span><i style="background:${colors[i]}"></i>${n}</span><b>${v}%</b></div>`).join("");
+}
+function drawRows(){
+  const q = document.getElementById("search").value.toLowerCase(), st = document.getElementById("status").value;
+  const list = orders.filter(o => (o.name + o.id).toLowerCase().includes(q) && (!st || o.status === st))
+    .sort((x,y) => (x[sortK] > y[sortK] ? 1 : -1) * sortDir);
+  document.getElementById("rows").innerHTML = list.map((o,i) => `<tr><td><b>${o.id}</b></td><td><div class="cust"><span class="av" style="background:${colors[i % colors.length]}">${o.name.split(" ").map(w => w[0]).join("")}</span>${o.name}</div></td><td>${new Date(o.date).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</td><td><b>$${o.amount.toFixed(2)}</b></td><td><span class="st ${o.status}">${o.status}</span></td></tr>`).join("");
+}
+document.getElementById("range").onclick = e => { const b = e.target.closest("button"); if(!b) return; range = +b.dataset.r; document.querySelectorAll("#range button").forEach(x => x.classList.toggle("on", x === b)); drawKpis(); drawChart(); };
+document.getElementById("theme").onclick = () => document.body.classList.toggle("dark");
+document.getElementById("search").oninput = drawRows;
+document.getElementById("status").onchange = drawRows;
+document.querySelector("thead").onclick = e => { const th = e.target.closest("th"); if(!th) return; sortDir = sortK === th.dataset.k ? -sortDir : 1; sortK = th.dataset.k; drawRows(); };
+if (new URLSearchParams(location.search).get("theme") === "dark") document.body.classList.add("dark");
+drawKpis(); drawChart(); drawDonut(); drawRows();
+</script>
+</body>
+</html>

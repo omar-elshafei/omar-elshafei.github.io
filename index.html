@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omar Elshafei — Front-End Web Developer</title>
+<meta name="description" content="Front-end web developer from Egypt: bilingual Arabic/English company websites, online stores and dashboards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b1520; --panel:#111f2d; --ink:#eaf2f7; --muted:#93a8b8; --line:#1f3345; --accent:#2dd4bf; --accent-2:#0f766e; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:Inter, system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1140px; margin:0 auto; padding:0 24px; }
+  nav { display:flex; justify-content:space-between; align-items:center; height:74px; }
+  .logo { font-weight:800; font-size:18px; }
+  .logo span { color:var(--accent); }
+  .links { display:flex; gap:24px; color:var(--muted); font-weight:500; font-size:15px; }
+  .links a:hover { color:var(--ink); }
+  .btn { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#05231f; padding:13px 22px; border-radius:12px; font-weight:700; font-size:15px; }
+  .btn.ghost { background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+
+  .hero { display:grid; grid-template-columns:1.3fr .7fr; gap:48px; align-items:center; padding:60px 0 80px; }
+  .avail { display:inline-flex; align-items:center; gap:8px; background:rgba(45,212,191,.1); color:var(--accent); border:1px solid rgba(45,212,191,.25); padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600; }
+  .avail i { width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(45,212,191,.2); }
+  h1 { font-size:56px; line-height:1.06; letter-spacing:-.03em; margin:20px 0 18px; font-weight:800; }
+  h1 span { background:linear-gradient(90deg,#2dd4bf,#60a5fa); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .lead { color:var(--muted); font-size:18px; line-height:1.7; max-width:560px; margin-bottom:30px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; }
+  .photo { position:relative; justify-self:center; }
+  .photo img { width:300px; height:300px; border-radius:50%; object-fit:cover; border:6px solid var(--panel); box-shadow:0 0 0 1px var(--line), 0 40px 80px rgba(0,0,0,.4); }
+  .photo::before { content:""; position:absolute; inset:-30px; border-radius:50%; background:radial-gradient(closest-side, rgba(45,212,191,.25), transparent); z-index:-1; }
+
+  section { padding:70px 0; border-top:1px solid var(--line); }
+  h2 { font-size:34px; letter-spacing:-.02em; margin-bottom:8px; }
+  .sub { color:var(--muted); margin-bottom:34px; }
+  .featured { display:grid; gap:26px; }
+  .feat { display:grid; grid-template-columns:1.15fr .85fr; gap:30px; background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:22px; align-items:center; }
+  .feat:nth-child(even) .shot { order:2; }
+  .shot { border-radius:14px; overflow:hidden; border:1px solid var(--line); aspect-ratio:16/10; }
+  .shot img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:transform .4s; }
+  .feat:hover .shot img { transform:scale(1.03); }
+  .kind { color:var(--accent); font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+  .feat h3 { font-size:26px; margin:8px 0 10px; }
+  .feat p { color:var(--muted); line-height:1.7; margin-bottom:14px; }
+  .feat ul { list-style:none; display:grid; gap:7px; margin-bottom:18px; color:#c9d8e2; font-size:15px; }
+  .feat li::before { content:"✓"; color:var(--accent); font-weight:800; margin-right:10px; }
+  .stack { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+  .stack span { font-size:12px; font-weight:600; color:var(--muted); border:1px solid var(--line); padding:4px 10px; border-radius:8px; }
+  .more { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:26px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:18px; overflow:hidden; transition:transform .2s, border-color .2s; }
+  .card:hover { transform:translateY(-4px); border-color:var(--accent-2); }
+  .card img { width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top; display:block; }
+  .card div { padding:16px 18px; }
+  .card h4 { font-size:17px; margin-bottom:4px; }
+  .card p { color:var(--muted); font-size:14px; }
+
+  .skills { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .sk { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px; }
+  .sk h4 { font-size:17px; margin-bottom:14px; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tags span { background:#0d2a2f; color:#9ff3e6; border:1px solid #17444a; padding:6px 12px; border-radius:10px; font-size:13px; font-weight:600; }
+
+  .contact { text-align:center; }
+  .contact h2 { font-size:40px; }
+  .contact .actions { justify-content:center; margin-top:26px; }
+  footer { border-top:1px solid var(--line); padding:26px 0; color:var(--muted); font-size:14px; text-align:center; }
+  @media (max-width:900px){
+    .hero, .feat { grid-template-columns:1fr; }
+    .feat:nth-child(even) .shot { order:0; }
+    .photo { order:-1; } .photo img { width:200px; height:200px; }
+    h1 { font-size:40px; } .links { display:none; }
+    .more, .skills { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">Omar<span>.</span>Elshafei</div>
+      <div class="links"><a href="#work">Work</a><a href="#skills">Skills</a><a href="#contact">Contact</a></div>
+      <a class="btn" href="#contact">Hire me</a>
+    </nav>
+
+    <div class="hero">
+      <div>
+        <span class="avail"><i></i>Available for new projects</span>
+        <h1>I build <span>fast, modern websites</span> for businesses in Egypt and the Gulf.</h1>
+        <p class="lead">Front-end web developer with an engineering background. Bilingual Arabic/English company websites, online stores and dashboards, responsive on every screen and built with clean code you fully own.</p>
+        <div class="actions"><a class="btn" href="#work">See my work</a><a class="btn ghost" href="#contact">Contact me</a></div>
+      </div>
+      <div class="photo"><img src="assets/photo.jpg" alt="Omar Elshafei"></div>
+    </div>
+  </div>
+
+  <section id="work">
+    <div class="wrap">
+      <h2>Featured projects</h2>
+      <p class="sub">Live demos. Click any project to open it and try it yourself.</p>
+      <div class="featured">
+        <article class="feat">
+          <a class="shot" href="softleaf/"><img src="assets/softleaf-ar.png" alt="SoftLeaf bilingual website"></a>
+          <div>
+            <span class="kind">Bilingual company website</span>
+            <h3>SoftLeaf</h3>
+            <p>Website for a private-label tissue and cleaning-products manufacturer, built for B2B clients in Saudi Arabia.</p>
+            <ul><li>One-click Arabic / English switch with full RTL & LTR layouts</li><li>Product catalog with category filtering</li><li>Quote request form, map and floating WhatsApp button</li></ul>
+            <div class="stack"><span>HTML</span><span>CSS Grid</span><span>JavaScript</span><span>RTL / LTR</span></div>
+            <a class="btn" href="softleaf/">Open live demo →</a>
+          </div>
+        </article>
+        <article class="feat">
+          <a class="shot" href="oud-store/"><img src="assets/oud-store-main.png" alt="Oud & Amber online store"></a>
+          <div>
+            <span class="kind">E-commerce storefront</span>
+            <h3>Oud &amp; Amber</h3>
+            <p>A luxury perfume store with a complete shopping experience, from browsing to the cart.</p>
+            <ul><li>Category filters, price sorting and live search</li><li>Slide-out cart with quantities and totals</li><li>Free-delivery progress bar to increase order value</li></ul>
+            <div class="stack"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Cart logic</span></div>
+            <a class="btn" href="oud-store/">Open live demo →</a>
+          </div>
+        </article>
+        <article class="feat">
+          <a class="shot" href="dashboard/"><img src="assets/dashboard.png" alt="Pulse sales dashboard"></a>
+          <div>
+            <span class="kind">Analytics dashboard</span>
+            <h3>Pulse</h3>
+            <p>A sales dashboard that turns store data into clear numbers and charts.</p>
+            <ul><li>KPI cards with sparklines and a revenue comparison chart</li><li>Searchable, sortable orders table with status badges</li><li>Date-range switching and dark mode</li></ul>
+            <div class="stack"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>SVG charts</span></div>
+            <a class="btn" href="dashboard/">Open live demo →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="more">
+        <a class="card" href="restaurant/"><img src="assets/restaurant.png" alt=""><div><h4>Nile Table</h4><p>Restaurant website with menu highlights and table booking.</p></div></a>
+        <a class="card" href="clinic/"><img src="assets/clinic.png" alt=""><div><h4>BrightSmile Dental</h4><p>Clinic website with an appointment booking form.</p></div></a>
+        <a class="card" href="app/"><img src="assets/app.png" alt=""><div><h4>Taskly</h4><p>Dark, modern landing page for a productivity app.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>What I work with</h2>
+      <p class="sub">The tools and features behind the projects above.</p>
+      <div class="skills">
+        <div class="sk"><h4>Front-end</h4><div class="tags"><span>HTML5</span><span>CSS3</span><span>Flexbox</span><span>CSS Grid</span><span>JavaScript ES6</span><span>DOM</span></div></div>
+        <div class="sk"><h4>Interfaces</h4><div class="tags"><span>Responsive</span><span>Mobile-first</span><span>Arabic RTL</span><span>Bilingual sites</span><span>Dark mode</span></div></div>
+        <div class="sk"><h4>Features</h4><div class="tags"><span>Product filters</span><span>Shopping cart</span><span>Search &amp; sort</span><span>SVG charts</span><span>Forms</span><span>WhatsApp &amp; maps</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Have a project in mind?</h2>
+      <p class="sub">Tell me what you need. I reply quickly, in Arabic or English.</p>
+      <div class="actions">
+        <a class="btn" href="mailto:omarelshafei15@gmail.com">Email me</a>
+        <a class="btn ghost" href="https://www.fiverr.com/omar_elshafei20">Fiverr profile</a>
+        <a class="btn ghost" href="https://mostaql.com/u/omar_elshafei">Mostaql profile</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© Omar Elshafei · Front-End Web Developer · Egypt</footer>
+</body>
+</html>

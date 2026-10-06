@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrightSmile Dental Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f4f8fb; --ink:#0f2a3d; --teal:#0e9f9a; --teal-soft:#d9f2f0; --muted:#5a7183; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Plus Jakarta Sans", system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1140px; margin:0 auto; padding:0 24px; }
+  .top { background:var(--ink); color:#cfe3ee; font-size:13px; padding:8px 0; }
+  .top .wrap { display:flex; justify-content:space-between; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+  .logo { font-weight:800; font-size:22px; display:flex; align-items:center; gap:10px; }
+  .logo i { width:34px; height:34px; border-radius:10px; background:var(--teal); display:inline-block; position:relative; }
+  .logo i::after { content:""; position:absolute; inset:9px 11px; background:#fff; border-radius:8px 8px 4px 4px; }
+  nav ul { display:flex; gap:26px; list-style:none; font-weight:500; font-size:15px; color:var(--muted); }
+  .btn { display:inline-block; background:var(--teal); color:#fff; padding:13px 24px; border-radius:12px; font-weight:700; font-size:15px; }
+  .hero { display:grid; grid-template-columns:1.15fr 1fr; gap:40px; align-items:center; padding:40px 0 70px; }
+  .pill { display:inline-block; background:var(--teal-soft); color:var(--teal); font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px; }
+  h1 { font-size:54px; line-height:1.08; letter-spacing:-.02em; margin:18px 0; font-weight:800; }
+  h1 em { font-style:normal; color:var(--teal); }
+  .lead { color:var(--muted); font-size:18px; line-height:1.6; margin-bottom:28px; max-width:500px; }
+  .form { background:#fff; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(15,42,61,.10); }
+  .form h3 { font-size:20px; margin-bottom:4px; }
+  .form p { color:var(--muted); font-size:14px; margin-bottom:18px; }
+  .field { border:1.5px solid #dbe6ee; border-radius:12px; padding:13px 14px; font-size:15px; color:#8aa0b0; margin-bottom:12px; }
+  .form .btn { width:100%; text-align:center; }
+  .trust { display:flex; gap:28px; margin-top:8px; color:var(--muted); font-size:14px; }
+  .trust b { color:var(--ink); font-size:22px; display:block; }
+  section { padding:70px 0; }
+  h2 { font-size:36px; letter-spacing:-.02em; margin-bottom:10px; }
+  .sub { color:var(--muted); margin-bottom:34px; }
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .svc { background:#fff; border-radius:18px; padding:24px; }
+  .svc .ic { width:46px; height:46px; border-radius:12px; background:var(--teal-soft); margin-bottom:16px; display:grid; place-items:center; font-weight:800; color:var(--teal); }
+  .svc h4 { font-size:17px; margin-bottom:6px; }
+  .svc p { color:var(--muted); font-size:14px; line-height:1.5; }
+  .doctors { background:#fff; }
+  .docs { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .doc { border-radius:18px; overflow:hidden; background:var(--bg); }
+  .doc .ph { height:170px; background:linear-gradient(160deg,#bfe7e4,#7cc9c4); }
+  .doc div.t { padding:18px; }
+  .doc span { color:var(--muted); font-size:14px; }
+  footer { padding:30px 0; text-align:center; color:var(--muted); font-size:14px; }
+  @media (max-width:860px){ .hero,.docs{grid-template-columns:1fr} .grid{grid-template-columns:1fr 1fr} h1{font-size:40px} nav ul,.top{display:none} }
+</style>
+</head>
+<body>
+  <div class="top"><div class="wrap"><span>Open Sat–Thu · 10:00–22:00</span><span>Call us: +20 100 000 0000</span></div></div>
+  <header class="wrap">
+    <nav>
+      <div class="logo"><i></i>BrightSmile</div>
+      <ul><li>Services</li><li>Doctors</li><li>Prices</li><li>Reviews</li></ul>
+      <a class="btn" href="#">Book visit</a>
+    </nav>
+    <div class="hero">
+      <div>
+        <span class="pill">New patients: free first check-up</span>
+        <h1>Gentle dental care for the <em>whole family</em>.</h1>
+        <p class="lead">Cleaning, whitening, implants and braces under one roof. Clear prices, no surprises, and appointments that start on time.</p>
+        <div class="trust">
+          <div><b>12k+</b>Happy patients</div>
+          <div><b>15 yrs</b>Experience</div>
+          <div><b>4.9/5</b>Google rating</div>
+        </div>
+      </div>
+      <div class="form">
+        <h3>Book an appointment</h3>
+        <p>We'll confirm by WhatsApp within 30 minutes.</p>
+        <div class="field">Your name</div>
+        <div class="field">Phone number</div>
+        <div class="field">Choose a service ▾</div>
+        <div class="field">Preferred date</div>
+        <a class="btn" href="#">Confirm booking</a>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <h2>Our services</h2>
+      <p class="sub">Everything your smile needs, with modern equipment.</p>
+      <div class="grid">
+        <div class="svc"><div class="ic">01</div><h4>Check-up & cleaning</h4><p>Full exam, X-ray and professional cleaning in one visit.</p></div>
+        <div class="svc"><div class="ic">02</div><h4>Teeth whitening</h4><p>Up to 8 shades brighter in a single 60-minute session.</p></div>
+        <div class="svc"><div class="ic">03</div><h4>Dental implants</h4><p>Permanent, natural-looking replacements for missing teeth.</p></div>
+        <div class="svc"><div class="ic">04</div><h4>Braces & aligners</h4><p>Metal, ceramic or clear aligners for teens and adults.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="doctors">
+    <div class="wrap">
+      <h2>Meet the doctors</h2>
+      <p class="sub">Specialists who explain every step before they start.</p>
+      <div class="docs">
+        <div class="doc"><div class="ph"></div><div class="t"><h4>Dr. Mona Hassan</h4><span>Orthodontist</span></div></div>
+        <div class="doc"><div class="ph" style="background:linear-gradient(160deg,#cde3f3,#8db8d9)"></div><div class="t"><h4>Dr. Karim Adel</h4><span>Implant specialist</span></div></div>
+        <div class="doc"><div class="ph" style="background:linear-gradient(160deg,#f3e3cd,#d9b58d)"></div><div class="t"><h4>Dr. Sara Nabil</h4><span>Family dentist</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>BrightSmile Dental — demo website by Omar Elshafei</footer>
+</body>
+</html>

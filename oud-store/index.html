@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oud & Amber — Luxury Fragrances</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#faf7f2; --ink:#1c1712; --muted:#7a6f63; --gold:#b8862f; --gold-2:#e6c27a; --line:#e9e1d4; --card:#fff; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Inter, system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  button { font-family:inherit; cursor:pointer; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  .bar { background:var(--ink); color:#e9dcc4; font-size:13px; text-align:center; padding:9px; letter-spacing:.04em; }
+  header { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10; }
+  nav { height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .logo { font-family:"Cormorant Garamond", serif; font-size:30px; font-weight:700; letter-spacing:.02em; }
+  .logo span { color:var(--gold); }
+  .search { flex:1; max-width:420px; display:flex; align-items:center; gap:10px; border:1.5px solid var(--line); border-radius:12px; padding:10px 14px; color:var(--muted); }
+  .search input { border:0; outline:0; font:inherit; width:100%; background:transparent; }
+  .icons { display:flex; gap:10px; }
+  .icon { position:relative; width:44px; height:44px; border-radius:12px; border:1.5px solid var(--line); background:#fff; display:grid; place-items:center; }
+  .icon svg { width:20px; height:20px; stroke:var(--ink); fill:none; stroke-width:1.8; }
+  .count { position:absolute; top:-6px; right:-6px; background:var(--gold); color:#fff; font-size:11px; font-weight:700; min-width:20px; height:20px; border-radius:10px; display:grid; place-items:center; padding:0 5px; }
+
+  .hero { margin:28px auto; border-radius:28px; overflow:hidden; display:grid; grid-template-columns:1.1fr 1fr; background:radial-gradient(circle at 80% 40%, #3a2a17, #1c1712 70%); color:#f4e7cf; min-height:360px; }
+  .hero .txt { padding:56px; display:flex; flex-direction:column; justify-content:center; }
+  .eyebrow { color:var(--gold-2); letter-spacing:.2em; font-size:12px; font-weight:700; text-transform:uppercase; }
+  .hero h1 { font-family:"Cormorant Garamond", serif; font-size:58px; line-height:1.02; margin:14px 0 16px; }
+  .hero p { color:#cdbb9d; line-height:1.7; max-width:420px; margin-bottom:26px; }
+  .btn { background:var(--gold); color:#fff; border:0; padding:14px 26px; border-radius:12px; font-weight:700; font-size:15px; align-self:flex-start; }
+  .hero .art { position:relative; }
+  .bottle { position:absolute; bottom:40px; border-radius:18px 18px 22px 22px; box-shadow:0 30px 60px rgba(0,0,0,.45); }
+  .bottle::before { content:""; position:absolute; left:50%; top:-34px; transform:translateX(-50%); width:38%; height:36px; border-radius:8px 8px 4px 4px; background:linear-gradient(#e6c27a,#8a6420); }
+  .bottle::after { content:""; position:absolute; inset:28% 18% auto; height:26%; border-radius:6px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); }
+  .v1 { left:18%; width:120px; height:190px; background:linear-gradient(160deg,#d9a24b,#7a4b12); }
+  .v2 { left:44%; width:140px; height:240px; background:linear-gradient(160deg,#5c2d1e,#1d0d07); }
+  .v3 { left:72%; width:100px; height:160px; background:linear-gradient(160deg,#f3d9a4,#b8862f); }
+
+  .toolbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin:36px 0 20px; flex-wrap:wrap; }
+  .toolbar h2 { font-family:"Cormorant Garamond", serif; font-size:38px; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; }
+  .f { border:1.5px solid var(--line); background:#fff; padding:9px 16px; border-radius:999px; font-weight:600; font-size:14px; color:var(--muted); }
+  .f.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  select { border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; font:inherit; background:#fff; }
+
+  .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-bottom:70px; }
+  .p { background:var(--card); border-radius:20px; overflow:hidden; border:1px solid var(--line); display:flex; flex-direction:column; }
+  .p .img { height:220px; position:relative; display:grid; place-items:end center; padding-bottom:26px; }
+  .p .mini { width:78px; height:120px; border-radius:12px 12px 16px 16px; position:relative; box-shadow:0 18px 30px rgba(0,0,0,.25); }
+  .p .mini::before { content:""; position:absolute; left:50%; top:-22px; transform:translateX(-50%); width:40%; height:24px; border-radius:6px 6px 3px 3px; background:linear-gradient(#e6c27a,#8a6420); }
+  .p .badge { position:absolute; top:14px; left:14px; background:#fff; font-size:11px; font-weight:700; padding:5px 10px; border-radius:8px; }
+  .p .body { padding:16px 18px 18px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .p h3 { font-family:"Cormorant Garamond", serif; font-size:23px; }
+  .p .notes { color:var(--muted); font-size:13px; }
+  .p .stars { color:var(--gold); font-size:13px; }
+  .p .foot { display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:10px; }
+  .price { font-weight:700; font-size:17px; }
+  .price s { color:var(--muted); font-weight:400; font-size:13px; margin-left:6px; }
+  .add { background:var(--ink); color:#fff; border:0; border-radius:10px; padding:10px 14px; font-weight:600; font-size:13px; }
+
+  .overlay { position:fixed; inset:0; background:rgba(28,23,18,.45); opacity:0; pointer-events:none; transition:.25s; z-index:20; }
+  .drawer { position:fixed; top:0; right:0; height:100%; width:400px; max-width:100%; background:#fff; transform:translateX(100%); transition:.3s; z-index:21; display:flex; flex-direction:column; }
+  .open .overlay { opacity:1; pointer-events:auto; }
+  .open .drawer { transform:none; }
+  .dh { display:flex; justify-content:space-between; align-items:center; padding:22px; border-bottom:1px solid var(--line); }
+  .dh h3 { font-family:"Cormorant Garamond", serif; font-size:28px; }
+  .x { border:0; background:var(--bg); width:36px; height:36px; border-radius:10px; font-size:18px; }
+  .ship { padding:14px 22px; font-size:13px; color:var(--muted); border-bottom:1px solid var(--line); }
+  .track { height:6px; background:var(--line); border-radius:6px; margin-top:8px; overflow:hidden; }
+  .track i { display:block; height:100%; background:var(--gold); transition:.3s; }
+  .items { flex:1; overflow:auto; padding:8px 22px; }
+  .it { display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); }
+  .it .sw { width:56px; height:56px; border-radius:12px; }
+  .it h4 { font-size:15px; }
+  .it small { color:var(--muted); }
+  .qty { display:flex; align-items:center; gap:8px; margin-top:6px; }
+  .qty button { width:26px; height:26px; border-radius:8px; border:1.5px solid var(--line); background:#fff; font-weight:700; }
+  .empty { color:var(--muted); text-align:center; padding:40px 0; }
+  .df { padding:22px; border-top:1px solid var(--line); display:grid; gap:12px; }
+  .row { display:flex; justify-content:space-between; font-weight:600; }
+  .row.total { font-size:19px; }
+  .checkout { width:100%; background:var(--gold); color:#fff; border:0; border-radius:12px; padding:15px; font-weight:700; font-size:16px; }
+  footer { border-top:1px solid var(--line); padding:26px 0; color:var(--muted); font-size:14px; text-align:center; }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr} .hero .art{height:260px} .grid{grid-template-columns:1fr 1fr} .search{display:none} .hero .txt{padding:34px} .hero h1{font-size:42px} }
+</style>
+</head>
+<body>
+<div class="bar">FREE DELIVERY ACROSS THE GULF ON ORDERS OVER SAR 500</div>
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo">Oud <span>&</span> Amber</div>
+      <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Search oud, musk, amber..."></label>
+      <div class="icons">
+        <button class="icon" aria-label="Wishlist"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-9A5.3 5.3 0 0 1 12 6a5.3 5.3 0 0 1 9.3 6C19 16.6 12 21 12 21z"/></svg></button>
+        <button class="icon" id="cartBtn" aria-label="Cart"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="count" id="count">0</span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="eyebrow">New collection · Autumn</span>
+      <h1>Crafted oud for unforgettable evenings.</h1>
+      <p>Hand-blended perfumes with Cambodian oud, Omani frankincense and warm amber. Long-lasting, made in small batches.</p>
+      <button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop the collection</button>
+    </div>
+    <div class="art" aria-hidden="true"><div class="bottle v1"></div><div class="bottle v2"></div><div class="bottle v3"></div></div>
+  </div>
+
+  <div class="toolbar" id="shop">
+    <h2>Best sellers</h2>
+    <div class="filters" id="filters">
+      <button class="f on" data-c="all">All</button>
+      <button class="f" data-c="oud">Oud</button>
+      <button class="f" data-c="musk">Musk</button>
+      <button class="f" data-c="amber">Amber</button>
+      <button class="f" data-c="gift">Gift sets</button>
+    </div>
+    <select id="sort"><option value="pop">Most popular</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>Oud & Amber — demo e-commerce project by Omar Elshafei</footer>
+
+<div id="cartRoot">
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer">
+    <div class="dh"><h3>Your bag</h3><button class="x" id="close">×</button></div>
+    <div class="ship"><span id="shipText"></span><div class="track"><i id="shipBar"></i></div></div>
+    <div class="items" id="items"></div>
+    <div class="df">
+      <div class="row"><span>Subtotal</span><span id="sub">SAR 0</span></div>
+      <div class="row"><span>Delivery</span><span id="del">—</span></div>
+      <div class="row total"><span>Total</span><span id="tot">SAR 0</span></div>
+      <button class="checkout">Checkout</button>
+    </div>
+  </aside>
+</div>
+
+<script>
+const products = [
+  {id:1, c:"oud", n:"Royal Oud", notes:"Oud · Saffron · Rose", p:420, old:520, r:4.9, rev:312, g:"linear-gradient(160deg,#5c2d1e,#1d0d07)", bg:"#efe3d3", tag:"Best seller"},
+  {id:2, c:"amber", n:"Amber Nights", notes:"Amber · Vanilla · Tonka", p:290, r:4.8, rev:201, g:"linear-gradient(160deg,#d9a24b,#7a4b12)", bg:"#f6ead2"},
+  {id:3, c:"musk", n:"White Musk", notes:"Musk · Jasmine · Cotton", p:180, r:4.7, rev:445, g:"linear-gradient(160deg,#f5f0e6,#c9bda8)", bg:"#f3f0ea", tag:"New"},
+  {id:4, c:"oud", n:"Oud Mubakhar", notes:"Oud smoke · Leather · Incense", p:560, r:5.0, rev:98, g:"linear-gradient(160deg,#3b2a20,#0d0806)", bg:"#e8ded2"},
+  {id:5, c:"amber", n:"Golden Sands", notes:"Amber · Sandalwood · Musk", p:240, old:300, r:4.6, rev:156, g:"linear-gradient(160deg,#f3d9a4,#b8862f)", bg:"#f7eedc"},
+  {id:6, c:"musk", n:"Rose Musk", notes:"Taif rose · Musk · Peony", p:210, r:4.8, rev:267, g:"linear-gradient(160deg,#f6c4c8,#b9516a)", bg:"#f8e8e8"},
+  {id:7, c:"gift", n:"Majlis Gift Box", notes:"3 x 50 ml + bakhoor burner", p:690, r:4.9, rev:74, g:"linear-gradient(160deg,#2f4a3a,#0f1e16)", bg:"#e3ebe5", tag:"Gift"},
+  {id:8, c:"gift", n:"Discovery Set", notes:"6 x 10 ml samples", p:150, r:4.7, rev:389, g:"linear-gradient(160deg,#c9b7e8,#5b3f8f)", bg:"#ece7f5"}
+];
+let cat = "all", sort = "pop", q = "", cart = {};
+const FREE = 500, fmt = n => "SAR " + n.toLocaleString();
+const grid = document.getElementById("grid");
+function draw(){
+  let list = products.filter(p => (cat === "all" || p.c === cat) && (p.n + p.notes).toLowerCase().includes(q));
+  if (sort === "low") list.sort((a,b) => a.p - b.p);
+  if (sort === "high") list.sort((a,b) => b.p - a.p);
+  grid.innerHTML = list.map(p => `
+    <article class="p">
+      <div class="img" style="background:${p.bg}">${p.tag ? `<span class="badge">${p.tag}</span>` : ""}<div class="mini" style="background:${p.g}"></div></div>
+      <div class="body">
+        <h3>${p.n}</h3><span class="notes">${p.notes}</span>
+        <span class="stars">★★★★★ <span style="color:#7a6f63">${p.r} (${p.rev})</span></span>
+        <div class="foot"><span class="price">${fmt(p.p)}${p.old ? `<s>${fmt(p.old)}</s>` : ""}</span><button class="add" data-id="${p.id}">Add to bag</button></div>
+      </div>
+    </article>`).join("") || `<p class="empty">No perfumes match your search.</p>`;
+}
+function drawCart(){
+  const ids = Object.keys(cart), items = document.getElementById("items");
+  let count = 0, sub = 0;
+  items.innerHTML = ids.length ? ids.map(id => {
+    const p = products.find(x => x.id == id), n = cart[id]; count += n; sub += n * p.p;
+    return `<div class="it"><div class="sw" style="background:${p.g}"></div><div><h4>${p.n}</h4><small>${fmt(p.p)}</small><div class="qty"><button data-d="-1" data-id="${id}">−</button><b>${n}</b><button data-d="1" data-id="${id}">+</button></div></div><b>${fmt(n * p.p)}</b></div>`;
+  }).join("") : `<p class="empty">Your bag is empty.</p>`;
+  const del = sub === 0 ? 0 : sub >= FREE ? 0 : 25;
+  document.getElementById("count").textContent = count;
+  document.getElementById("sub").textContent = fmt(sub);
+  document.getElementById("del").textContent = sub === 0 ? "—" : del ? fmt(del) : "Free";
+  document.getElementById("tot").textContent = fmt(sub + del);
+  document.getElementById("shipText").textContent = sub >= FREE ? "You've unlocked free delivery!" : `Add ${fmt(FREE - sub)} more for free delivery`;
+  document.getElementById("shipBar").style.width = Math.min(100, sub / FREE * 100) + "%";
+}
+const root = document.getElementById("cartRoot");
+const open = v => root.classList.toggle("open", v);
+grid.onclick = e => { const b = e.target.closest(".add"); if (!b) return; cart[b.dataset.id] = (cart[b.dataset.id] || 0) + 1; drawCart(); open(true); };
+document.getElementById("items").onclick = e => { const b = e.target.closest("button"); if (!b) return; const id = b.dataset.id; cart[id] += +b.dataset.d; if (cart[id] <= 0) delete cart[id]; drawCart(); };
+document.getElementById("filters").onclick = e => { const b = e.target.closest(".f"); if (!b) return; cat = b.dataset.c; document.querySelectorAll(".f").forEach(x => x.classList.toggle("on", x === b)); draw(); };
+document.getElementById("sort").onchange = e => { sort = e.target.value; draw(); };
+document.getElementById("q").oninput = e => { q = e.target.value.toLowerCase(); draw(); };
+document.getElementById("cartBtn").onclick = () => open(true);
+document.getElementById("close").onclick = () => open(false);
+document.getElementById("overlay").onclick = () => open(false);
+if (new URLSearchParams(location.search).get("cart") === "demo") { cart = {1:1, 2:1}; open(true); }
+draw(); drawCart();
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة متابعة المهام والإنجازات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f3f6fb; --panel:#fff; --ink:#0f1b2d; --muted:#64748b; --line:#e5eaf2; --brand:#2563eb; --brand-soft:#e8efff; --green:#16a34a; --amber:#d97706; --red:#dc2626; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Cairo, system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  button, input, select { font-family:inherit; }
+  .app { display:grid; grid-template-columns:230px 1fr; min-height:100vh; }
+  aside { background:#0f1b2d; color:#cbd5e1; padding:22px 16px; display:flex; flex-direction:column; gap:6px; }
+  .logo { display:flex; align-items:center; gap:10px; color:#fff; font-weight:800; font-size:19px; padding:0 8px 20px; }
+  .logo i { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,#3b82f6,#22d3ee); }
+  aside a { display:block; padding:10px 12px; border-radius:10px; color:#cbd5e1; text-decoration:none; font-weight:600; font-size:14px; }
+  aside a.on { background:rgba(59,130,246,.18); color:#fff; }
+  .tip { margin-top:auto; background:rgba(255,255,255,.06); border-radius:14px; padding:14px; font-size:13px; line-height:1.7; }
+  main { padding:24px 28px 40px; display:flex; flex-direction:column; gap:20px; min-width:0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+  .top h1 { font-size:24px; font-weight:800; }
+  .top p { color:var(--muted); font-size:14px; }
+  .btn { background:var(--brand); color:#fff; border:0; border-radius:12px; padding:11px 18px; font-weight:700; font-size:14px; cursor:pointer; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .kpi { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .kpi span { color:var(--muted); font-size:13px; font-weight:600; }
+  .kpi b { display:block; font-size:28px; font-weight:800; margin-top:4px; }
+  .bar { height:8px; background:var(--line); border-radius:8px; margin-top:10px; overflow:hidden; }
+  .bar i { display:block; height:100%; background:linear-gradient(90deg,#22c55e,#16a34a); border-radius:8px; transition:width .4s; }
+  .grid { display:grid; grid-template-columns:1.6fr 1fr; gap:18px; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; min-width:0; }
+  .ph { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .ph h3 { font-size:16px; font-weight:800; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; }
+  .filters select, .filters input { border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-size:13px; background:#fff; }
+  .task { display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:12px 6px; border-bottom:1px solid var(--line); }
+  .task:last-child { border-bottom:0; }
+  .chk { width:24px; height:24px; border-radius:8px; border:2px solid #cbd5e1; background:#fff; cursor:pointer; display:grid; place-items:center; color:#fff; font-weight:800; font-size:14px; }
+  .done .chk { background:var(--green); border-color:var(--green); }
+  .done .title { text-decoration:line-through; color:var(--muted); }
+  .title { font-weight:700; font-size:15px; }
+  .meta { color:var(--muted); font-size:12px; display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }
+  .badge { font-size:11px; font-weight:700; padding:3px 9px; border-radius:8px; }
+  .b-todo { background:#f1f5f9; color:#475569; } .b-doing { background:#fef3c7; color:#b45309; } .b-done { background:#dcfce7; color:#15803d; }
+  .p-high { color:var(--red); } .p-med { color:var(--amber); } .p-low { color:var(--green); }
+  .acts { display:flex; gap:6px; }
+  .acts button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:5px 9px; font-size:12px; cursor:pointer; }
+  .empty { color:var(--muted); text-align:center; padding:30px 0; }
+  #chart { width:100%; height:180px; }
+  #teamList > div { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:14px; }
+  .team .av { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; color:#fff; font-weight:800; font-size:13px; flex:none; }
+  .team .t { flex:1; display:block; }
+  .team .t small { color:var(--muted); display:block; }
+  .team .mini { display:block; height:6px; background:var(--line); border-radius:6px; overflow:hidden; margin-top:4px; }
+  .team .mini i { display:block; height:100%; background:var(--brand); }
+  .wins li { list-style:none; padding:10px 0; border-bottom:1px dashed var(--line); font-size:14px; display:flex; gap:10px; }
+  .wins li::before { content:"🏆"; }
+  dialog { border:0; border-radius:18px; padding:22px; width:min(440px, 92vw); box-shadow:0 30px 80px rgba(15,27,45,.3); }
+  dialog::backdrop { background:rgba(15,27,45,.45); }
+  dialog h3 { margin-bottom:14px; }
+  dialog form { display:grid; gap:10px; }
+  dialog input, dialog select { border:1.5px solid var(--line); border-radius:10px; padding:11px 12px; font-size:14px; width:100%; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .dact { display:flex; gap:10px; justify-content:flex-start; margin-top:6px; }
+  .ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
+  .foot { color:var(--muted); font-size:12px; text-align:center; }
+  @media (max-width:980px){ .app{grid-template-columns:1fr} aside{display:none} .kpis{grid-template-columns:1fr 1fr} .grid{grid-template-columns:1fr} main{padding:16px} }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="logo"><i></i>لوحة المؤسسة</div>
+    <a class="on" href="#">الرئيسية</a>
+    <a href="#tasks">المهام اليومية</a>
+    <a href="#team">فريق العمل</a>
+    <a href="#wins">الإنجازات</a>
+    <div class="tip">💡 كل التغييرات تُحفظ تلقائيا. أضف مهمة جديدة، وحدّث حالتها بضغطة واحدة.</div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div><h1>صباح الخير 👋</h1><p id="today"></p></div>
+      <button class="btn" id="addBtn">+ مهمة جديدة</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span>مهام اليوم</span><b id="kTotal">0</b></div>
+      <div class="kpi"><span>قيد التنفيذ</span><b id="kDoing">0</b></div>
+      <div class="kpi"><span>مكتملة</span><b id="kDone">0</b></div>
+      <div class="kpi"><span>نسبة الإنجاز</span><b id="kRate">0%</b><div class="bar"><i id="kBar"></i></div></div>
+    </div>
+
+    <div class="grid">
+      <div class="panel" id="tasks">
+        <div class="ph"><h3>المهام اليومية</h3>
+          <div class="filters">
+            <input id="q" placeholder="بحث عن مهمة...">
+            <select id="fStatus"><option value="">كل الحالات</option><option value="todo">لم تبدأ</option><option value="doing">قيد التنفيذ</option><option value="done">مكتملة</option></select>
+            <select id="fWho"><option value="">كل الموظفين</option></select>
+          </div>
+        </div>
+        <div id="list"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="panel"><div class="ph"><h3>الإنجاز خلال الأسبوع</h3></div><svg id="chart" viewBox="0 0 320 180"></svg></div>
+        <div class="panel team" id="team"><div class="ph"><h3>أداء الفريق</h3></div><div id="teamList"></div></div>
+      </div>
+    </div>
+
+    <div class="panel" id="wins"><div class="ph"><h3>آخر الإنجازات</h3></div><ul class="wins" id="winList"></ul></div>
+    <p class="foot">مشروع تجريبي من تنفيذ عمر الشافعي · البيانات تُحفظ في المتصفح</p>
+  </main>
+</div>
+
+<dialog id="dlg">
+  <h3>مهمة جديدة</h3>
+  <form id="form" method="dialog">
+    <input name="title" placeholder="عنوان المهمة" required>
+    <div class="row2">
+      <select name="who"></select>
+      <select name="pri"><option value="high">أولوية عالية</option><option value="med" selected>أولوية متوسطة</option><option value="low">أولوية منخفضة</option></select>
+    </div>
+    <input name="due" type="time" value="14:00">
+    <div class="dact"><button class="btn" value="ok">حفظ المهمة</button><button class="btn ghost" value="cancel" formnovalidate>إلغاء</button></div>
+  </form>
+</dialog>
+
+<script>
+const TEAM = [["أحمد","#2563eb"],["سارة","#db2777"],["خالد","#059669"],["منى","#d97706"]];
+const LABEL = {todo:"لم تبدأ", doing:"قيد التنفيذ", done:"مكتملة"};
+const PRI = {high:["عالية","p-high"], med:["متوسطة","p-med"], low:["منخفضة","p-low"]};
+const KEY = "org-dashboard-tasks-v1";
+const seed = [
+  {id:1, title:"مراجعة تقرير المبيعات الأسبوعي", who:"أحمد", pri:"high", due:"10:00", st:"done"},
+  {id:2, title:"الرد على استفسارات العملاء", who:"سارة", pri:"med", due:"11:30", st:"doing"},
+  {id:3, title:"تجهيز عرض اجتماع الإدارة", who:"خالد", pri:"high", due:"13:00", st:"doing"},
+  {id:4, title:"تحديث بيانات الموردين", who:"منى", pri:"low", due:"15:00", st:"todo"},
+  {id:5, title:"متابعة فواتير الشهر", who:"أحمد", pri:"med", due:"16:00", st:"todo"},
+  {id:6, title:"نشر إعلان الوظيفة الجديدة", who:"سارة", pri:"low", due:"12:00", st:"done"}
+];
+let tasks;
+try { tasks = JSON.parse(localStorage.getItem(KEY)) || seed; } catch(e) { tasks = seed; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(tasks)); } catch(e) {} };
+const $ = id => document.getElementById(id);
+
+$("today").textContent = new Date().toLocaleDateString("ar-EG", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+const whoOpts = TEAM.map(([n]) => `<option>${n}</option>`).join("");
+$("fWho").innerHTML += whoOpts;
+document.querySelector("#form [name=who]").innerHTML = whoOpts;
+
+function render(){
+  const q = $("q").value.trim(), fs = $("fStatus").value, fw = $("fWho").value;
+  const list = tasks.filter(t => (!q || t.title.includes(q)) && (!fs || t.st === fs) && (!fw || t.who === fw));
+  $("list").innerHTML = list.length ? list.map(t => `
+    <div class="task ${t.st === "done" ? "done" : ""}">
+      <button class="chk" data-act="toggle" data-id="${t.id}">${t.st === "done" ? "✓" : ""}</button>
+      <div><div class="title">${t.title}</div>
+        <div class="meta"><span>👤 ${t.who}</span><span>⏰ ${t.due}</span><span class="${PRI[t.pri][1]}">● ${PRI[t.pri][0]}</span><span class="badge b-${t.st}">${LABEL[t.st]}</span></div></div>
+      <div class="acts">${t.st === "todo" ? `<button data-act="start" data-id="${t.id}">ابدأ</button>` : ""}<button data-act="del" data-id="${t.id}">حذف</button></div>
+    </div>`).join("") : `<p class="empty">لا توجد مهام مطابقة</p>`;
+
+  const total = tasks.length, done = tasks.filter(t => t.st === "done").length, doing = tasks.filter(t => t.st === "doing").length;
+  const rate = total ? Math.round(done / total * 100) : 0;
+  $("kTotal").textContent = total; $("kDoing").textContent = doing; $("kDone").textContent = done;
+  $("kRate").textContent = rate + "%"; $("kBar").style.width = rate + "%";
+
+  $("teamList").innerHTML = TEAM.map(([n,c]) => {
+    const mine = tasks.filter(t => t.who === n), d = mine.filter(t => t.st === "done").length, p = mine.length ? Math.round(d / mine.length * 100) : 0;
+    return `<div><span class="av" style="background:${c}">${n[0]}</span><span class="t">${n}<small>${d} من ${mine.length} مهام مكتملة</small><span class="mini"><i style="width:${p}%;background:${c}"></i></span></span><b>${p}%</b></div>`;
+  }).join("");
+
+  const wins = tasks.filter(t => t.st === "done").slice(-5).reverse();
+  $("winList").innerHTML = wins.length ? wins.map(t => `<li><span><b>${t.who}</b> أنجز: ${t.title}</span></li>`).join("") : `<p class="empty">لا توجد إنجازات بعد</p>`;
+
+  const days = ["السبت","الأحد","الإثنين","الثلاثاء","الأربعاء","اليوم"], vals = [62,75,58,80,71,rate || 50];
+  $("chart").innerHTML = vals.map((v,i) => { const h = v * 1.3, x = 290 - i * 52, y = 150 - h;
+    return `<rect x="${x - 26}" y="${y}" width="30" height="${h}" rx="7" fill="${i === 5 ? "#2563eb" : "#bfd3ff"}"/><text x="${x - 11}" y="${y - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f1b2d">${v}%</text><text x="${x - 11}" y="172" text-anchor="middle" font-size="10" fill="#64748b">${days[i]}</text>`; }).join("");
+}
+
+$("list").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const t = tasks.find(x => x.id == b.dataset.id); if (!t) return;
+  if (b.dataset.act === "toggle") t.st = t.st === "done" ? "todo" : "done";
+  if (b.dataset.act === "start") t.st = "doing";
+  if (b.dataset.act === "del") tasks = tasks.filter(x => x !== t);
+  save(); render();
+};
+["q","fStatus","fWho"].forEach(id => $(id).addEventListener("input", render));
+$("addBtn").onclick = () => $("dlg").showModal();
+$("dlg").addEventListener("close", () => {
+  if ($("dlg").returnValue !== "ok") return;
+  const f = new FormData($("form"));
+  tasks.push({id:Date.now(), title:f.get("title"), who:f.get("who"), pri:f.get("pri"), due:f.get("due") || "—", st:"todo"});
+  $("form").reset(); save(); render();
+});
+render();
+</script>
+</body>
+</html>

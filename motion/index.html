@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit — The workspace that moves with your team</title>
+<meta name="description" content="Orbit: a motion-design product landing page demo with kinetic typography, scroll animations, count-up numbers and glowing effects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#06060b; --bg-2:#0c0c16; --panel:rgba(255,255,255,.04); --panel-2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.09); --ink:#f4f4fb; --muted:#9a9ab3; --dim:#5d5d76;
+    --violet:#8b5cf6; --blue:#3b82f6; --cyan:#22d3ee; --pink:#ec4899; --lime:#a3e635;
+    --grad:linear-gradient(100deg,#a78bfa 0%,#60a5fa 35%,#22d3ee 65%,#f0abfc 100%);
+    --ease:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1);
+    --display:"Space Grotesk", Inter, system-ui, sans-serif;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { -webkit-text-size-adjust:100%; overflow-x:clip; }
+  body { font-family:Inter, system-ui, sans-serif; background:var(--bg); color:var(--ink); overflow-x:clip; line-height:1.55; }
+  body.loading { overflow:hidden; }
+  a { color:inherit; text-decoration:none; }
+  img, svg { display:block; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+  ::selection { background:var(--violet); color:#fff; }
+
+  /* ---------- Intro ---------- */
+  .intro { position:fixed; inset:0; z-index:100; background:#000; display:grid; place-items:center; overflow:hidden; }
+  .intro-words { position:relative; height:1.1em; font:700 clamp(56px,11vw,150px)/1 var(--display); letter-spacing:-.04em; }
+  .intro-words span { position:absolute; left:50%; top:0; transform:translateX(-50%) scale(.6); opacity:0; filter:blur(18px); white-space:nowrap; }
+  .intro-words span.on { animation:wordFlash .62s var(--ease) forwards; }
+  .intro-words span.last.on { animation:wordStay .7s var(--ease) forwards; }
+  .intro-words span.last { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  @keyframes wordFlash { 0%{opacity:0;transform:translateX(-50%) scale(.6);filter:blur(18px)} 35%{opacity:1;transform:translateX(-50%) scale(1);filter:blur(0)} 75%{opacity:1;transform:translateX(-50%) scale(1.04);filter:blur(0)} 100%{opacity:0;transform:translateX(-50%) scale(1.25);filter:blur(12px)} }
+  @keyframes wordStay { 0%{opacity:0;transform:translateX(-50%) scale(.6);filter:blur(18px)} 100%{opacity:1;transform:translateX(-50%) scale(1);filter:blur(0)} }
+  .intro-count { position:absolute; bottom:32px; right:36px; font:600 14px var(--display); color:var(--dim); letter-spacing:.1em; }
+  .intro-bar { position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--grad); }
+  .intro.out { animation:introOut .9s var(--ease-in-out) forwards; }
+  @keyframes introOut { to { clip-path:inset(0 0 100% 0); } }
+  .intro { clip-path:inset(0 0 0 0); }
+
+  /* ---------- Background ---------- */
+  .bg { position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
+  .orb { position:absolute; border-radius:50%; filter:blur(90px); opacity:.55; will-change:transform; }
+  .orb.a { width:46vw; height:46vw; background:#6d28d9; left:-12vw; top:-14vw; animation:drift1 18s ease-in-out infinite alternate; }
+  .orb.b { width:38vw; height:38vw; background:#1d4ed8; right:-10vw; top:10vh; animation:drift2 22s ease-in-out infinite alternate; }
+  .orb.c { width:30vw; height:30vw; background:#0e7490; left:30vw; top:60vh; opacity:.35; animation:drift3 26s ease-in-out infinite alternate; }
+  @keyframes drift1 { to { transform:translate(14vw,12vh) scale(1.15); } }
+  @keyframes drift2 { to { transform:translate(-12vw,24vh) scale(.9); } }
+  @keyframes drift3 { to { transform:translate(-16vw,-20vh) scale(1.2); } }
+  .grid-floor { position:absolute; inset:0; background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px); background-size:64px 64px; mask-image:radial-gradient(ellipse 70% 55% at 50% 30%,#000 20%,transparent 75%); -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 30%,#000 20%,transparent 75%); opacity:.55; }
+  .noise { position:absolute; inset:-50%; opacity:.06; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation:grain 1s steps(4) infinite; }
+  @keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-4%,3%)} 50%{transform:translate(3%,-2%)} 75%{transform:translate(-2%,-4%)} 100%{transform:translate(0,0)} }
+
+  /* ---------- Cursor ---------- */
+  .cursor, .cursor-ring { position:fixed; left:0; top:0; z-index:90; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%); }
+  .cursor { width:7px; height:7px; background:#fff; mix-blend-mode:difference; }
+  .cursor, .cursor-ring { opacity:0; }
+  body.has-cursor .cursor, body.has-cursor .cursor-ring { opacity:1; }
+  .cursor-ring { width:38px; height:38px; border:1px solid rgba(255,255,255,.35); transition:width .35s var(--ease),height .35s var(--ease),background .35s,border-color .35s; }
+  .cursor-ring.big { width:74px; height:74px; background:rgba(139,92,246,.12); border-color:rgba(167,139,250,.6); }
+  @media (hover:none), (max-width:900px) { .cursor, .cursor-ring { display:none; } }
+
+  /* ---------- Nav ---------- */
+  .progress { position:fixed; top:0; left:0; height:2px; width:100%; transform-origin:0 50%; transform:scaleX(0); background:var(--grad); z-index:60; }
+  header { position:fixed; top:14px; left:0; right:0; z-index:50; }
+  nav { display:flex; align-items:center; justify-content:space-between; height:58px; padding:0 10px 0 20px; border-radius:16px; border:1px solid transparent; transition:background .4s, border-color .4s, backdrop-filter .4s; }
+  header.scrolled nav { background:rgba(10,10,18,.6); border-color:var(--line); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+  .logo { display:flex; align-items:center; gap:10px; font:700 20px var(--display); letter-spacing:-.02em; }
+  .logo-mark { width:26px; height:26px; border-radius:50%; position:relative; background:conic-gradient(from 0deg,#a78bfa,#22d3ee,#f0abfc,#a78bfa); animation:spin 6s linear infinite; }
+  .logo-mark::after { content:""; position:absolute; inset:5px; border-radius:50%; background:var(--bg); }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .nav-links { display:flex; gap:30px; font-size:14px; color:var(--muted); font-weight:500; }
+  .nav-links a { position:relative; transition:color .3s; }
+  .nav-links a::after { content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px; background:var(--ink); transform:scaleX(0); transform-origin:right; transition:transform .45s var(--ease); }
+  .nav-links a:hover { color:var(--ink); }
+  .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
+  .btn { position:relative; display:inline-flex; align-items:center; gap:10px; height:46px; padding:0 22px; border-radius:12px; font-weight:600; font-size:15px; overflow:hidden; isolation:isolate; transition:transform .4s var(--ease); white-space:nowrap; }
+  .btn-primary { background:#fff; color:#0a0a12; }
+  .btn-primary::before { content:""; position:absolute; inset:0; z-index:-1; background:var(--grad); transform:translateY(101%); transition:transform .5s var(--ease); }
+  .btn-primary:hover::before { transform:translateY(0); }
+  .btn-ghost { border:1px solid var(--line); background:var(--panel); color:var(--ink); }
+  .btn-ghost:hover { border-color:rgba(255,255,255,.25); }
+  .btn .arrow { transition:transform .45s var(--ease); }
+  .btn:hover .arrow { transform:translateX(4px); }
+  .btn-sm { height:40px; padding:0 16px; font-size:14px; border-radius:10px; }
+
+  /* ---------- Split text ---------- */
+  .split .w { display:inline-block; white-space:nowrap; }
+  .split .c { display:inline-block; opacity:0; transform:translateY(.7em) rotate(8deg); filter:blur(8px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay:calc(var(--i) * 28ms + var(--d, 0ms)); }
+  .split.in .c { opacity:1; transform:none; filter:blur(0); }
+  .grad-text { background:var(--grad); background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shimmer 6s linear infinite; }
+  .grad-text .c { background:inherit; background-size:inherit; -webkit-background-clip:text; background-clip:text; color:transparent; }
+  @keyframes shimmer { to { background-position:-200% 0; } }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity:0; transform:translateY(40px); transition:opacity 1s var(--ease), transform 1s var(--ease); transition-delay:var(--d, 0ms); }
+  .reveal.zoom { transform:scale(.92) translateY(30px); }
+  .reveal.left { transform:translateX(-50px); }
+  .reveal.right { transform:translateX(50px); }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* ---------- Hero ---------- */
+  .hero { min-height:100vh; padding:150px 0 70px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .pill { display:inline-flex; align-items:center; gap:10px; padding:6px 14px 6px 6px; border-radius:999px; border:1px solid var(--line); background:var(--panel); font-size:13px; color:var(--muted); }
+  .pill b { padding:3px 10px; border-radius:999px; background:var(--grad); color:#0a0a12; font-size:12px; }
+  .hero h1 { margin-top:26px; font:700 clamp(46px,8.4vw,112px)/.95 var(--display); letter-spacing:-.045em; }
+  .hero h1 .line { display:block; }
+  .hero p.lead { max-width:560px; margin:28px auto 0; font-size:clamp(16px,1.6vw,19px); color:var(--muted); }
+  .hero-cta { display:flex; gap:12px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+
+  .stage { position:relative; width:100%; max-width:1000px; margin-top:70px; perspective:1400px; }
+  .app { position:relative; border-radius:20px; border:1px solid var(--line); background:linear-gradient(180deg,rgba(22,22,36,.92),rgba(12,12,22,.92)); box-shadow:0 40px 120px -30px rgba(109,40,217,.55), 0 0 0 1px rgba(255,255,255,.03) inset; transform:rotateX(18deg) scale(.94); transform-style:preserve-3d; transition:transform 1.2s var(--ease); overflow:hidden; text-align:left; }
+  .app.in { transform:rotateX(0) scale(1); }
+  .app::before { content:""; position:absolute; inset:-1px; border-radius:inherit; padding:1px; background:linear-gradient(140deg,rgba(167,139,250,.6),transparent 30%,transparent 70%,rgba(34,211,238,.5)); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+  .app-top { display:flex; align-items:center; gap:8px; height:46px; padding:0 18px; border-bottom:1px solid var(--line); }
+  .dot { width:11px; height:11px; border-radius:50%; background:#2a2a3d; }
+  .app-top .url { margin-left:14px; flex:1; max-width:340px; height:24px; border-radius:7px; background:var(--panel); font-size:12px; color:var(--dim); display:flex; align-items:center; padding:0 10px; }
+  .app-body { display:grid; grid-template-columns:190px 1fr; min-height:420px; }
+  .side { border-right:1px solid var(--line); padding:18px 14px; display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--muted); }
+  .side div { padding:8px 10px; border-radius:8px; display:flex; align-items:center; gap:10px; }
+  .side div.act { background:var(--panel-2); color:var(--ink); }
+  .side i { width:8px; height:8px; border-radius:3px; background:var(--dim); }
+  .side div.act i { background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .main { padding:22px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-content:start; }
+  .kpi { border:1px solid var(--line); border-radius:14px; padding:16px; background:var(--panel); }
+  .kpi small { color:var(--muted); font-size:12px; }
+  .kpi strong { display:block; font:600 28px var(--display); margin-top:6px; letter-spacing:-.02em; }
+  .kpi .up { font-size:12px; color:var(--lime); }
+  .chart-card { grid-column:span 2; border:1px solid var(--line); border-radius:14px; padding:16px; background:var(--panel); }
+  .chart-card svg { width:100%; height:170px; margin-top:8px; overflow:visible; }
+  .draw { stroke-dasharray:var(--len, 1200); stroke-dashoffset:var(--len, 1200); transition:stroke-dashoffset 2.4s var(--ease) .3s; }
+  .in .draw, .draw.in { stroke-dashoffset:0; }
+  .area { opacity:0; transition:opacity 1.6s ease 1.2s; }
+  .in .area { opacity:1; }
+  .tasks { border:1px solid var(--line); border-radius:14px; padding:16px; background:var(--panel); display:flex; flex-direction:column; gap:12px; font-size:13px; }
+  .bar { height:6px; border-radius:6px; background:rgba(255,255,255,.07); overflow:hidden; margin-top:6px; }
+  .bar span { display:block; height:100%; width:0; border-radius:inherit; background:var(--grad); transition:width 1.8s var(--ease); }
+  .in .bar span { width:var(--w); }
+  .float { position:absolute; z-index:3; padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:rgba(16,16,28,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); font-size:13px; text-align:left; box-shadow:0 20px 50px -20px rgba(0,0,0,.8); animation:bob 6s ease-in-out infinite; }
+  .float.f1 { left:-46px; top:150px; }
+  .float.f2 { right:-40px; top:70px; animation-delay:-2s; }
+  .float.f3 { right:40px; bottom:-26px; animation-delay:-4s; }
+  .float b { display:block; font:600 18px var(--display); }
+  .float small { color:var(--muted); }
+  .float .avatars { display:flex; margin-top:6px; }
+  .float .avatars i { width:22px; height:22px; border-radius:50%; border:2px solid #10101c; margin-left:-6px; }
+  .float .avatars i:first-child { margin-left:0; }
+  @keyframes bob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
+  .live { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--lime); }
+  .live::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--lime); box-shadow:0 0 0 0 rgba(163,230,53,.7); animation:ping 1.6s infinite; }
+  @keyframes ping { 70% { box-shadow:0 0 0 8px rgba(163,230,53,0); } 100% { box-shadow:0 0 0 0 rgba(163,230,53,0); } }
+
+  /* ---------- Marquee ---------- */
+  .marquee { padding:60px 0 30px; overflow:hidden; mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent); -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent); }
+  .marquee p { text-align:center; color:var(--dim); font-size:13px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:26px; }
+  .track { display:flex; gap:70px; width:max-content; animation:slide 28s linear infinite; }
+  .track span { font:600 24px var(--display); color:#4b4b63; letter-spacing:-.02em; white-space:nowrap; transition:color .3s; }
+  .track span:hover { color:var(--ink); }
+  @keyframes slide { to { transform:translateX(-50%); } }
+
+  /* ---------- Sections ---------- */
+  section { position:relative; }
+  .eyebrow { display:inline-block; font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan); font-weight:600; }
+  .h2 { font:700 clamp(36px,5.6vw,72px)/1 var(--display); letter-spacing:-.04em; margin-top:16px; }
+  .sub { color:var(--muted); font-size:18px; max-width:540px; margin-top:20px; }
+  .center { text-align:center; }
+  .center .sub { margin-left:auto; margin-right:auto; }
+
+  /* Kinetic statement (scroll-scrubbed) */
+  .statement { padding:160px 0; }
+  .statement p { font:600 clamp(30px,4.6vw,60px)/1.12 var(--display); letter-spacing:-.035em; max-width:1040px; }
+  .statement .sw { color:#2a2a3c; transition:color .25s; }
+  .statement .sw.lit { color:var(--ink); }
+  .statement .sw.hl.lit { color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; }
+
+  /* Stats */
+  .stats { padding:40px 0 140px; }
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .stat { position:relative; padding:30px 26px; border-radius:20px; border:1px solid var(--line); background:var(--panel); overflow:hidden; }
+  .stat .num { font:700 clamp(40px,4.4vw,58px)/1 var(--display); letter-spacing:-.04em; }
+  .stat p { color:var(--muted); margin-top:10px; font-size:15px; }
+  .ring { position:absolute; right:18px; top:18px; width:54px; height:54px; transform:rotate(-90deg); }
+  .ring circle { fill:none; stroke-width:4; }
+  .ring .bgc { stroke:rgba(255,255,255,.08); }
+  .ring .fg { stroke:url(#rg); stroke-linecap:round; stroke-dasharray:151; stroke-dashoffset:151; transition:stroke-dashoffset 2s var(--ease) .2s; }
+  .stat.in .ring .fg { stroke-dashoffset:calc(151 - 151 * var(--p)); }
+
+  /* Features with spotlight */
+  .features { padding:120px 0; }
+  .feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:60px; }
+  .card { position:relative; padding:30px; border-radius:22px; background:var(--panel); border:1px solid var(--line); overflow:hidden; min-height:270px; transition:transform .5s var(--ease), border-color .4s; }
+  .card::before { content:""; position:absolute; inset:0; background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(139,92,246,.22),transparent 45%); opacity:0; transition:opacity .4s; pointer-events:none; }
+  .card:hover::before { opacity:1; }
+  .card:hover { border-color:rgba(167,139,250,.35); }
+  .card.wide { grid-column:span 2; }
+  .icon { width:52px; height:52px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(140deg,rgba(139,92,246,.35),rgba(34,211,238,.18)); border:1px solid rgba(167,139,250,.35); margin-bottom:22px; }
+  .icon svg { width:24px; height:24px; stroke:#fff; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+  .card h3 { font:600 22px var(--display); letter-spacing:-.02em; }
+  .card p { color:var(--muted); margin-top:10px; font-size:15px; max-width:420px; }
+  .typing { margin-top:20px; font:500 14px ui-monospace,Consolas,monospace; color:var(--cyan); min-height:22px; }
+  .typing::after { content:"▋"; margin-left:2px; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+  .chips span { padding:6px 12px; border-radius:999px; border:1px solid var(--line); font-size:13px; color:var(--muted); background:rgba(255,255,255,.02); transition:all .4s var(--ease); }
+  .card:hover .chips span { border-color:rgba(167,139,250,.4); color:var(--ink); }
+  .card:hover .chips span:nth-child(odd) { transform:translateY(-3px); }
+  .orbit-vis { position:absolute; right:-40px; bottom:-60px; width:260px; height:260px; }
+  .orbit-vis .o { position:absolute; inset:0; border:1px dashed rgba(167,139,250,.3); border-radius:50%; animation:spin 20s linear infinite; }
+  .orbit-vis .o:nth-child(2) { inset:40px; animation-duration:14s; animation-direction:reverse; border-color:rgba(34,211,238,.3); }
+  .orbit-vis .o:nth-child(3) { inset:80px; animation-duration:9s; }
+  .orbit-vis .o::after { content:""; position:absolute; top:-5px; left:50%; width:10px; height:10px; border-radius:50%; background:var(--cyan); box-shadow:0 0 14px var(--cyan); }
+  .orbit-vis .o:nth-child(2)::after { background:var(--pink); box-shadow:0 0 14px var(--pink); }
+  .orbit-vis .o:nth-child(3)::after { background:var(--violet); box-shadow:0 0 14px var(--violet); }
+
+  /* Horizontal scroll steps */
+  .hscroll { height:320vh; }
+  .hs-sticky { position:sticky; top:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; justify-content:center; }
+  .hs-head { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:46px; }
+  .hs-count { font:600 15px var(--display); color:var(--muted); }
+  .hs-count b { color:var(--ink); font-size:40px; letter-spacing:-.04em; }
+  .hs-track { display:flex; gap:24px; padding-left:max(24px, calc((100vw - 1180px) / 2 + 24px)); will-change:transform; }
+  .step { flex:0 0 min(520px, 80vw); height:min(420px, 56vh); border-radius:26px; border:1px solid var(--line); background:linear-gradient(160deg,rgba(28,28,46,.9),rgba(12,12,22,.9)); padding:36px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+  .step .n { font:700 120px/1 var(--display); letter-spacing:-.06em; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; opacity:.9; }
+  .step h3 { font:600 30px var(--display); letter-spacing:-.03em; }
+  .step p { color:var(--muted); margin-top:10px; max-width:380px; }
+  .step .glow { position:absolute; width:300px; height:300px; border-radius:50%; filter:blur(70px); opacity:.35; right:-80px; top:-80px; }
+  .hs-line { height:2px; background:rgba(255,255,255,.08); margin-top:46px; border-radius:2px; overflow:hidden; }
+  .hs-line span { display:block; height:100%; width:100%; transform-origin:0 50%; transform:scaleX(0); background:var(--grad); }
+
+  /* Results chart */
+  .results { padding:140px 0; }
+  .results-grid { display:grid; grid-template-columns:1fr 1.25fr; gap:50px; align-items:center; }
+  .bigchart { border-radius:24px; border:1px solid var(--line); background:var(--panel); padding:28px; }
+  .bigchart-head { display:flex; justify-content:space-between; align-items:center; }
+  .bigchart-head strong { font:700 40px var(--display); letter-spacing:-.04em; }
+  .bars { display:flex; align-items:end; gap:10px; height:220px; margin-top:26px; }
+  .bars div { flex:1; border-radius:8px 8px 3px 3px; background:linear-gradient(180deg,#a78bfa,rgba(59,130,246,.25)); height:var(--h); transform:scaleY(0); transform-origin:bottom; transition:transform 1.2s var(--ease); transition-delay:calc(var(--i) * 70ms); position:relative; }
+  .bars div:last-child { background:linear-gradient(180deg,#22d3ee,rgba(34,211,238,.2)); box-shadow:0 0 30px -4px rgba(34,211,238,.7); }
+  .in .bars div { transform:scaleY(1); }
+  .months { display:flex; gap:10px; margin-top:10px; }
+  .months span { flex:1; text-align:center; font-size:12px; color:var(--dim); }
+  .checks { margin-top:30px; display:flex; flex-direction:column; gap:14px; }
+  .checks div { display:flex; gap:12px; align-items:flex-start; color:var(--muted); }
+  .checks svg { flex:0 0 22px; width:22px; height:22px; margin-top:1px; }
+  .checks path { stroke:var(--cyan); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; --len:30; }
+
+  /* Testimonials */
+  .quotes { padding:120px 0; overflow:hidden; }
+  .q-row { display:flex; gap:18px; width:max-content; margin-top:56px; animation:slide 50s linear infinite; }
+  .q-row.rev { animation-direction:reverse; margin-top:18px; }
+  .quotes:hover .q-row { animation-play-state:paused; }
+  .q { width:380px; padding:26px; border-radius:20px; border:1px solid var(--line); background:var(--panel); }
+  .q p { font-size:15px; color:#cfcfe0; }
+  .q .who { display:flex; align-items:center; gap:12px; margin-top:18px; font-size:14px; }
+  .q .who i { width:36px; height:36px; border-radius:50%; }
+  .q .who small { display:block; color:var(--dim); }
+
+  /* Pricing */
+  .pricing { padding:120px 0; }
+  .toggle { display:inline-flex; position:relative; margin-top:30px; padding:5px; border-radius:14px; border:1px solid var(--line); background:var(--panel); }
+  .toggle button { position:relative; z-index:1; border:0; background:none; color:var(--muted); font:600 14px Inter, sans-serif; padding:10px 20px; cursor:pointer; transition:color .3s; }
+  .toggle button.on { color:#0a0a12; }
+  .toggle .knob { position:absolute; top:5px; bottom:5px; left:5px; border-radius:10px; background:#fff; transition:transform .5s var(--ease), width .5s var(--ease); }
+  .toggle em { font-style:normal; font-size:11px; color:var(--lime); margin-left:6px; }
+  .toggle button.on em { color:#3f6212; }
+  .plans { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:50px; text-align:left; }
+  .plan { position:relative; padding:32px; border-radius:24px; border:1px solid var(--line); background:var(--panel); transition:transform .5s var(--ease); }
+  .plan:hover { transform:translateY(-8px); }
+  .plan.pop { background:linear-gradient(170deg,rgba(139,92,246,.22),rgba(12,12,22,.7) 60%); border-color:rgba(167,139,250,.45); }
+  .plan.pop .tag { position:absolute; top:22px; right:22px; font-size:12px; padding:4px 10px; border-radius:999px; background:var(--grad); color:#0a0a12; font-weight:600; }
+  .plan h3 { font:600 20px var(--display); }
+  .price { display:flex; align-items:baseline; gap:4px; margin:20px 0 6px; }
+  .price .cur { font:600 26px var(--display); color:var(--muted); }
+  .price .amt { font:700 58px/1 var(--display); letter-spacing:-.05em; display:inline-flex; overflow:hidden; height:58px; }
+  .price .amt span { display:inline-block; transition:transform .6s var(--ease), opacity .6s; }
+  .price .amt.flip span { transform:translateY(-100%); opacity:0; }
+  .price small { color:var(--muted); }
+  .plan ul { list-style:none; margin:24px 0 28px; display:flex; flex-direction:column; gap:10px; color:var(--muted); font-size:15px; }
+  .plan li::before { content:"✓"; color:var(--cyan); margin-right:10px; font-weight:700; }
+  .plan .btn { width:100%; justify-content:center; }
+
+  /* CTA */
+  .cta { padding:160px 0 120px; text-align:center; position:relative; overflow:hidden; }
+  .cta h2 { font:700 clamp(54px,11vw,170px)/.9 var(--display); letter-spacing:-.06em; }
+  .cta .burst { position:absolute; left:50%; top:52%; width:780px; height:780px; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(circle,rgba(139,92,246,.45),rgba(34,211,238,.15) 40%,transparent 68%); filter:blur(20px); z-index:-1; animation:breathe 7s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform:translate(-50%,-50%) scale(1.15); opacity:.8; } }
+  .magnet { display:inline-block; margin-top:44px; transition:transform .5s var(--ease); }
+  .magnet .btn { height:60px; padding:0 34px; font-size:17px; border-radius:16px; }
+
+  footer { border-top:1px solid var(--line); padding:34px 0; color:var(--dim); font-size:14px; }
+  footer .wrap { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  footer a:hover { color:var(--ink); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1000px) {
+    .stats-grid { grid-template-columns:repeat(2,1fr); }
+    .feat-grid, .plans { grid-template-columns:1fr; }
+    .card.wide { grid-column:auto; }
+    .results-grid { grid-template-columns:1fr; }
+    .float.f1, .float.f2 { display:none; }
+  }
+  @media (max-width:760px) {
+    .nav-links, .nav-cta-ghost { display:none; }
+    .app-body { grid-template-columns:1fr; }
+    .side { display:none; }
+    .main { grid-template-columns:1fr 1fr; padding:14px; }
+    .chart-card { grid-column:span 2; }
+    .tasks { grid-column:span 2; }
+    .float.f3 { right:10px; }
+    .reveal.left, .reveal.right { transform:translateY(40px); }
+    .reveal.in { transform:none; }
+    .hs-head { flex-direction:column; align-items:flex-start; }
+    .step .n { font-size:84px; }
+    .statement { padding:110px 0; }
+    .q { width:300px; }
+  }
+  @media (max-width:420px) {
+    .stats-grid { grid-template-columns:1fr; }
+    .hero { padding-top:130px; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; transition-delay:0ms !important; }
+    .intro { display:none; }
+    .hscroll { height:auto; }
+    .hs-sticky { position:relative; height:auto; padding:100px 0; }
+    .hs-track { flex-wrap:wrap; padding:0 24px; transform:none !important; }
+    .step { flex:1 1 300px; }
+  }
+</style>
+</head>
+<body class="loading">
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-words"><span>Plan.</span><span>Build.</span><span>Ship.</span><span class="last">Orbit.</span></div>
+  <div class="intro-count" id="introCount">000</div>
+  <div class="intro-bar" id="introBar"></div>
+</div>
+
+<div class="bg" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="grid-floor"></div><div class="noise"></div></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div><div class="cursor-ring" id="ring" aria-hidden="true"></div>
+<div class="progress" id="progress"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a78bfa"/><stop offset=".5" stop-color="#60a5fa"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+    <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".35"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient>
+  </defs>
+</svg>
+
+<header id="header">
+  <div class="wrap">
+    <nav>
+      <a href="#" class="logo"><span class="logo-mark"></span>Orbit</a>
+      <div class="nav-links"><a href="#features">Features</a><a href="#how">How it works</a><a href="#results">Results</a><a href="#pricing">Pricing</a></div>
+      <div style="display:flex;gap:8px"><a href="#pricing" class="btn btn-ghost btn-sm nav-cta-ghost" data-hover>Log in</a><a href="#pricing" class="btn btn-primary btn-sm" data-hover>Start free</a></div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="pill reveal" style="--d:100ms"><b>New</b> Orbit 3.0 is here — real-time everything</span>
+    <h1>
+      <span class="line split" data-split style="--d:150ms">The workspace</span>
+      <span class="line split grad-text" data-split style="--d:450ms">that moves with you.</span>
+    </h1>
+    <p class="lead reveal" style="--d:900ms">Plan projects, track every task and watch your team's progress update live — all in one fast, beautiful place.</p>
+    <div class="hero-cta reveal" style="--d:1050ms">
+      <a href="#pricing" class="btn btn-primary" data-hover>Get started — it's free <span class="arrow">→</span></a>
+      <a href="#how" class="btn btn-ghost" data-hover>See how it works</a>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="float f1"><small>Tasks done today</small><b data-count="1284">0</b><span class="live">Live</span></div>
+      <div class="float f2"><small>Team online</small><div class="avatars"><i style="background:#a78bfa"></i><i style="background:#22d3ee"></i><i style="background:#f0abfc"></i><i style="background:#a3e635"></i></div></div>
+      <div class="float f3"><small>Sprint finished</small><b>2 days early ✦</b></div>
+      <div class="app" id="app">
+        <div class="app-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">app.orbit.io/overview</span></div>
+        <div class="app-body">
+          <div class="side">
+            <div class="act"><i></i>Overview</div><div><i></i>Projects</div><div><i></i>Tasks</div><div><i></i>Team</div><div><i></i>Reports</div><div><i></i>Settings</div>
+          </div>
+          <div class="main">
+            <div class="kpi"><small>Active projects</small><strong data-count="48">0</strong><span class="up">▲ 12% this week</span></div>
+            <div class="kpi"><small>On-time rate</small><strong data-count="97" data-suffix="%">0</strong><span class="up">▲ 4.1%</span></div>
+            <div class="kpi"><small>Hours saved</small><strong data-count="326">0</strong><span class="up">▲ 38</span></div>
+            <div class="chart-card">
+              <small style="color:var(--muted);font-size:12px">Weekly velocity</small>
+              <svg viewBox="0 0 600 170" preserveAspectRatio="none">
+                <path class="area" d="M0,140 C60,130 90,95 150,100 C210,105 240,60 300,62 C360,64 390,90 450,70 C510,50 540,22 600,18 L600,170 L0,170 Z" fill="url(#ag)"/>
+                <path class="draw" d="M0,140 C60,130 90,95 150,100 C210,105 240,60 300,62 C360,64 390,90 450,70 C510,50 540,22 600,18" fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="tasks">
+              <small style="color:var(--muted);font-size:12px">Sprint progress</small>
+              <div>Website redesign<div class="bar"><span style="--w:86%"></span></div></div>
+              <div>Mobile app v2<div class="bar"><span style="--w:64%"></span></div></div>
+              <div>Launch campaign<div class="bar"><span style="--w:42%"></span></div></div>
+              <div>Customer portal<div class="bar"><span style="--w:91%"></span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <p>Trusted by fast teams everywhere</p>
+    <div class="track">
+      <span>Northwind</span><span>◆ Lumina</span><span>Vertex</span><span>● Hexa Labs</span><span>Quantum</span><span>▲ Peakline</span><span>Solace</span><span>✦ Nebula</span>
+      <span>Northwind</span><span>◆ Lumina</span><span>Vertex</span><span>● Hexa Labs</span><span>Quantum</span><span>▲ Peakline</span><span>Solace</span><span>✦ Nebula</span>
+    </div>
+  </div>
+
+  <section class="statement wrap">
+    <p id="statement">Teams lose hours every week chasing updates across chats, sheets and emails. <span data-hl>Orbit brings everything into one place</span> — so everyone knows what's next, and work simply <span data-hl>moves forward.</span></p>
+  </section>
+
+  <section class="stats wrap">
+    <div class="stats-grid">
+      <div class="stat reveal" style="--d:0ms;--p:.92"><svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="24"/><circle class="fg" cx="27" cy="27" r="24"/></svg><div class="num" data-count="2.4" data-decimals="1" data-suffix="M">0</div><p>Tasks completed every month</p></div>
+      <div class="stat reveal" style="--d:120ms;--p:.98"><svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="24"/><circle class="fg" cx="27" cy="27" r="24"/></svg><div class="num" data-count="98" data-suffix="%">0</div><p>Projects delivered on time</p></div>
+      <div class="stat reveal" style="--d:240ms;--p:.7"><svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="24"/><circle class="fg" cx="27" cy="27" r="24"/></svg><div class="num" data-count="140" data-suffix="+">0</div><p>Countries using Orbit</p></div>
+      <div class="stat reveal" style="--d:360ms;--p:.6"><svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="24"/><circle class="fg" cx="27" cy="27" r="24"/></svg><div class="num" data-count="6" data-suffix="h">0</div><p>Saved per person, each week</p></div>
+    </div>
+  </section>
+
+  <section class="features wrap" id="features">
+    <div class="center">
+      <span class="eyebrow reveal">Features</span>
+      <h2 class="h2 split" data-split>Everything your team needs.</h2>
+      <p class="sub reveal" style="--d:200ms">Simple enough for day one. Powerful enough for your biggest launch.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="card wide reveal zoom" data-hover>
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div>
+        <h3>Smart task boards</h3>
+        <p>Drag, drop and done. Boards, lists and timelines that update for everyone the second something changes.</p>
+        <div class="typing" id="typing"></div>
+        <div class="orbit-vis"><div class="o"></div><div class="o"></div><div class="o"></div></div>
+      </div>
+      <div class="card reveal zoom" style="--d:120ms" data-hover>
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Live collaboration</h3>
+        <p>See who's working on what, comment in place and never ask "any update?" again.</p>
+      </div>
+      <div class="card reveal zoom" data-hover>
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></div>
+        <h3>Reports that build themselves</h3>
+        <p>Progress, workload and deadlines turned into clear charts — automatically, every week.</p>
+      </div>
+      <div class="card wide reveal zoom" style="--d:120ms" data-hover>
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M10 14 21 3M15 3h6v6M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg></div>
+        <h3>Connects with your tools</h3>
+        <p>Bring your calendar, files and chats together. Orbit works with the apps your team already loves.</p>
+        <div class="chips"><span>Google Calendar</span><span>Slack</span><span>Drive</span><span>GitHub</span><span>Figma</span><span>Zoom</span><span>Notion</span><span>+40 more</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hscroll" id="how">
+    <div class="hs-sticky">
+      <div class="wrap hs-head">
+        <div><span class="eyebrow">How it works</span><h2 class="h2">From idea to launch<br>in four moves.</h2></div>
+        <div class="hs-count"><b id="hsNum">01</b> / 04</div>
+      </div>
+      <div class="hs-track" id="hsTrack">
+        <div class="step"><div class="glow" style="background:#8b5cf6"></div><div class="n">01</div><div><h3>Create your space</h3><p>Sign up in seconds and invite your team with one link. No setup, no training.</p></div></div>
+        <div class="step"><div class="glow" style="background:#3b82f6"></div><div class="n">02</div><div><h3>Plan the work</h3><p>Turn big goals into clear tasks with owners, dates and priorities.</p></div></div>
+        <div class="step"><div class="glow" style="background:#22d3ee"></div><div class="n">03</div><div><h3>Move together</h3><p>Everyone sees progress live. Blockers show up early, not on deadline day.</p></div></div>
+        <div class="step"><div class="glow" style="background:#ec4899"></div><div class="n">04</div><div><h3>Ship &amp; celebrate</h3><p>Launch on time, review what worked, and start the next win even faster.</p></div></div>
+        <div style="flex:0 0 10vw"></div>
+      </div>
+      <div class="wrap"><div class="hs-line"><span id="hsLine"></span></div></div>
+    </div>
+  </section>
+
+  <section class="results wrap" id="results">
+    <div class="results-grid">
+      <div>
+        <span class="eyebrow reveal">Results</span>
+        <h2 class="h2 split" data-split>Watch your team speed up.</h2>
+        <p class="sub reveal" style="--d:200ms">Teams that switch to Orbit finish more work in less time — and the numbers prove it.</p>
+        <div class="checks">
+          <div class="reveal left" style="--d:200ms"><svg viewBox="0 0 24 24"><path class="draw" d="M5 12.5l4.5 4.5L19 7"/></svg>3× faster weekly planning</div>
+          <div class="reveal left" style="--d:350ms"><svg viewBox="0 0 24 24"><path class="draw" d="M5 12.5l4.5 4.5L19 7"/></svg>Half the status meetings</div>
+          <div class="reveal left" style="--d:500ms"><svg viewBox="0 0 24 24"><path class="draw" d="M5 12.5l4.5 4.5L19 7"/></svg>Every deadline visible to everyone</div>
+        </div>
+      </div>
+      <div class="bigchart reveal right" id="bigchart">
+        <div class="bigchart-head"><div><small style="color:var(--muted)">Tasks shipped per month</small><br><strong data-count="8420">0</strong></div><span class="live">+212%</span></div>
+        <div class="bars">
+          <div style="--h:22%;--i:0"></div><div style="--h:30%;--i:1"></div><div style="--h:28%;--i:2"></div><div style="--h:41%;--i:3"></div><div style="--h:47%;--i:4"></div><div style="--h:44%;--i:5"></div><div style="--h:58%;--i:6"></div><div style="--h:66%;--i:7"></div><div style="--h:71%;--i:8"></div><div style="--h:83%;--i:9"></div><div style="--h:100%;--i:10"></div>
+        </div>
+        <div class="months"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quotes">
+    <div class="wrap center">
+      <span class="eyebrow reveal">Loved by teams</span>
+      <h2 class="h2 split" data-split>People can't stop talking.</h2>
+    </div>
+    <div class="q-row" id="qrow1"></div>
+    <div class="q-row rev" id="qrow2"></div>
+  </section>
+
+  <section class="pricing wrap center" id="pricing">
+    <span class="eyebrow reveal">Pricing</span>
+    <h2 class="h2 split" data-split>Simple, honest pricing.</h2>
+    <div class="toggle reveal" style="--d:200ms" id="toggle">
+      <span class="knob" id="knob"></span>
+      <button class="on" data-plan="m">Monthly</button>
+      <button data-plan="y">Yearly <em>-20%</em></button>
+    </div>
+    <div class="plans">
+      <div class="plan reveal" style="--d:0ms">
+        <h3>Starter</h3>
+        <div class="price"><span class="cur">$</span><span class="amt" data-m="0" data-y="0"><span>0</span></span><small>/ user</small></div>
+        <p style="color:var(--muted);font-size:14px">For small teams getting started.</p>
+        <ul><li>Up to 5 people</li><li>Unlimited tasks</li><li>Basic boards</li></ul>
+        <a href="#" class="btn btn-ghost" data-hover>Start free</a>
+      </div>
+      <div class="plan pop reveal" style="--d:120ms">
+        <span class="tag">Most popular</span>
+        <h3>Team</h3>
+        <div class="price"><span class="cur">$</span><span class="amt" data-m="12" data-y="9"><span>12</span></span><small>/ user</small></div>
+        <p style="color:var(--muted);font-size:14px">Everything a growing team needs.</p>
+        <ul><li>Unlimited people</li><li>Live collaboration</li><li>Automatic reports</li><li>40+ integrations</li></ul>
+        <a href="#" class="btn btn-primary" data-hover>Try Team free <span class="arrow">→</span></a>
+      </div>
+      <div class="plan reveal" style="--d:240ms">
+        <h3>Business</h3>
+        <div class="price"><span class="cur">$</span><span class="amt" data-m="24" data-y="19"><span>24</span></span><small>/ user</small></div>
+        <p style="color:var(--muted);font-size:14px">For companies with many teams.</p>
+        <ul><li>Everything in Team</li><li>Advanced security</li><li>Priority support</li></ul>
+        <a href="#" class="btn btn-ghost" data-hover>Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="burst"></div>
+    <div class="wrap">
+      <h2><span class="split" data-split>Ready to</span><br><span class="split grad-text" data-split style="--d:250ms">move faster?</span></h2>
+      <p class="sub reveal" style="--d:500ms;margin:24px auto 0">Join thousands of teams already shipping with Orbit. Free forever for small teams.</p>
+      <div class="magnet reveal" id="magnet" style="--d:650ms"><a href="#pricing" class="btn btn-primary" data-hover>Start for free <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Orbit — demo website by <a href="../">Omar Elshafei</a></span>
+    <span><a href="#features">Features</a> · <a href="#pricing">Pricing</a> · <a href="../">More projects</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* ---- Split text into words + letters ---- */
+  $$('[data-split]').forEach(el => {
+    let i = 0;
+    el.innerHTML = el.textContent.trim().split(' ').map(word =>
+      '<span class="w">' + [...word].map(ch => `<span class="c" style="--i:${i++}">${ch}</span>`).join('') + '</span>'
+    ).join(' ');
+  });
+
+  /* ---- Count-up numbers ---- */
+  const countUp = el => {
+    if (el.dataset.done) return; el.dataset.done = 1;
+    const end = parseFloat(el.dataset.count), dec = +(el.dataset.decimals || 0), suf = el.dataset.suffix || '';
+    const fmt = v => (dec ? v.toFixed(dec) : Math.round(v).toLocaleString('en-US')) + suf;
+    if (reduce) { el.textContent = fmt(end); return; }
+    const dur = 2000, t0 = performance.now();
+    const tick = now => {
+      const p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
+      el.textContent = fmt(end * e);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  /* ---- Reveal on scroll ---- */
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    const el = en.target;
+    el.classList.add('in');
+    $$('[data-count]', el).forEach(countUp);
+    if (el.matches('[data-count]')) countUp(el);
+    io.unobserve(el);
+  }), { threshold: .18, rootMargin: '0px 0px -6% 0px' });
+
+  const startReveals = () => {
+    $$('.reveal, [data-split], [data-count], .stat, #app, #bigchart, .checks svg').forEach(el => io.observe(el));
+  };
+
+  /* ---- Draw-path lengths ---- */
+  $$('path.draw').forEach(p => { try { p.style.setProperty('--len', Math.ceil(p.getTotalLength()) + 1); } catch (e) {} });
+
+  /* ---- Intro sequence ---- */
+  const intro = $('#intro');
+  const finishIntro = () => {
+    document.body.classList.remove('loading');
+    intro.classList.add('out');
+    setTimeout(() => intro.remove(), 950);
+    startReveals();
+  };
+  if (reduce || sessionStorage.getItem('orbitIntro')) {
+    intro.remove(); document.body.classList.remove('loading'); startReveals();
+  } else {
+    try { sessionStorage.setItem('orbitIntro', '1'); } catch (e) {}
+    const words = $$('.intro-words span'), cnt = $('#introCount'), bar = $('#introBar');
+    const total = 2300, t0 = performance.now();
+    words.forEach((w, i) => setTimeout(() => w.classList.add('on'), 120 + i * 480));
+    const loop = now => {
+      const p = Math.min((now - t0) / total, 1);
+      cnt.textContent = String(Math.round(p * 100)).padStart(3, '0');
+      bar.style.width = (p * 100) + '%';
+      if (p < 1) requestAnimationFrame(loop); else setTimeout(finishIntro, 250);
+    };
+    requestAnimationFrame(loop);
+    intro.addEventListener('click', finishIntro, { once: true });
+  }
+
+  /* ---- Scroll-driven effects ---- */
+  const header = $('#header'), progress = $('#progress');
+  const statement = $('#statement');
+  // wrap statement words
+  (() => {
+    const out = [];
+    statement.childNodes.forEach(n => {
+      const hl = n.nodeType === 1 && n.hasAttribute('data-hl');
+      (n.textContent).split(/(\s+)/).forEach(t => {
+        if (!t.trim()) { out.push(t); return; }
+        out.push(`<span class="sw${hl ? ' hl' : ''}">${t}</span>`);
+      });
+    });
+    statement.innerHTML = out.join('');
+  })();
+  const sWords = $$('.sw', statement);
+  const hs = $('#how'), track = $('#hsTrack'), hsLine = $('#hsLine'), hsNum = $('#hsNum');
+  const app = $('#app');
+
+  let ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    const y = scrollY, vh = innerHeight, docH = document.documentElement.scrollHeight - vh;
+    progress.style.transform = `scaleX(${docH > 0 ? y / docH : 0})`;
+    header.classList.toggle('scrolled', y > 30);
+
+    // statement word lighting
+    const r = statement.getBoundingClientRect();
+    const p = Math.min(Math.max((vh * .85 - r.top) / (r.height + vh * .45), 0), 1);
+    const lit = Math.floor(p * sWords.length * 1.05);
+    sWords.forEach((w, i) => w.classList.toggle('lit', i < lit));
+
+    // horizontal steps
+    if (!reduce) {
+      const hr = hs.getBoundingClientRect();
+      const hp = Math.min(Math.max(-hr.top / (hr.height - vh), 0), 1);
+      const max = track.scrollWidth - innerWidth;
+      track.style.transform = `translate3d(${-hp * Math.max(max, 0)}px,0,0)`;
+      hsLine.style.transform = `scaleX(${hp})`;
+      hsNum.textContent = '0' + Math.min(4, Math.floor(hp * 3.999) + 1);
+
+      // hero app parallax
+      if (y < vh * 1.4) app.parentElement.style.transform = `translateY(${y * -0.06}px)`;
+    }
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---- Mouse effects (desktop) ---- */
+  const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (fine && !reduce) {
+    const cur = $('#cursor'), ring = $('#ring');
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', e => { document.body.classList.add('has-cursor'); mx = e.clientX; my = e.clientY; cur.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+    const follow = () => { rx += (mx - rx) * .16; ry += (my - ry) * .16; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(follow); };
+    follow();
+    document.addEventListener('mouseover', e => ring.classList.toggle('big', !!e.target.closest('[data-hover], a, button')));
+
+    // 3D tilt on hero app
+    const stage = $('#stage');
+    stage.addEventListener('mousemove', e => {
+      if (!app.classList.contains('in')) return;
+      const b = stage.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width - .5, yy = (e.clientY - b.top) / b.height - .5;
+      app.style.transform = `rotateY(${x * 8}deg) rotateX(${-yy * 8}deg)`;
+    });
+    stage.addEventListener('mouseleave', () => { app.style.transform = ''; });
+
+    // spotlight cards
+    $$('.card').forEach(c => c.addEventListener('mousemove', e => {
+      const b = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - b.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - b.top) + 'px');
+    }));
+
+    // magnetic buttons
+    const mag = $('#magnet');
+    mag.addEventListener('mousemove', e => {
+      const b = mag.getBoundingClientRect();
+      mag.style.transform = `translate(${(e.clientX - b.left - b.width / 2) * .35}px,${(e.clientY - b.top - b.height / 2) * .45}px)`;
+    });
+    mag.addEventListener('mouseleave', () => { mag.style.transform = ''; });
+  }
+
+  /* ---- Typing effect ---- */
+  const typing = $('#typing');
+  const lines = ['> Design homepage → moved to Done', '> Sara commented on "Launch plan"', '> Sprint 14 is 86% complete', '> 3 tasks due today — on track'];
+  if (reduce) typing.textContent = lines[0];
+  else {
+    let li = 0, ci = 0, del = false;
+    const type = () => {
+      const s = lines[li];
+      typing.textContent = s.slice(0, ci);
+      if (!del && ci < s.length) { ci++; setTimeout(type, 38); }
+      else if (!del) { del = true; setTimeout(type, 1600); }
+      else if (ci > 0) { ci--; setTimeout(type, 14); }
+      else { del = false; li = (li + 1) % lines.length; setTimeout(type, 300); }
+    };
+    type();
+  }
+
+  /* ---- Testimonials ---- */
+  const quotes = [
+    ['Orbit replaced three tools for us. Our weekly meeting went from an hour to 15 minutes.', 'Lina Haddad', 'Product Lead, Lumina', '#a78bfa'],
+    ['The first project app my whole team actually enjoys opening every morning.', 'Marcus Reed', 'CTO, Vertex', '#22d3ee'],
+    ['We shipped our redesign two weeks early. Everyone could see exactly what was left.', 'Yara Mansour', 'Design Director, Nebula', '#f0abfc'],
+    ['Setup took five minutes. The live updates are honestly addictive.', 'Daniel Okafor', 'Founder, Hexa Labs', '#a3e635'],
+    ['Reports used to take my Friday afternoon. Now they just appear.', 'Sofia Lopez', 'Ops Manager, Peakline', '#60a5fa'],
+    ['Clean, fast and beautiful. It makes our whole company feel more organized.', 'Omar Khaled', 'CEO, Solace', '#fb923c']
+  ];
+  const card = q => `<div class="q"><p>"${q[0]}"</p><div class="who"><i style="background:linear-gradient(140deg,${q[3]},#1e1b4b)"></i><div>${q[1]}<small>${q[2]}</small></div></div></div>`;
+  const half = quotes.map(card).join('');
+  const rev = quotes.slice().reverse().map(card).join('');
+  $('#qrow1').innerHTML = half + half;
+  $('#qrow2').innerHTML = rev + rev;
+
+  /* ---- Pricing toggle ---- */
+  const toggle = $('#toggle'), knob = $('#knob'), btns = $$('button', toggle);
+  const placeKnob = b => { knob.style.width = b.offsetWidth + 'px'; knob.style.transform = `translateX(${b.offsetLeft - 5}px)`; };
+  const setPlan = b => {
+    btns.forEach(x => x.classList.toggle('on', x === b)); placeKnob(b);
+    $$('.amt').forEach(a => {
+      const v = a.dataset[b.dataset.plan];
+      if (a.textContent === v) return;
+      a.classList.add('flip');
+      setTimeout(() => { a.innerHTML = `<span style="transform:translateY(100%);opacity:0">${v}</span>`; a.classList.remove('flip'); requestAnimationFrame(() => requestAnimationFrame(() => { a.firstChild.style.transform = ''; a.firstChild.style.opacity = ''; })); }, 260);
+    });
+  };
+  btns.forEach(b => b.addEventListener('click', () => setPlan(b)));
+  addEventListener('load', () => placeKnob($('button.on', toggle)));
+  placeKnob(btns[0]);
+})();
+</script>
+</body>
+</html>

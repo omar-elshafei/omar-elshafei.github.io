@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مكتبة نجمة — مكتبة رقمية تفاعلية للأطفال</title>
+<meta name="description" content="نموذج مكتبة رقمية تفاعلية لطالبات المرحلة الابتدائية: قصص مصورة ناطقة، ألعاب تعليمية، تلوين وأنشطة قابلة للطباعة. تعمل على الآيباد والجوال بدون تسجيل.">
+<meta name="theme-color" content="#7b5cff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff8ee; --ink:#2b2350; --muted:#6d6690; --card:#fff; --line:#efe6ff;
+  --violet:#7b5cff; --pink:#ff5e8a; --green:#22c38e; --red:#ff5a5a; --sun:#ffc531;
+  --r:26px; --shadow:0 10px 0 rgba(43,35,80,.10),0 18px 40px rgba(43,35,80,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:"Baloo Bhaijaan 2",Tahoma,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;
+  background-image:radial-gradient(circle at 10% 0%,#ffe3f0 0,transparent 35%),radial-gradient(circle at 100% 30%,#e3f4ff 0,transparent 35%);background-attachment:fixed}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 40px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,248,238,.88);backdrop-filter:blur(10px);border-bottom:2px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-top:10px;padding-bottom:10px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.45rem;text-decoration:none;color:var(--ink)}
+.logo b{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#ffd75e,#ff9f43);font-size:1.5rem;box-shadow:0 4px 0 #e0861f}
+.sp{flex:1}
+.pill{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:4px 14px;font-weight:800;font-size:1.1rem}
+.pill.pop{animation:pop .5s}
+.ibtn{width:46px;height:46px;border-radius:14px;background:#fff;border:2px solid var(--line);font-size:1.35rem;display:grid;place-items:center;box-shadow:0 4px 0 var(--line)}
+.ibtn:active{transform:translateY(3px);box-shadow:none}
+
+/* home */
+.hero{display:flex;align-items:center;gap:18px;margin:26px 0 18px}
+.owl{font-size:4.6rem;animation:bob 2.6s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(0,0,0,.08))}
+.hero h1{margin:0;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.2}
+.hero p{margin:4px 0 0;color:var(--muted);font-size:1.15rem}
+.ages{display:inline-flex;background:#fff;border:2px solid var(--line);border-radius:20px;padding:5px;gap:4px;margin:4px 0 22px}
+.ages button{padding:10px 18px;border-radius:15px;font-weight:700;font-size:1.05rem;color:var(--muted)}
+.ages button[aria-pressed=true]{background:var(--violet);color:#fff;box-shadow:0 4px 0 #5a3fd8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{position:relative;text-align:right;text-decoration:none;border-radius:var(--r);padding:92px 20px 18px;color:#fff;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;
+  box-shadow:var(--shadow);overflow:hidden;transition:transform .18s;animation:rise .5s both}
+.card:hover{transform:translateY(-4px) rotate(-.6deg)}
+.card:active{transform:scale(.97)}
+.card .ic{position:absolute;top:12px;left:14px;font-size:4.2rem;transform:rotate(-8deg);filter:drop-shadow(0 6px 0 rgba(0,0,0,.12))}
+.card h2{margin:0;font-size:1.55rem;line-height:1.2;text-shadow:0 2px 0 rgba(0,0,0,.12)}
+.card p{margin:2px 0 10px;opacity:.95;font-size:1.02rem}
+.card .meta{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:rgba(255,255,255,.28);border-radius:999px;padding:2px 10px;font-size:.9rem;font-weight:700}
+.card::after{content:"";position:absolute;inset:auto -30px -60px auto;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14)}
+
+/* section */
+.crumbs{display:flex;align-items:center;gap:10px;margin:22px 0 14px}
+.back{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:8px 16px;font-weight:700;box-shadow:0 4px 0 var(--line)}
+.shead{border-radius:var(--r);padding:22px;color:#fff;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)}
+.shead .ic{font-size:4rem}
+.shead h1{margin:0;font-size:clamp(1.6rem,4vw,2.3rem)}
+.shead p{margin:0;opacity:.95}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
+.tile{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--shadow);text-align:center;border:3px solid transparent;animation:rise .45s both;transition:transform .15s}
+.tile:hover{transform:translateY(-4px)}
+.tile .big{font-size:3.6rem;display:block}
+.tile h3{margin:6px 0 2px;font-size:1.4rem}
+.tile p{margin:0;color:var(--muted)}
+.tile .ok{display:inline-block;margin-top:10px;font-weight:800;color:var(--green)}
+.tile.done{border-color:#bff0dc}
+
+/* activity shell */
+.panel{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:22px;margin-top:6px}
+.ptitle{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:1.5rem}
+.prog{height:12px;background:#f1ecff;border-radius:999px;overflow:hidden;margin-bottom:18px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--pink));border-radius:999px;transition:width .4s}
+.say{display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;border-radius:18px;padding:12px 22px;font-weight:800;font-size:1.15rem;box-shadow:0 5px 0 #5a3fd8}
+.say:active{transform:translateY(4px);box-shadow:none}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:11px 20px;font-weight:800;font-size:1.1rem;box-shadow:0 5px 0 var(--line)}
+.btn:active{transform:translateY(4px);box-shadow:none}
+.btn.go{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 5px 0 #179a6f}
+.center{text-align:center}
+.ltr{direction:ltr}
+
+/* story */
+.scene{position:relative;border-radius:22px;height:clamp(200px,38vw,330px);display:flex;align-items:center;justify-content:center;gap:.15em;flex-wrap:nowrap;font-size:clamp(3.4rem,11vw,7rem);font-weight:800;overflow:hidden;touch-action:pan-y;user-select:none}
+.scene span{display:inline-block;animation:float 3s ease-in-out infinite}
+.scene span:nth-child(2){animation-delay:.4s}.scene span:nth-child(3){animation-delay:.8s}.scene span:nth-child(4){animation-delay:1.2s}
+.scene.flip{animation:flip .45s}
+.stext{font-size:clamp(1.35rem,3.4vw,1.9rem);line-height:1.9;margin:18px 4px;text-align:center;min-height:3.8em}
+.stext .w{border-radius:10px;padding:0 4px;transition:background .15s,color .15s}
+.stext .w.on{background:var(--sun);color:#2b2350}
+.sctrl{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.nav{width:62px;height:62px;border-radius:20px;background:#fff;border:2px solid var(--line);font-size:1.7rem;box-shadow:0 5px 0 var(--line)}
+.nav:disabled{opacity:.35}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.dots i{width:12px;height:12px;border-radius:50%;background:#e4dcff;transition:.3s}
+.dots i.on{background:var(--violet);width:30px;border-radius:8px}
+.note{font-size:.95rem;color:var(--muted);text-align:center;margin-top:10px}
+
+/* quiz */
+.qshow{font-size:clamp(3rem,9vw,5rem);text-align:center;margin:4px 0 6px;letter-spacing:.06em}
+.qtext{font-size:1.55rem;text-align:center;margin:0 0 16px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+.opt{background:#fff;border:3px solid var(--line);border-radius:22px;padding:16px 10px;font-size:1.5rem;font-weight:800;box-shadow:0 6px 0 var(--line);min-height:108px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.opt .e{font-size:2.8rem;line-height:1}
+.opt .sw{width:54px;height:54px;border-radius:50%;border:3px solid rgba(0,0,0,.1)}
+.opt:active{transform:translateY(4px);box-shadow:none}
+.opt.right{background:#dcfbef;border-color:var(--green);box-shadow:0 6px 0 #9ee3c8}
+.opt.wrong{background:#ffe5e5;border-color:var(--red);animation:shake .4s}
+
+/* order */
+.slots{min-height:84px;border:3px dashed #d8ccff;border-radius:22px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:#faf8ff}
+.slots.bad{animation:shake .4s;border-color:var(--red)}
+.slots.good{border-color:var(--green);background:#e9fbf3}
+.bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.chip{background:linear-gradient(135deg,#ffcf5c,#ffad3b);color:#3a2700;border-radius:16px;padding:10px 18px;font-weight:800;font-size:1.3rem;box-shadow:0 5px 0 #d98a1b;animation:rise .3s both}
+.chip:active{transform:translateY(4px);box-shadow:none}
+.slots .chip{background:linear-gradient(135deg,#a993ff,#7b5cff);color:#fff;box-shadow:0 5px 0 #5a3fd8}
+.hint{color:#b3a9d6;font-size:1.1rem}
+
+/* memory */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:620px;margin:0 auto}
+.mc{aspect-ratio:3/4;perspective:700px}
+.mc .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mc.open .in,.mc.got .in{transform:rotateY(180deg)}
+.mc .f,.mc .b{position:absolute;inset:0;border-radius:18px;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.mc .f{background:linear-gradient(135deg,#7b5cff,#ff5e8a);color:#fff;font-size:2.2rem;box-shadow:0 5px 0 #5a3fd8}
+.mc .b{background:#fff;border:3px solid var(--line);transform:rotateY(180deg);font-size:clamp(1.8rem,6vw,2.8rem);font-weight:800}
+.mc.got .b{border-color:var(--green);background:#e9fbf3}
+
+/* sort */
+.items{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;min-height:90px}
+.it{background:#fff;border:3px solid var(--line);border-radius:20px;padding:8px 14px;font-size:1.25rem;font-weight:800;box-shadow:0 5px 0 var(--line);touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;min-width:92px}
+.it .e{font-size:2.4rem;line-height:1.1}
+.it.sel{border-color:var(--violet);box-shadow:0 5px 0 #c9bbff;transform:translateY(-4px)}
+.it.ghost{position:fixed;z-index:99;pointer-events:none;transform:scale(1.08) rotate(-4deg);opacity:.92}
+.it.gone{visibility:hidden}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.bin{border-radius:24px;padding:14px;min-height:170px;border:3px dashed rgba(0,0,0,.12);text-align:center;transition:transform .15s}
+.bin.hot{transform:scale(1.03);border-style:solid}
+.bin h4{margin:0 0 8px;font-size:1.35rem}
+.bin .e{font-size:2.4rem}
+.bin .got{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px;font-size:1.8rem}
+.bin.bad{animation:shake .4s}
+
+/* coloring */
+.colwrap{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+.colwrap svg{width:100%;height:auto;background:#fff;border-radius:22px;border:3px solid var(--line);touch-action:manipulation}
+.cz{fill:#fff;stroke:#2b2350;stroke-width:3;stroke-linejoin:round;cursor:pointer;transition:fill .2s}
+.pal{display:grid;grid-template-columns:repeat(2,52px);gap:10px}
+.pal button{width:52px;height:52px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px var(--line),0 4px 0 rgba(0,0,0,.08)}
+.pal button[aria-pressed=true]{box-shadow:0 0 0 4px var(--ink);transform:scale(1.08)}
+
+/* worksheet */
+.sheet{border:3px dashed #d8ccff;border-radius:22px;padding:22px;background:#fff}
+.sheet h2{margin:0 0 6px;text-align:center}
+.sheet .name{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;font-size:1.15rem;margin-bottom:16px}
+.sheet .name span{border-bottom:2px dotted #999;min-width:160px;display:inline-block}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.steps div{border:2px solid #e2dbff;border-radius:18px;text-align:center;padding:10px 6px;font-size:1rem}
+.steps .e{font-size:2.6rem;display:block}
+.steps .circ{display:inline-block;width:38px;height:38px;border:2px solid #2b2350;border-radius:50%;margin-top:6px}
+.draw{border:2px solid #e2dbff;border-radius:18px;height:170px;margin-top:14px;display:flex;align-items:flex-start;justify-content:flex-start;padding:10px;color:var(--muted)}
+.qrrow{display:flex;align-items:center;gap:16px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+#qr{background:#fff;padding:8px;border:2px solid #e2dbff;border-radius:14px}
+#qr img,#qr canvas{display:block;width:120px;height:120px}
+
+.foot{text-align:center;color:var(--muted);font-size:.95rem;margin-top:30px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:14px 26px;border-radius:20px;font-weight:800;font-size:1.25rem;z-index:60;transition:transform .35s cubic-bezier(.3,1.6,.6,1);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+#fx i{position:absolute;top:-40px;font-style:normal;font-size:1.8rem;animation:fall linear forwards}
+
+@keyframes bob{50%{transform:translateY(-10px) rotate(4deg)}}
+@keyframes float{50%{transform:translateY(-12px)}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+@keyframes pop{40%{transform:scale(1.3)}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes flip{from{opacity:0;transform:perspective(800px) rotateY(-25deg) scale(.96)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (max-width:640px){
+  .hero{margin-top:16px}.owl{font-size:3.4rem}
+  .grid{grid-template-columns:1fr 1fr;gap:12px}
+  .card{min-height:0;padding:66px 12px 12px}.card .ic{font-size:2.6rem;top:8px;left:10px}.card h2{font-size:1.15rem}.card p{font-size:.85rem;margin-bottom:8px}
+  .card .meta .tag:first-child{display:none}
+  .ages{display:flex}.ages button{flex:1;padding:9px 6px;font-size:.92rem;white-space:nowrap}
+  .colwrap{grid-template-columns:1fr}.pal{grid-template-columns:repeat(8,1fr)}.pal button{width:100%;height:auto;aspect-ratio:1}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .logo span{display:none}
+  .panel{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  body{background:#fff}.top,.crumbs,.noprint,.foot,.toast{display:none!important}
+  .panel{box-shadow:none;padding:0}.sheet{border:0}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#/"><b>⭐</b><span>مكتبة نجمة</span></a>
+    <div class="sp"></div>
+    <div class="pill" id="stars" title="نجومك">⭐ <span>0</span></div>
+    <button class="ibtn" id="mute" aria-label="الصوت">🔊</button>
+    <a class="ibtn" href="#/" aria-label="الرئيسية">🏠</a>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<div class="wrap foot">نموذج تجريبي — مكتبة رقمية تفاعلية للأطفال · تصميم وتطوير: عمر الشافعي</div>
+<div class="toast" id="toast"></div>
+<div id="fx"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const graphemes = s => window.Intl && Intl.Segmenter ? [...new Intl.Segmenter().segment(s)].map(x => x.segment) : [...s];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('najma.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('najma.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+let age = store.get('age', 'small');
+let muted = store.get('muted', false);
+const done = new Set(store.get('done', []));
+
+/* ---------- sounds (no files needed) ---------- */
+let ac;
+function tone(freqs, dur = .12, type = 'sine') {
+  if (muted) return;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const t = ac.currentTime;
+    freqs.forEach((f, i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(.22, t + i * dur + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, t + i * dur + dur);
+      o.connect(g).connect(ac.destination); o.start(t + i * dur); o.stop(t + i * dur + dur + .03);
+    });
+  } catch (e) {}
+}
+const ding = () => tone([660, 880, 1320], .11);
+const buzz = () => tone([220, 170], .14, 'square');
+const pop = () => tone([560], .07, 'triangle');
+
+/* ---------- narration (speech + word highlight) ---------- */
+let voices = [], hlTimer = null;
+const hasTTS = 'speechSynthesis' in window;
+if (hasTTS) { const lv = () => voices = speechSynthesis.getVoices(); lv(); speechSynthesis.onvoiceschanged = lv; }
+function stopSpeak() { clearInterval(hlTimer); if (hasTTS) speechSynthesis.cancel(); $$('.w.on').forEach(w => w.classList.remove('on')); }
+function speak(text, lang = 'ar', spans) {
+  stopSpeak();
+  if (muted) return;
+  const mark = n => spans && spans.forEach((s, k) => s.classList.toggle('on', k === n));
+  let gotBoundary = false;
+  if (spans && spans.length) {
+    const per = lang === 'en' ? 430 : 520; let i = 0;
+    setTimeout(() => { if (gotBoundary) return; mark(0); hlTimer = setInterval(() => { i++; if (i >= spans.length) { clearInterval(hlTimer); setTimeout(() => mark(-1), per); } else mark(i); }, per); }, 350);
+  }
+  if (!hasTTS) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang === 'en' ? 'en-US' : 'ar-SA';
+  const v = voices.find(v => v.lang.toLowerCase().startsWith(lang));
+  if (v) u.voice = v;
+  u.rate = lang === 'en' ? .85 : .9;
+  if (spans) {
+    const starts = []; let p = 0; text.split(' ').forEach(w => { starts.push(p); p += w.length + 1; });
+    u.onboundary = e => {
+      if (e.name && e.name !== 'word') return;
+      gotBoundary = true; clearInterval(hlTimer);
+      let idx = 0; starts.forEach((s, k) => { if (e.charIndex >= s) idx = k; });
+      mark(idx);
+    };
+    u.onend = () => { if (gotBoundary) mark(-1); };
+  }
+  speechSynthesis.speak(u);
+}
+
+/* ---------- rewards ---------- */
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); }
+function confetti() {
+  const fx = $('#fx'); const set = ['⭐', '🌟', '🎈', '💜', '🎉', '✨', '🌸'];
+  for (let i = 0; i < 36; i++) {
+    const e = document.createElement('i'); e.textContent = set[i % set.length];
+    e.style.left = Math.random() * 100 + 'vw'; e.style.animationDuration = 1.6 + Math.random() * 1.6 + 's';
+    e.style.animationDelay = Math.random() * .4 + 's'; e.style.fontSize = 1.2 + Math.random() * 1.6 + 'rem';
+    fx.appendChild(e); setTimeout(() => e.remove(), 3800);
+  }
+}
+function updateStars(bump) { const s = $('#stars'); $('span', s).textContent = done.size; if (bump) { s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop'); } }
+function win(key, lang = 'ar') {
+  ding(); confetti();
+  const msg = lang === 'en' ? 'Great job! ⭐' : 'أحسنتِ يا بطلة! ⭐';
+  toast(msg); speak(lang === 'en' ? 'Great job!' : 'أحسنتِ يا بطلة', lang);
+  if (key && !done.has(key)) { done.add(key); store.set('done', [...done]); updateStars(true); }
+}
+
+/* ---------- content ---------- */
+const TAGS = { story: ['📖', 'قصة ناطقة', 'استمعي وتابعي الكلمات'], game: ['🎮', 'لعبة', 'العبي وتعلّمي'], act: ['✏️', 'نشاط', 'طبّقي ما تعلمتِه'] };
+const SECTIONS = [
+  { id: 'read', icon: '📚', title: 'هيا نقرأ سويا', sub: 'قصص مصورة وناطقة لكل عمر', c: ['#ff9a62', '#ff5e8a'], byAge: true, items: [
+    { tag: 'story', type: 'story',
+      small: { title: 'الأرنب الكريم', pages: [
+        { s: '🐰🌳☀️', bg: ['#fff3c4', '#c9f5d0'], t: 'في صباح جميل، خرج الأرنب الصغير يبحث عن طعام.' },
+        { s: '🐰🥕🌱', bg: ['#ffe2c6', '#ffd0dd'], t: 'وجد جزرة كبيرة في الحديقة، ففرح كثيرا.' },
+        { s: '🐰🐿️🦔', bg: ['#e1f1ff', '#e8ddff'], t: 'نادى أصدقاءه، وأكلوا الجزرة معا وهم يضحكون.' },
+        { s: '💛🐰💛', bg: ['#fff0f6', '#fff6c9'], t: 'تعلّم الأرنب أن المشاركة تجعل الفرح أكبر.' }] },
+      big: { title: 'رائدة الفضاء الصغيرة', pages: [
+        { s: '👧🔭🌙', bg: ['#1f2a6b', '#5b3fa6'], dark: true, t: 'كانت سارة تحب النظر إلى النجوم كل ليلة، وتحلم أن تصبح رائدة فضاء.' },
+        { s: '📚👧✏️', bg: ['#fff3c4', '#ffd9c2'], t: 'قرأت كتبا كثيرة عن الكواكب، وتعلمت أن الحلم يحتاج إلى علم وصبر.' },
+        { s: '🚀✨🪐', bg: ['#2a1f6b', '#8a3fa6'], dark: true, t: 'شاركت في مسابقة العلوم بالمدرسة، وصنعت نموذجا لصاروخ يطير بالماء.' },
+        { s: '🏆👧🌟', bg: ['#fff0c4', '#ffd0e4'], t: 'فاز مشروعها بالمركز الأول، وقالت: كل حلم كبير يبدأ بخطوة صغيرة.' }] } },
+    { tag: 'game', type: 'quiz',
+      small: { title: 'أسئلة القصة', qs: [
+        { q: 'ماذا وجد الأرنب في الحديقة؟', opts: [{ e: '🥕', t: 'جزرة' }, { e: '🍎', t: 'تفاحة' }, { e: '🍌', t: 'موزة' }], a: 0 },
+        { q: 'مع من أكل الأرنب الجزرة؟', opts: [{ e: '🙈', t: 'وحده' }, { e: '🐿️🦔', t: 'أصدقائه' }, { e: '🐻', t: 'الدب' }], a: 1 },
+        { q: 'كيف شعر الأصدقاء؟', opts: [{ e: '😢', t: 'حزانى' }, { e: '😡', t: 'غاضبون' }, { e: '😄', t: 'سعداء' }], a: 2 }] },
+      big: { title: 'أسئلة القصة', qs: [
+        { q: 'ماذا كانت سارة تحلم أن تصبح؟', opts: [{ e: '👩‍🚀', t: 'رائدة فضاء' }, { e: '👩‍🍳', t: 'طاهية' }, { e: '👩‍⚕️', t: 'طبيبة' }], a: 0 },
+        { q: 'ماذا صنعت سارة في المسابقة؟', opts: [{ e: '🚀', t: 'صاروخ يطير بالماء' }, { e: '🤖', t: 'روبوت' }, { e: '🏠', t: 'بيت' }], a: 0 },
+        { q: 'ما الذي يحتاجه الحلم كما تعلمت سارة؟', opts: [{ e: '🎮', t: 'اللعب فقط' }, { e: '📚⏳', t: 'العلم والصبر' }, { e: '💤', t: 'النوم' }], a: 1 }] } },
+    { tag: 'act', type: 'order',
+      small: { title: 'رتّبي الجملة', prompt: 'اضغطي على الكلمات بالترتيب لتكوّني جملة من القصة', words: ['الأرنب', 'شارك', 'الجزرة', 'مع', 'أصدقائه'] },
+      big: { title: 'رتّبي الحكمة', prompt: 'رتّبي الكلمات لتكوّني حكمة سارة', words: ['كل', 'حلم', 'كبير', 'يبدأ', 'بخطوة', 'صغيرة'] } }
+  ] },
+  { id: 'arabic', icon: '🔤', title: 'لغتي العربية', sub: 'حروف وكلمات وتراكيب', c: ['#36cfa0', '#1ea6c8'], items: [
+    { tag: 'story', type: 'story', title: 'صديقي حرف الباء', pages: [
+      { s: 'ب 🦆', bg: ['#e2fbf1', '#d6f0ff'], t: 'هذا حرف الباء. بطة تبدأ بحرف الباء.' },
+      { s: 'ب 🚪', bg: ['#fff3c4', '#ffe0cc'], t: 'باب يبدأ بحرف الباء أيضا.' },
+      { s: 'ب 🏠', bg: ['#f0e6ff', '#ffe0ef'], t: 'وبيت يبدأ بحرف الباء.' },
+      { s: '⬇️ ب', bg: ['#e2fbf1', '#fff3c4'], t: 'حرف الباء له نقطة واحدة تحته. هيا نكتبه معا.' }] },
+    { tag: 'game', type: 'quiz', title: 'اسمعي واختاري الحرف', qs: [
+      { q: 'اسمعي واختاري الحرف', say: 'أين حرف الميم؟', show: '👂', opts: [{ t: 'م' }, { t: 'ب' }, { t: 'ت' }, { t: 'ن' }], a: 0 },
+      { q: 'اسمعي واختاري الحرف', say: 'أين حرف السين؟', show: '👂', opts: [{ t: 'ش' }, { t: 'س' }, { t: 'ص' }, { t: 'ر' }], a: 1 },
+      { q: 'بأي حرف تبدأ كلمة شمس؟', show: '☀️', opts: [{ t: 'ق' }, { t: 'ب' }, { t: 'ش' }], a: 2 },
+      { q: 'بأي حرف تبدأ كلمة قمر؟', show: '🌙', opts: [{ t: 'ق' }, { t: 'ف' }, { t: 'ك' }], a: 0 }] },
+    { tag: 'act', type: 'memory', title: 'طابقي الحرف بالصورة',
+      small: { title: 'طابقي الحرف بالصورة', pairs: [['أ', '🦁', 'أسد'], ['ب', '🦆', 'بطة'], ['ت', '🍎', 'تفاحة'], ['ش', '☀️', 'شمس']] },
+      big: { title: 'طابقي الحرف بالصورة', pairs: [['أ', '🦁', 'أسد'], ['ب', '🦆', 'بطة'], ['ت', '🍎', 'تفاحة'], ['ش', '☀️', 'شمس'], ['س', '🐟', 'سمكة'], ['ق', '🌙', 'قمر']] } }
+  ] },
+  { id: 'english', icon: '🇬🇧', title: 'لغتي الإنجليزية', sub: 'My first English words', c: ['#5b8cff', '#7b5cff'], lang: 'en', items: [
+    { tag: 'story', type: 'story', title: 'My Cat', pages: [
+      { s: '🐱', bg: ['#fff3c4', '#ffe0cc'], t: 'This is my cat.' },
+      { s: '🐱🧶', bg: ['#e1f1ff', '#e8ddff'], t: 'My cat likes to play.' },
+      { s: '🐱🥛', bg: ['#e2fbf1', '#fff6c9'], t: 'My cat drinks milk.' },
+      { s: '🐱😴🌙', bg: ['#2a2f6b', '#5b3fa6'], dark: true, t: 'Good night, my cat!' }] },
+    { tag: 'game', type: 'quiz', title: 'Listen and choose', qs: [
+      { q: 'Find the apple', opts: [{ e: '🍌', t: 'banana' }, { e: '🍎', t: 'apple' }, { e: '🍇', t: 'grapes' }], a: 1 },
+      { q: 'Find the dog', opts: [{ e: '🐶', t: 'dog' }, { e: '🐱', t: 'cat' }, { e: '🐟', t: 'fish' }], a: 0 },
+      { q: 'Which one is red?', opts: [{ sw: '#3b82f6', t: 'blue' }, { sw: '#22c55e', t: 'green' }, { sw: '#ef4444', t: 'red' }], a: 2 },
+      { q: 'How many stars?', show: '⭐⭐⭐', opts: [{ t: '2' }, { t: '3' }, { t: '5' }], a: 1 }] },
+    { tag: 'act', type: 'memory', title: 'Match the word',
+      small: { title: 'Match the word', pairs: [['Cat', '🐱', 'cat'], ['Dog', '🐶', 'dog'], ['Sun', '☀️', 'sun'], ['Car', '🚗', 'car']] },
+      big: { title: 'Match the word', pairs: [['Cat', '🐱', 'cat'], ['Dog', '🐶', 'dog'], ['Sun', '☀️', 'sun'], ['Car', '🚗', 'car'], ['Book', '📘', 'book'], ['Fish', '🐟', 'fish']] } }
+  ] },
+  { id: 'math', icon: '🔢', title: 'عبقري الرياضيات', sub: 'أرقام ومسابقات ممتعة', c: ['#ffb347', '#ff7a45'], items: [
+    { tag: 'story', type: 'story', title: 'ليلى في السوق', pages: [
+      { s: '👧🛒', bg: ['#fff3c4', '#ffe0cc'], t: 'ذهبت ليلى مع أمها إلى سوق الفاكهة.' },
+      { s: '🍎🍎🍎', bg: ['#ffe2e2', '#fff3c4'], t: 'اشترت ليلى ثلاث تفاحات حمراء.' },
+      { s: '🍌🍌', bg: ['#fff7c2', '#e2fbf1'], t: 'ثم اشترت موزتين صفراوين.' },
+      { s: '3 + 2 = 5', bg: ['#e8ddff', '#ffd0e4'], t: 'ثلاثة واثنان يساوي خمسة. معها خمس فاكهات!' }] },
+    { tag: 'game', type: 'quiz',
+      small: { title: 'مسابقة العد', qs: [
+        { q: 'كم تفاحة ترين؟', show: '🍎🍎🍎🍎', opts: [{ t: '3' }, { t: '4' }, { t: '5' }], a: 1 },
+        { q: 'كم نجمة؟', show: '⭐⭐⭐⭐⭐⭐', opts: [{ t: '6' }, { t: '5' }, { t: '7' }], a: 0 },
+        { q: 'اثنان زائد واحد يساوي؟', show: '🐟🐟 + 🐟', opts: [{ t: '2' }, { t: '4' }, { t: '3' }], a: 2 },
+        { q: 'أيهما أكبر؟', opts: [{ t: '8' }, { t: '5' }, { t: '3' }], a: 0 }] },
+      big: { title: 'تحدي العباقرة', qs: [
+        { q: 'سبعة في ثلاثة يساوي؟', show: '7 × 3', opts: [{ t: '24' }, { t: '21' }, { t: '18' }], a: 1 },
+        { q: 'ثمانية وأربعون تقسيم ستة؟', show: '48 ÷ 6', opts: [{ t: '8' }, { t: '7' }, { t: '9' }], a: 0 },
+        { q: 'ما نصف العدد أربعة وعشرين؟', show: '½ × 24', opts: [{ t: '14' }, { t: '10' }, { t: '12' }], a: 2 },
+        { q: 'ما العدد التالي؟', show: '5 · 10 · 15 · ?', opts: [{ t: '25' }, { t: '20' }, { t: '18' }], a: 1 }] } },
+    { tag: 'act', type: 'sort',
+      small: { title: 'صنّفي الأرقام', prompt: 'اسحبي كل رقم إلى المكان المناسب', bins: [{ n: 'أصغر من 5', e: '🐜', c: '#e2fbf1' }, { n: 'أكبر من 5', e: '🐘', c: '#ffe8d6' }], items: [{ t: '2', b: 0 }, { t: '7', b: 1 }, { t: '4', b: 0 }, { t: '9', b: 1 }, { t: '1', b: 0 }, { t: '8', b: 1 }] },
+      big: { title: 'زوجي أم فردي؟', prompt: 'اسحبي كل عدد إلى المكان المناسب', bins: [{ n: 'زوجي', e: '👯', c: '#e1f1ff' }, { n: 'فردي', e: '🦄', c: '#ffe0ef' }], items: [{ t: '12', b: 0 }, { t: '7', b: 1 }, { t: '20', b: 0 }, { t: '15', b: 1 }, { t: '9', b: 1 }, { t: '34', b: 0 }] } }
+  ] },
+  { id: 'science', icon: '🔬', title: 'مبدع العلوم', sub: 'تجارب عملية خفيفة', c: ['#2ec4b6', '#3a86ff'], items: [
+    { tag: 'story', type: 'story', title: 'رحلة قطرة الماء', pages: [
+      { s: '💧🌊', bg: ['#d6f0ff', '#c9f5ec'], t: 'أنا قطرة ماء صغيرة، أعيش في البحر الكبير.' },
+      { s: '☀️💧', bg: ['#fff3c4', '#ffe0cc'], t: 'سخّنتني الشمس فصعدت إلى السماء بخارا.' },
+      { s: '☁️☁️', bg: ['#e8f1ff', '#f1ecff'], t: 'اجتمعت مع صديقاتي القطرات فصرنا سحابة.' },
+      { s: '🌧️🌱', bg: ['#d6f0ff', '#d9f7d6'], t: 'ثم نزلنا مطرا نسقي الأرض والنبات.' }] },
+    { tag: 'game', type: 'sort', title: 'يطفو أم يغرق؟', prompt: 'اسحبي كل شيء إلى الحوض المناسب', bins: [{ n: 'يطفو', e: '🛟', c: '#e1f1ff' }, { n: 'يغرق', e: '⚓', c: '#e9e3ff' }], items: [{ e: '🪵', t: 'خشب', b: 0 }, { e: '🪨', t: 'حجر', b: 1 }, { e: '🦆', t: 'بطة مطاط', b: 0 }, { e: '🔑', t: 'مفتاح', b: 1 }, { e: '🍃', t: 'ورقة', b: 0 }, { e: '🪙', t: 'عملة', b: 1 }] },
+    { tag: 'act', type: 'quiz',
+      small: { title: 'العالِمة الصغيرة', qs: [
+        { q: 'ماذا تحتاج النبتة لتنمو؟', opts: [{ e: '☀️💧', t: 'شمس وماء' }, { e: '🍬', t: 'حلوى' }, { e: '📱', t: 'هاتف' }], a: 0 },
+        { q: 'أين تعيش السمكة؟', opts: [{ e: '🌳', t: 'الشجرة' }, { e: '🌊', t: 'الماء' }, { e: '🏜️', t: 'الصحراء' }], a: 1 },
+        { q: 'أي شيء يذوب في الماء؟', opts: [{ e: '🪨', t: 'الحجر' }, { e: '🔑', t: 'المفتاح' }, { e: '🧂', t: 'الملح' }], a: 2 }] },
+      big: { title: 'العالِمة الصغيرة', qs: [
+        { q: 'ماذا نسمي تحول الماء إلى بخار؟', opts: [{ e: '♨️', t: 'التبخر' }, { e: '🧊', t: 'التجمد' }, { e: '🫧', t: 'الذوبان' }], a: 0 },
+        { q: 'ما الكوكب الذي نعيش عليه؟', opts: [{ e: '🔴', t: 'المريخ' }, { e: '🌍', t: 'الأرض' }, { e: '🪐', t: 'زحل' }], a: 1 },
+        { q: 'أي عضو يضخ الدم في الجسم؟', opts: [{ e: '🫁', t: 'الرئتان' }, { e: '🧠', t: 'الدماغ' }, { e: '❤️', t: 'القلب' }], a: 2 }] } }
+  ] },
+  { id: 'color', icon: '🎨', title: 'هيا نلون ونتعلم', sub: 'ألوان وأشكال وإبداع', c: ['#ff6fb5', '#c264fe'], items: [
+    { tag: 'story', type: 'story', title: 'ألوان قوس قزح', pages: [
+      { s: '🌧️☀️', bg: ['#e1f1ff', '#fff3c4'], t: 'بعد المطر، أشرقت الشمس الجميلة.' },
+      { s: '🌈', bg: ['#e8f7ff', '#fff0f6'], t: 'فظهر في السماء قوس قزح بألوانه الزاهية.' },
+      { s: '🍓🍊🍋', bg: ['#ffe2e2', '#fff7c2'], t: 'الأحمر مثل الفراولة، والبرتقالي مثل البرتقالة، والأصفر مثل الليمون.' },
+      { s: '🥦🌊🍇', bg: ['#d9f7d6', '#e8ddff'], t: 'والأخضر مثل البروكلي، والأزرق مثل البحر، والبنفسجي مثل العنب.' }] },
+    { tag: 'game', type: 'color', title: 'لوّني البيت الجميل' },
+    { tag: 'act', type: 'quiz', title: 'ما لونه؟', qs: [
+      { q: 'ما لون الموزة؟', show: '🍌', opts: [{ sw: '#ffd43b', t: 'أصفر' }, { sw: '#3b82f6', t: 'أزرق' }, { sw: '#ef4444', t: 'أحمر' }], a: 0 },
+      { q: 'ما لون العشب؟', show: '🌱', opts: [{ sw: '#a855f7', t: 'بنفسجي' }, { sw: '#22c55e', t: 'أخضر' }, { sw: '#f97316', t: 'برتقالي' }], a: 1 },
+      { q: 'ما لون السماء في النهار؟', show: '🌤️', opts: [{ sw: '#111827', t: 'أسود' }, { sw: '#ef4444', t: 'أحمر' }, { sw: '#60a5fa', t: 'أزرق' }], a: 2 }] }
+  ] },
+  { id: 'games', icon: '🧩', title: 'ألعابي التعليمية', sub: 'ألعاب ذكاء وتفكير', c: ['#8fd14f', '#22b07d'], items: [
+    { tag: 'story', type: 'story', title: 'السلحفاة والأرنب', pages: [
+      { s: '🐢🐇', bg: ['#e2fbf1', '#fff3c4'], t: 'قال الأرنب للسلحفاة: أنا أسرع منك، هيا نتسابق!' },
+      { s: '🐇💨', bg: ['#e1f1ff', '#fff0f6'], t: 'ركض الأرنب بسرعة، ثم نام تحت شجرة.' },
+      { s: '🐢🌳😴', bg: ['#d9f7d6', '#fff7c2'], t: 'مشت السلحفاة بهدوء، ولم تتوقف أبدا.' },
+      { s: '🐢🏁🏆', bg: ['#fff0c4', '#ffd0e4'], t: 'وصلت السلحفاة أولا! المثابرة تصنع الفوز.' }] },
+    { tag: 'game', type: 'memory',
+      small: { title: 'لعبة الذاكرة', pairs: [['🐼', '🐼', 'باندا'], ['🦒', '🦒', 'زرافة'], ['🐬', '🐬', 'دلفين'], ['🦋', '🦋', 'فراشة']] },
+      big: { title: 'لعبة الذاكرة', pairs: [['🐼', '🐼', 'باندا'], ['🦒', '🦒', 'زرافة'], ['🐬', '🐬', 'دلفين'], ['🦋', '🦋', 'فراشة'], ['🦉', '🦉', 'بومة'], ['🐢', '🐢', 'سلحفاة']] } },
+    { tag: 'act', type: 'quiz', title: 'أكملي النمط', qs: [
+      { q: 'ما الشكل التالي؟', show: '🔴🔵🔴🔵❓', opts: [{ e: '🟢' }, { e: '🔴' }, { e: '🔵' }], a: 1 },
+      { q: 'ما الشكل التالي؟', show: '⭐⭐🌙⭐⭐❓', opts: [{ e: '🌙' }, { e: '⭐' }, { e: '☀️' }], a: 1 },
+      { q: 'أي شيء مختلف؟', show: '🍎🍎🍌🍎', opts: [{ e: '🍎' }, { e: '🍌' }], a: 1 }] }
+  ] },
+  { id: 'practical', icon: '✂️', title: 'الأنشطة العملية', sub: 'أوراق عمل للطباعة مع QR', c: ['#ffcc33', '#ff9f1c'], items: [
+    { tag: 'story', type: 'story', title: 'نزرع بذرة', pages: [
+      { s: '🌰🪴', bg: ['#fff3c4', '#f3e2cf'], t: 'وضعنا بذرة صغيرة في التراب.' },
+      { s: '💧🪴', bg: ['#d6f0ff', '#e2fbf1'], t: 'سقيناها بالماء كل يوم.' },
+      { s: '☀️🌱', bg: ['#fff7c2', '#d9f7d6'], t: 'وضعناها في الشمس، فنبتت ورقة خضراء.' },
+      { s: '🌻😊', bg: ['#fff0c4', '#ffd0e4'], t: 'وبعد أيام كبرت وصارت زهرة جميلة!' }] },
+    { tag: 'game', type: 'order', title: 'رتّبي خطوات الزراعة', prompt: 'اضغطي على الخطوات بالترتيب الصحيح', words: ['🌰 نضع البذرة', '💧 نسقيها', '☀️ تأخذ الشمس', '🌻 تصبح زهرة'] },
+    { tag: 'act', type: 'sheet', title: 'ورقة عمل للطباعة' }
+  ] }
+];
+const SEC = Object.fromEntries(SECTIONS.map(s => [s.id, s]));
+const pick = it => (it.small ? Object.assign({}, it, it[age]) : it);
+const keyOf = (sec, i, it) => sec.id + '/' + i + (it.small ? '/' + age : '');
+const totalFor = sec => sec.items.length;
+const doneFor = sec => sec.items.filter((it, i) => done.has(keyOf(sec, i, it))).length;
+const grad = c => `linear-gradient(135deg,${c[0]},${c[1]})`;
+
+/* ---------- views ---------- */
+const app = $('#app');
+function home() {
+  app.innerHTML = `
+  <section class="hero">
+    <div class="owl" aria-hidden="true">🦉</div>
+    <div><h1>أهلا بكِ في مكتبة نجمة!</h1><p>اختاري عالمك، واستمعي، والعبي، واجمعي النجوم ⭐</p></div>
+  </section>
+  <div class="ages" role="group" aria-label="العمر">
+    <button data-age="small" aria-pressed="${age === 'small'}">🌼 الصغيرات (6–9)</button>
+    <button data-age="big" aria-pressed="${age === 'big'}">🚀 اليافعات (10–13)</button>
+  </div>
+  <div class="grid">${SECTIONS.map((s, i) => `
+    <a class="card" href="#/s/${s.id}" style="background:${grad(s.c)};animation-delay:${i * 50}ms">
+      <span class="ic" aria-hidden="true">${s.icon}</span>
+      <h2>${s.title}</h2><p>${s.sub}</p>
+      <div class="meta"><span class="tag">📖 🎮 ✏️</span><span class="tag">⭐ ${doneFor(s)}/${totalFor(s)}</span>${s.byAge ? '<span class="tag">حسب العمر</span>' : ''}</div>
+    </a>`).join('')}</div>`;
+  $$('.ages button').forEach(b => b.onclick = () => { age = b.dataset.age; store.set('age', age); pop(); home(); });
+}
+function section(sec) {
+  app.innerHTML = `
+  <div class="crumbs"><a class="back" href="#/">→ المكتبة</a></div>
+  <div class="shead" style="background:${grad(sec.c)}"><span class="ic">${sec.icon}</span><div><h1>${sec.title}</h1><p>${sec.sub}${sec.byAge ? ' · ' + (age === 'small' ? 'للصغيرات 6–9' : 'لليافعات 10–13') : ''}</p></div></div>
+  <div class="tiles">${sec.items.map((raw, i) => { const it = pick(raw), t = TAGS[it.tag], ok = done.has(keyOf(sec, i, raw)); return `
+    <a class="tile ${ok ? 'done' : ''}" href="#/s/${sec.id}/${i}" style="text-decoration:none;color:inherit;animation-delay:${i * 80}ms">
+      <span class="big">${t[0]}</span><h3>${t[1]}: ${it.title}</h3><p>${t[2]}</p>${ok ? '<span class="ok">✔ أنجزتِه</span>' : ''}
+    </a>`; }).join('')}</div>`;
+}
+function activity(sec, i) {
+  const raw = sec.items[i]; if (!raw) return section(sec);
+  const it = pick(raw), key = keyOf(sec, i, raw), lang = sec.lang || 'ar';
+  app.innerHTML = `
+  <div class="crumbs"><a class="back" href="#/s/${sec.id}">→ ${sec.title}</a></div>
+  <div class="panel"><h2 class="ptitle">${TAGS[it.tag][0]} ${it.title}</h2><div id="act"></div></div>`;
+  const box = $('#act');
+  ({ story, quiz, order, memory, sort, color: coloring, sheet })[it.type](box, it, key, lang, sec);
+}
+
+/* story */
+function story(box, it, key, lang) {
+  let p = 0, auto = false; const n = it.pages.length;
+  box.innerHTML = `
+    <div class="scene" id="scene"></div>
+    <p class="stext ${lang === 'en' ? 'ltr' : ''}" id="stext"></p>
+    <div class="sctrl">
+      <button class="nav" id="prev" aria-label="السابق">→</button>
+      <button class="say" id="play">🔊 ${lang === 'en' ? 'Listen' : 'استمعي'}</button>
+      <button class="nav" id="next" aria-label="التالي">←</button>
+    </div>
+    <div class="dots">${it.pages.map(() => '<i></i>').join('')}</div>
+    <p class="note">اضغطي «استمعي» لتسمعي القصة وتتابعي الكلمات الملونة · اسحبي الصورة للتنقل</p>`;
+  const render = () => {
+    const pg = it.pages[p], sc = $('#scene');
+    sc.style.background = grad(pg.bg); sc.style.color = pg.dark ? '#fff' : 'inherit';
+    sc.innerHTML = (/\s/.test(pg.s) ? pg.s.split(' ') : graphemes(pg.s)).map(x => `<span>${x}</span>`).join('');
+    sc.classList.remove('flip'); void sc.offsetWidth; sc.classList.add('flip');
+    $('#stext').innerHTML = pg.t.split(' ').map(w => `<span class="w">${w}</span>`).join(' ');
+    $('#prev').disabled = p === 0;
+    $('#next').textContent = p === n - 1 ? '⭐' : '←';
+    $$('.dots i', box).forEach((d, k) => d.classList.toggle('on', k === p));
+    if (auto) read();
+  };
+  const read = () => speak(it.pages[p].t, lang, $$('#stext .w'));
+  const go = d => {
+    if (p + d < 0) return;
+    if (p + d >= n) { stopSpeak(); win(key, lang); return; }
+    p += d; pop(); render();
+  };
+  $('#play').onclick = () => { auto = true; read(); };
+  $('#prev').onclick = () => go(-1);
+  $('#next').onclick = () => go(1);
+  let x0 = null; const sc = $('#scene');
+  sc.onpointerdown = e => x0 = e.clientX;
+  sc.onpointerup = e => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); };
+  render();
+}
+
+/* quiz */
+function quiz(box, it, key, lang) {
+  let k = 0, lock = false;
+  const show = () => {
+    const q = it.qs[k];
+    const order = shuffle(q.opts.map((o, i) => i));
+    box.innerHTML = `
+      <div class="prog"><i style="width:${k / it.qs.length * 100}%"></i></div>
+      ${q.show ? `<div class="qshow ${lang === 'en' ? 'ltr' : ''}">${q.show}</div>` : ''}
+      <p class="qtext ${lang === 'en' ? 'ltr' : ''}">${q.q} <button class="ibtn" id="rep" style="display:inline-grid;vertical-align:middle" aria-label="أعيدي السؤال">🔊</button></p>
+      <div class="opts">${order.map(i => { const o = q.opts[i]; return `<button class="opt" data-i="${i}">${o.e ? `<span class="e">${o.e}</span>` : ''}${o.sw ? `<span class="sw" style="background:${o.sw}"></span>` : ''}${o.t ? `<span class="${lang === 'en' ? 'ltr' : ''}">${o.t}</span>` : ''}</button>`; }).join('')}</div>`;
+    const ask = () => speak(q.say || q.q, lang);
+    $('#rep').onclick = ask; ask(); lock = false;
+    $$('.opt', box).forEach(b => b.onclick = () => {
+      if (lock) return;
+      if (+b.dataset.i === q.a) {
+        lock = true; b.classList.add('right'); ding();
+        speak(lang === 'en' ? 'Yes!' : 'صحيح!', lang);
+        setTimeout(() => { k++; if (k < it.qs.length) show(); else finish(); }, 1000);
+      } else { b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); buzz(); speak(lang === 'en' ? 'Try again' : 'حاولي مرة أخرى', lang); }
+    });
+  };
+  const finish = () => {
+    box.innerHTML = `<div class="prog"><i style="width:100%"></i></div><div class="center"><div class="qshow">🏆</div><p class="qtext">${lang === 'en' ? 'You answered all the questions!' : 'أجبتِ عن كل الأسئلة!'}</p><button class="btn go" id="again">🔁 ${lang === 'en' ? 'Play again' : 'العبي مرة أخرى'}</button></div>`;
+    win(key, lang); $('#again').onclick = () => { k = 0; show(); };
+  };
+  show();
+}
+
+/* order (tap words in the right order) */
+function order(box, it, key, lang) {
+  const start = () => {
+    let bank; do { bank = shuffle(it.words); } while (bank.join() === it.words.join());
+    box.innerHTML = `
+      <p class="qtext" style="font-size:1.25rem">${it.prompt} <button class="ibtn" id="rep" style="display:inline-grid;vertical-align:middle" aria-label="استمعي">🔊</button></p>
+      <div class="slots" id="slots"><span class="hint">ضعي الكلمات هنا</span></div>
+      <div class="bank" id="bank">${bank.map(w => `<button class="chip">${w}</button>`).join('')}</div>
+      <div class="center noprint" style="margin-top:18px"><button class="btn" id="reset">🔄 من جديد</button></div>`;
+    const slots = $('#slots'), bk = $('#bank');
+    $('#rep').onclick = () => speak(it.prompt, lang);
+    $('#reset').onclick = start;
+    bk.onclick = e => {
+      const c = e.target.closest('.chip'); if (!c) return;
+      $('.hint', slots)?.remove(); pop(); slots.appendChild(c);
+      speak(c.textContent.replace(/\p{Extended_Pictographic}/gu, '').trim(), lang);
+      if (!bk.children.length) check();
+    };
+    slots.onclick = e => { const c = e.target.closest('.chip'); if (c && !slots.classList.contains('good')) { pop(); bk.appendChild(c); } };
+    const check = () => {
+      const got = $$('.chip', slots).map(c => c.textContent);
+      if (got.join() === it.words.join()) {
+        slots.classList.add('good'); win(key, lang);
+        setTimeout(() => speak(it.words.map(w => w.replace(/\p{Extended_Pictographic}/gu, '').trim()).join(' '), lang), 1300);
+      } else {
+        buzz(); slots.classList.remove('bad'); void slots.offsetWidth; slots.classList.add('bad');
+        speak('حاولي مرة أخرى', lang); setTimeout(start, 900);
+      }
+    };
+  };
+  start();
+}
+
+/* memory */
+function memory(box, it, key, lang) {
+  const start = () => {
+    const cards = shuffle(it.pairs.flatMap((p, i) => [{ v: p[0], i }, { v: p[1], i }]));
+    const cols = cards.length > 8 ? 4 : 4;
+    box.innerHTML = `<p class="qtext" style="font-size:1.2rem">اقلبي بطاقتين وابحثي عن الزوج المتطابق</p>
+      <div class="mem" style="grid-template-columns:repeat(${cols},1fr)">${cards.map((c, n) => `<button class="mc" data-i="${c.i}" aria-label="بطاقة ${n + 1}"><div class="in"><div class="f">⭐</div><div class="b ${lang === 'en' ? 'ltr' : ''}">${c.v}</div></div></button>`).join('')}</div>
+      <div class="center" style="margin-top:16px"><button class="btn" id="reset">🔄 من جديد</button></div>`;
+    $('#reset').onclick = start;
+    let open = [], found = 0, busy = false;
+    $$('.mc', box).forEach(c => c.onclick = () => {
+      if (busy || c.classList.contains('open') || c.classList.contains('got')) return;
+      c.classList.add('open'); pop(); open.push(c);
+      if (open.length < 2) return;
+      busy = true;
+      const [a, b] = open;
+      if (a.dataset.i === b.dataset.i) {
+        setTimeout(() => {
+          a.classList.add('got'); b.classList.add('got'); ding(); speak(it.pairs[a.dataset.i][2], lang);
+          open = []; busy = false; found++;
+          if (found === it.pairs.length) setTimeout(() => win(key, lang), 700);
+        }, 350);
+      } else setTimeout(() => { a.classList.remove('open'); b.classList.remove('open'); open = []; busy = false; }, 900);
+    });
+  };
+  start();
+}
+
+/* sort (drag or tap) */
+function sort(box, it, key, lang) {
+  box.innerHTML = `
+    <p class="qtext" style="font-size:1.25rem">${it.prompt} <button class="ibtn" id="rep" style="display:inline-grid;vertical-align:middle" aria-label="استمعي">🔊</button></p>
+    <div class="items" id="items">${shuffle(it.items).map(x => `<div class="it" data-b="${x.b}" tabindex="0">${x.e ? `<span class="e">${x.e}</span>` : ''}<span style="${x.e ? '' : 'font-size:2rem'}">${x.t}</span></div>`).join('')}</div>
+    <div class="bins">${it.bins.map((b, i) => `<div class="bin" data-b="${i}" style="background:${b.c}"><span class="e">${b.e}</span><h4>${b.n}</h4><div class="got"></div></div>`).join('')}</div>
+    <p class="note">اسحبي العنصر بإصبعك، أو اضغطي عليه ثم اضغطي على المكان</p>`;
+  $('#rep').onclick = () => speak(it.prompt, lang);
+  let sel = null, left = it.items.length;
+  const drop = (el, bin) => {
+    if (!bin) return;
+    if (el.dataset.b === bin.dataset.b) {
+      ding(); const g = document.createElement('span'); g.textContent = el.querySelector('.e')?.textContent || el.textContent; $('.got', bin).appendChild(g);
+      speak(el.textContent.replace(/\p{Extended_Pictographic}/gu, '').trim(), lang);
+      el.remove(); sel = null; left--;
+      if (!left) setTimeout(() => win(key, lang), 400);
+    } else { buzz(); bin.classList.remove('bad'); void bin.offsetWidth; bin.classList.add('bad'); speak('حاولي مرة أخرى', lang); }
+  };
+  $$('.it', box).forEach(el => {
+    el.onpointerdown = e => {
+      e.preventDefault();
+      const r = el.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top;
+      let ghost = null, moved = false, hot = null;
+      const mv = ev => {
+        if (!moved && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) < 8) return;
+        if (!moved) { moved = true; ghost = el.cloneNode(true); ghost.classList.add('ghost'); ghost.style.width = r.width + 'px'; document.body.appendChild(ghost); el.classList.add('gone'); }
+        ghost.style.left = ev.clientX - ox + 'px'; ghost.style.top = ev.clientY - oy + 'px';
+        const b = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.bin');
+        if (b !== hot) { hot?.classList.remove('hot'); hot = b; hot?.classList.add('hot'); }
+      };
+      const up = ev => {
+        removeEventListener('pointermove', mv); removeEventListener('pointerup', up);
+        if (moved) { ghost.remove(); el.classList.remove('gone'); hot?.classList.remove('hot'); drop(el, hot); }
+        else { $$('.it.sel', box).forEach(x => x.classList.remove('sel')); sel = el; el.classList.add('sel'); pop(); }
+      };
+      addEventListener('pointermove', mv); addEventListener('pointerup', up);
+    };
+  });
+  $$('.bin', box).forEach(b => b.onclick = () => { if (sel) drop(sel, b); });
+}
+
+/* coloring */
+function coloring(box, it, key, lang) {
+  const cols = ['#ff5a5a', '#ff9f1c', '#ffd43b', '#22c55e', '#60a5fa', '#7b5cff', '#ff7ac6', '#8b5a2b'];
+  let cur = cols[0];
+  box.innerHTML = `
+    <div class="colwrap">
+      <svg viewBox="0 0 400 300" id="pic" aria-label="صورة للتلوين">
+        <rect class="cz" x="3" y="3" width="394" height="200" rx="16"/>
+        <path class="cz" d="M285 60 q10-22 34-14 q12-18 34-4 q22 0 18 22 q-6 14-24 10 h-50 q-22-2-12-14z"/>
+        <circle class="cz" cx="70" cy="62" r="32"/>
+        <rect class="cz" x="3" y="203" width="394" height="94" rx="16"/>
+        <path class="cz" d="M150 132 L230 70 L310 132 Z"/>
+        <rect class="cz" x="165" y="132" width="130" height="100"/>
+        <rect class="cz" x="214" y="176" width="34" height="56" rx="6"/>
+        <rect class="cz" x="178" y="148" width="28" height="26" rx="4"/>
+        <rect class="cz" x="256" y="148" width="28" height="26" rx="4"/>
+        <rect class="cz" x="338" y="170" width="16" height="62"/>
+        <circle class="cz" cx="346" cy="146" r="34"/>
+        <circle class="cz" cx="60" cy="244" r="16"/>
+        <circle class="cz" cx="60" cy="244" r="6"/>
+        <circle class="cz" cx="110" cy="256" r="12"/>
+        <circle class="cz" cx="110" cy="256" r="5"/>
+      </svg>
+      <div>
+        <div class="pal" role="group" aria-label="الألوان">${cols.map((c, i) => `<button style="background:${c}" data-c="${c}" aria-pressed="${i === 0}" aria-label="لون"></button>`).join('')}</div>
+      </div>
+    </div>
+    <div class="center noprint" style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn" id="clear">🧽 امسحي</button><button class="btn go" id="fin">✔ انتهيت</button>
+    </div>`;
+  speak('اختاري لونا ثم اضغطي على جزء من الصورة', lang);
+  $$('.pal button', box).forEach(b => b.onclick = () => { cur = b.dataset.c; $$('.pal button', box).forEach(x => x.setAttribute('aria-pressed', x === b)); pop(); });
+  $$('.cz', box).forEach(z => z.onclick = () => { z.style.fill = cur; pop(); });
+  $('#clear').onclick = () => $$('.cz', box).forEach(z => z.style.fill = '');
+  $('#fin').onclick = () => {
+    const filled = $$('.cz', box).filter(z => z.style.fill).length;
+    if (filled < 5) { buzz(); toast('لوّني أجزاء أكثر 🎨'); speak('لوّني أجزاء أكثر', lang); } else win(key, lang);
+  };
+}
+
+/* printable worksheet with QR */
+function sheet(box, it, key, lang, sec) {
+  const steps = shuffle([['🌰', 'البذرة'], ['💧', 'السقي'], ['☀️🌱', 'النبتة الصغيرة'], ['🌻', 'الزهرة']]);
+  const link = location.href.split('#')[0] + '#/s/' + sec.id + '/0';
+  box.innerHTML = `
+    <div class="sheet">
+      <h2>🌻 ورقة عمل: كيف تنمو النبتة؟</h2>
+      <div class="name"><div>الاسم: <span></span></div><div>الصف: <span></span></div><div>التاريخ: <span></span></div></div>
+      <p><b>1.</b> رقّمي المراحل من 1 إلى 4 حسب ترتيبها:</p>
+      <div class="steps">${steps.map(s => `<div><span class="e">${s[0]}</span>${s[1]}<br><span class="circ"></span></div>`).join('')}</div>
+      <p style="margin-top:16px"><b>2.</b> ارسمي نبتتك بعد أسبوع من الزراعة:</p>
+      <div class="draw">✏️</div>
+      <div class="qrrow"><div id="qr"></div><div><b>3.</b> امسحي الرمز بالجوال<br>لتسمعي قصة «نزرع بذرة» 🔊</div></div>
+    </div>
+    <div class="center noprint" style="margin-top:18px"><button class="btn go" id="print">🖨️ اطبعي الورقة</button></div>`;
+  try { new QRCode($('#qr'), { text: link, width: 240, height: 240, colorDark: '#2b2350', colorLight: '#ffffff' }); }
+  catch (e) { $('#qr').textContent = 'QR'; }
+  $('#print').onclick = () => { win(key, lang); setTimeout(() => window.print(), 600); };
+}
+
+/* ---------- router ---------- */
+function route() {
+  stopSpeak();
+  const [, s, id, i] = location.hash.split('/');
+  if (s === 's' && SEC[id]) { i != null && i !== '' ? activity(SEC[id], +i) : section(SEC[id]); }
+  else home();
+  scrollTo(0, 0);
+}
+$('#mute').onclick = () => { muted = !muted; store.set('muted', muted); $('#mute').textContent = muted ? '🔇' : '🔊'; if (muted) stopSpeak(); };
+$('#mute').textContent = muted ? '🔇' : '🔊';
+addEventListener('hashchange', route);
+updateStars(); route();
+</script>
+</body>
+</html>
